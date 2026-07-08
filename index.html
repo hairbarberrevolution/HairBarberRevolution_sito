@@ -537,7 +537,7 @@
                 <div class="border border-black flex items-center justify-center" style="width:1.75rem;height:1.75rem;">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 </div>
-                <span>Aggiungi un servizio</span>
+                <span>Aggiungi un altro servizio</span>
               </button>
             </div>
 
@@ -549,7 +549,7 @@
                 <span id="submit-label">Vai a WhatsApp</span>
               </button>
               <p class="text-center text-black/40 tracking-wide" style="font-size:.7rem;margin-top:1rem;">
-                Verrai reindirizzato a WhatsApp con un messaggio precompilato.
+                Verrai reindirizzato a WhatsApp con un messaggio precompilato in base ai dati inseriti.
               </p>
             </div>
           </form>
@@ -700,7 +700,7 @@
         </a>
       </div>
       <div class="text-white/40 text-xs tracking-widest text-center md:text-right" style="line-height:1.8;">
-        Hair&amp;Barber Revolution, via Fornacetta 7 Costa Masnaga (LC), 23845<br>
+        HAIR&amp;BARBER REVOLUTION, VIA FORNACETTA 7 COSTA MASNAGA (LC), 23845<br>
         &copy; <span id="footer-year"></span> HAIR&amp;BARBER REVOLUTION DI TOMA VERUSKA. TUTTI I DIRITTI RISERVATI.<br>
         P.IVA 03667090132
       </div>
@@ -1133,15 +1133,15 @@ function handleSubmit(e) {
     .filter(Boolean);
 
   if (!name || !gender || chosen.length === 0) {
-    alert('Compila tutti i campi obbligatori');
+    alert('Devi compilare tutti i campi obbligatori.');
     return;
   }
 
   var phone = gender === 'Donna' ? '393331355200' : '393381583431';
   var intro = gender === 'Donna' ? 'sarei interessata' : 'sarei interessato';
   var msg   = 'Ciao, sono ' + name + ',\n'
-    + intro + ' a prendere un appuntamento per ' + chosen.join(', ')
-    + '\nPotrei sapere le disponibilità?\nGrazie!';
+    + intro + ' a prenotare un appuntamento per ' + chosen.join(', ')
+    + '\nPotrei sapere le vostre disponibilità?\nGrazie!';
   window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
