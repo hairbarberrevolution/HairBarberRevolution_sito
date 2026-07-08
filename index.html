@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hair&amp;Barber Revolution</title>
+  <meta name="description" content="Hair&amp;Barber Revolution - Salone Parrucchieri &amp; Barber Shop a Costa Masnaga (LC). Taglio, colore, barba e molto altro." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <script src="GALLERIA_DONNA.js"></script>
+  <script src="GALLERIA_UOMO.js"></script>
+  <script src="SERVIZI_DONNA.js"></script>
+  <script src="SERVIZI_UOMO.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ["'Cormorant Garamond'", "serif"],
+            sans:  ["'Segoe UI'", "system-ui", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #fff; color: #111; }
+
+    /* ════════════════════════════════
+       SPLASH
+    ════════════════════════════════ */
+    @keyframes splashScissors {
+      0%   { transform: rotate(0deg) scale(0.5); opacity: 0; }
+      25%  { transform: rotate(-35deg) scale(1); opacity: 1; }
+      50%  { transform: rotate(5deg) scale(1); }
+      75%  { transform: rotate(-35deg) scale(1); }
+      100% { transform: rotate(0deg) scale(1); opacity: 1; }
+    }
+    @keyframes splashPoleIn {
+      from { transform: translateY(-30px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes splashPoleSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @keyframes splashCombSlide {
+      from { transform: translateX(60px); opacity: 0; }
+      to   { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes splashLineGrow {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+    @keyframes splashLogoFade {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes splashExit {
+      from { opacity: 1; transform: scale(1); }
+      to   { opacity: 0; transform: scale(1.04); }
+    }
+
+    .splash-scissors { opacity: 0; animation: splashScissors 1.6s ease-in-out 0s forwards; }
+    .splash-pole     { opacity: 0; animation: splashPoleIn 0.5s ease 0.4s forwards, splashPoleSpin 1.2s ease-in-out 0.4s forwards; }
+    .splash-comb     { opacity: 0; animation: splashCombSlide 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.75s forwards; }
+    .splash-line     { transform: scaleX(0); transform-origin: left; animation: splashLineGrow 0.6s ease 1.2s forwards; }
+    .splash-logo     { opacity: 0; animation: splashLogoFade 0.8s ease-out 1.5s forwards; }
+    .splash-exit     { animation: splashExit 0.7s ease-in-out forwards !important; }
+
+    /* ════════════════════════════════
+       SCROLL ANIMATIONS
+    ════════════════════════════════ */
+    .anim-up   { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .anim-fade { opacity: 0; transition: opacity 0.65s ease; }
+    .anim-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .anim-up.in, .anim-fade.in, .anim-left.in { opacity: 1; transform: none; }
+
+    /* ════════════════════════════════
+       HERO BANNER
+    ════════════════════════════════ */
+    #home {
+      position: relative;
+      min-height: 65vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('IMMAGINI_GENERALI/banner.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: grayscale(100%);
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.62);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 1.5rem;
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
+    @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+    @keyframes scaleIn  { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:none; } }
+
+    .hero-title  { opacity:0; animation: fadeInUp 1s ease 0.3s forwards; }
+    .hero-sub    { opacity:0; animation: fadeIn   0.8s ease 0.7s forwards; }
+    .hero-cta    { opacity:0; animation: fadeInUp 0.8s ease 1.0s forwards; }
+    .hero-scroll { opacity:0; animation: fadeIn   1.0s ease 1.5s forwards; }
+
+    @keyframes scrollTick { 0% { transform: translateY(0); } 100% { transform: translateY(48px); } }
+    .scroll-tick { animation: scrollTick 1.5s linear infinite; }
+
+    /* ════════════════════════════════
+       NAVBAR
+    ════════════════════════════════ */
+    #navbar { transition: padding 0.3s, border-color 0.3s, background 0.3s; }
+    #navbar.scrolled { border-bottom: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.85) !important; }
+    #navbar.opaque   { background: #000 !important; border-bottom: 1px solid rgba(255,255,255,0.15); }
+
+    /* ════════════════════════════════
+       MOBILE MENU
+    ════════════════════════════════ */
+    @keyframes menuIn  { from { opacity:0; transform:translateY(-100%); } to { opacity:1; transform:none; } }
+    @keyframes menuOut { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-100%); } }
+    #mobile-menu         { display: none; }
+    #mobile-menu.open    { display: flex; animation: menuIn  0.4s ease-in-out forwards; }
+    #mobile-menu.closing {                animation: menuOut 0.4s ease-in-out forwards; }
+
+    /* ════════════════════════════════
+       GALLERY
+    ════════════════════════════════ */
+    .gallery-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 1rem; }
+    @media (min-width: 640px)  { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+    .gallery-item { position: relative; overflow: hidden; background: rgba(0,0,0,.05); aspect-ratio: 1 / 1; }
+    .gallery-item img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.7s ease; }
+    .gallery-item:hover img { transform: scale(1.05); }
+    .gallery-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background 0.5s ease; pointer-events: none; }
+    .gallery-item:hover .gallery-overlay { background: rgba(0,0,0,.25); }
+    @keyframes tabFade { from { opacity:0; } to { opacity:1; } }
+    .tab-anim { animation: tabFade 0.3s ease forwards; }
+
+    /* ════════════════════════════════
+       FORM ELEMENTS
+    ════════════════════════════════ */
+    .field-input {
+      width: 100%; height: 48px; padding: 0 12px;
+      border: 1px solid rgba(0,0,0,.3); outline: none;
+      font-size: .875rem; font-family: inherit; background: #fff;
+      transition: border-color .2s;
+    }
+    .field-input:focus { border-color: #000; }
+
+    .styled-select {
+      appearance: none; -webkit-appearance: none;
+      width: 100%; height: 48px; padding: 0 40px 0 12px;
+      border: 1px solid rgba(0,0,0,.3); outline: none;
+      font-size: .875rem; font-family: inherit;
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;
+      cursor: pointer; color: #000; transition: border-color .2s;
+    }
+    .styled-select:focus { border-color: #000; }
+
+    /* ════════════════════════════════
+       SERVICES TABLE
+    ════════════════════════════════ */
+    .price-table tr:last-child td { border-bottom: none; }
+
+    /* ════════════════════════════════
+       TEAM IMAGE PLACEHOLDER
+    ════════════════════════════════ */
+    .team-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem; font-weight: 700;
+      color: rgba(0,0,0,.15);
+    }
+
+    /* ════════════════════════════════
+       SERVICE ROW (booking)
+    ════════════════════════════════ */
+    .service-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .service-row .styled-select { flex: 1; }
+  </style>
+</head>
+
+<body>
+
+<!-- SPLASH -->
+<div id="splash" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
+  <div class="flex items-center justify-center mb-10" style="gap:2rem;height:80px;">
+    <div class="splash-scissors">
+      <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+        <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+        <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+        <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+      </svg>
+    </div>
+    <div class="splash-pole">
+      <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="6" y="3" width="12" height="18" rx="2"/>
+        <line x1="6" y1="7" x2="18" y2="7"/>
+        <line x1="6" y1="17" x2="18" y2="17"/>
+        <line x1="10" y1="3" x2="14" y2="21"/>
+      </svg>
+    </div>
+    <div class="splash-comb">
+      <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="10" width="18" height="4" rx="1"/>
+        <line x1="6" y1="14" x2="6" y2="20"/>
+        <line x1="9" y1="14" x2="9" y2="20"/>
+        <line x1="12" y1="14" x2="12" y2="20"/>
+        <line x1="15" y1="14" x2="15" y2="20"/>
+        <line x1="18" y1="14" x2="18" y2="20"/>
+      </svg>
+    </div>
+  </div>
+  <div class="splash-line bg-black mb-8" style="width:8rem;height:1px;"></div>
+  <div class="splash-logo">
+    <img src="logo.png" alt="Hair&amp;Barber Revolution" style="width:13rem;height:auto;" />
+  </div>
+</div>
+
+<div id="site" style="height:100vh;overflow:hidden;">
+
+<!-- NAVBAR -->
+<header id="navbar" class="fixed top-0 left-0 right-0 z-40 py-4" style="background:transparent;">
+  <div class="container mx-auto px-6 flex items-center justify-between">
+
+    <button onclick="goTo('home')" class="focus:outline-none">
+      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:2.75rem;width:auto;object-fit:contain;"
+        onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
+    </button>
+
+    <nav class="hidden md:flex items-center" style="gap:1.75rem;">
+      <button onclick="goTo('home')"     class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Home</button>
+      <button onclick="goTo('about')"    class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Chi siamo</button>
+      <button onclick="goTo('services')" class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Servizi</button>
+      <button onclick="goTo('gallery')"  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Galleria</button>
+      <button onclick="goTo('booking')"  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Prenota</button>
+      <a href="buoni.html"               class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Buoni</a>
+      <a href="https://www.google.com/search?sa=X&sca_esv=d7a897ae2fa4bc83&rlz=1C5CHFA_enIT1162IT1162&sxsrf=APpeQntG2aU_eaiUI3zmi98G93WmNKITOg:1783459273975&q=Hair%26Barber+Revolution+Recensioni&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxIxNDYwMjUwMDEwsTS3MDYyNDA2M9vAyPiKUdEjMbNIzSmxKCm1SCEotSw_p7QkMz8PyExOzSsGsjIXsRJWAwD3RWPAYwAAAA&rldimm=13025804049783210366&tbm=lcl&hl=it-IT&ved=2ahUKEwjnkfzDv8GVAxX_9bsIHT_pD3gQ9fQKegQITRAG&biw=856&bih=862&dpr=2#lkt=LocalPoiReviews" target="_blank" rel="noreferrer" class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Recensioni</a>
+      <button onclick="goTo('contact')"  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Contatti</button>
+    </nav>
+
+    <div class="hidden md:flex items-center" style="gap:1rem;">
+      <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white hover:opacity-60 transition-opacity" aria-label="Facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white hover:opacity-60 transition-opacity" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+      </a>
+    </div>
+
+    <button onclick="openMenu()" class="md:hidden text-white focus:outline-none" aria-label="Apri menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6"  x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="fixed inset-0 z-50 bg-black flex-col justify-center items-center">
+  <button onclick="closeMenu()" class="absolute top-6 right-6 text-white p-2 focus:outline-none" aria-label="Chiudi menu">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+  <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:5rem;width:auto;object-fit:contain;margin-bottom:3rem;opacity:.9;"
+    onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
+  <nav class="flex flex-col items-center" style="gap:2rem;">
+    <button onclick="goTo('home');closeMenu()"     class="text-3xl font-serif uppercase tracking-widest text-white">Home</button>
+    <button onclick="goTo('about');closeMenu()"    class="text-3xl font-serif uppercase tracking-widest text-white">Chi siamo</button>
+    <button onclick="goTo('services');closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Servizi</button>
+    <button onclick="goTo('gallery');closeMenu()"  class="text-3xl font-serif uppercase tracking-widest text-white">Galleria</button>
+    <button onclick="goTo('booking');closeMenu()"  class="text-3xl font-serif uppercase tracking-widest text-white">Prenota</button>
+    <a href="buoni.html"                           class="text-3xl font-serif uppercase tracking-widest text-white">Buoni</a>
+    <a href="https://www.google.com/search?sa=X&sca_esv=d7a897ae2fa4bc83&rlz=1C5CHFA_enIT1162IT1162&sxsrf=APpeQntG2aU_eaiUI3zmi98G93WmNKITOg:1783459273975&q=Hair%26Barber+Revolution+Recensioni&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxIxNDYwMjUwMDEwsTS3MDYyNDA2M9vAyPiKUdEjMbNIzSmxKCm1SCEotSw_p7QkMz8PyExOzSsGsjIXsRJWAwD3RWPAYwAAAA&rldimm=13025804049783210366&tbm=lcl&hl=it-IT&ved=2ahUKEwjnkfzDv8GVAxX_9bsIHT_pD3gQ9fQKegQITRAG&biw=856&bih=862&dpr=2#lkt=LocalPoiReviews" target="_blank" rel="noreferrer" onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Recensioni</a>
+    <button onclick="goTo('contact');closeMenu()"  class="text-3xl font-serif uppercase tracking-widest text-white">Contatti</button>
+  </nav>
+  <div class="flex" style="gap:1.5rem;margin-top:4rem;">
+    <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+    </a>
+  </div>
+</div>
+
+<main>
+
+  <!-- HERO BANNER -->
+  <section id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content container mx-auto flex flex-col items-center">
+      <h1 class="hero-title font-serif font-bold text-white" style="font-size:clamp(2.8rem,8vw,5.5rem);line-height:1.1;letter-spacing:.02em;text-shadow:0 2px 20px rgba(0,0,0,.4);margin-bottom:1.5rem;">
+        Hair&amp;Barber Revolution
+      </h1>
+      <p class="hero-sub text-white leading-relaxed" style="font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.35rem);opacity:.88;max-width:38rem;margin-bottom:3rem;text-shadow:0 1px 8px rgba(0,0,0,.5);">
+        Un salone di bellezza dove l'arte incontra la precisione.
+        Ogni dettaglio curato con passione, per donna e per uomo.
+      </p>
+      <div class="hero-cta">
+        <button onclick="goTo('booking')"
+          class="px-10 py-4 bg-white text-black uppercase font-medium border border-white transition-colors duration-300 hover:bg-transparent hover:text-white"
+          style="letter-spacing:.2em;font-size:.75rem;">
+          Prenota un appuntamento
+        </button>
+      </div>
+    </div>
+    <div class="hero-scroll absolute flex flex-col items-center" style="bottom:2.5rem;left:50%;transform:translateX(-50%);">
+      <span class="text-white uppercase" style="font-size:.65rem;letter-spacing:.2em;margin-bottom:.5rem;">Scorri</span>
+      <div style="width:1px;height:3rem;background:rgba(255,255,255,.3);overflow:hidden;position:relative;">
+        <div class="scroll-tick" style="width:100%;height:50%;background:#fff;position:absolute;top:0;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="bg-white px-6" style="padding-top:6rem;padding-bottom:6rem;">
+    <div class="container mx-auto">
+      <div class="max-w-3xl mx-auto text-center" style="margin-bottom:5rem;">
+        <h2 class="anim-up text-black uppercase" style="font-size:.75rem;letter-spacing:.25em;opacity:.4;margin-bottom:1rem;">Chi Siamo</h2>
+        <h3 class="anim-up font-serif font-bold text-black leading-tight" style="font-size:clamp(2rem,5vw,3rem);margin-bottom:2rem;transition-delay:.1s;">
+          Stile, Eleganza<br />e Precisione
+        </h3>
+        <p class="anim-fade text-black leading-relaxed" style="font-size:1rem;opacity:.6;transition-delay:.2s;">
+          Hair&amp;Barber Revolution nasce dalla passione per la cura dei capelli e della barba.
+          Il nostro salone è uno spazio moderno e accogliente, pensato per offrire un momento
+          di puro relax e cura di sé. Ogni dettaglio è curato con professionalità e amore per l'arte.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+
+        <!-- Veruska -->
+        <div class="anim-up flex flex-col items-center text-center">
+          <div class="overflow-hidden border border-black/10 mb-6 bg-black/5 flex items-center justify-center" style="width:10rem;height:10rem;">
+            <img src="IMMAGINI_NOI/veruska.png" alt="Veruska" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'team-placeholder\'>V</div>'" />
+          </div>
+          <div class="border-t border-black/10 pt-6 w-full">
+            <h4 class="font-serif font-bold text-black" style="font-size:1.2rem;margin-bottom:.25rem;">Veruska</h4>
+            <p class="text-black uppercase" style="font-size:.7rem;letter-spacing:.15em;opacity:.4;margin-bottom:1rem;">Stilista &amp; Colorista</p>
+            <p class="text-black leading-relaxed" style="font-size:.875rem;opacity:.6;">Esperta colorista e stilista donna. Trasforma ogni taglio e colore in un'opera d'arte personalizzata, esaltando la bellezza naturale di ogni cliente con tecniche all'avanguardia e un tocco unico.</p>
+          </div>
+        </div>
+
+        <!-- Max -->
+        <div class="anim-up flex flex-col items-center text-center" style="transition-delay:.12s;">
+          <div class="overflow-hidden border border-black/10 mb-6 bg-black/5 flex items-center justify-center" style="width:10rem;height:10rem;">
+            <img src="IMMAGINI_NOI/max.png" alt="Max" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'team-placeholder\'>M</div>'" />
+          </div>
+          <div class="border-t border-black/10 pt-6 w-full">
+            <h4 class="font-serif font-bold text-black" style="font-size:1.2rem;margin-bottom:.25rem;">Max</h4>
+            <p class="text-black uppercase" style="font-size:.7rem;letter-spacing:.15em;opacity:.4;margin-bottom:1rem;">Maestro Barbiere</p>
+            <p class="text-black leading-relaxed" style="font-size:.875rem;opacity:.6;">Precisione millimetrica nei tagli maschili e maestria nella rasatura classica. Unisce la tradizione del barber shop italiano alle tendenze contemporanee con passione e dedizione.</p>
+          </div>
+        </div>
+
+        <!-- Gaia -->
+        <div class="anim-up flex flex-col items-center text-center" style="transition-delay:.24s;">
+          <div class="overflow-hidden border border-black/10 mb-6 bg-black/5 flex items-center justify-center" style="width:10rem;height:10rem;">
+            <img src="IMMAGINI_NOI/gaia.png" alt="Gaia" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'team-placeholder\'>G</div>'" />
+          </div>
+          <div class="border-t border-black/10 pt-6 w-full">
+            <h4 class="font-serif font-bold text-black" style="font-size:1.2rem;margin-bottom:.25rem;">Gaia</h4>
+            <p class="text-black uppercase" style="font-size:.7rem;letter-spacing:.15em;opacity:.4;margin-bottom:1rem;">Parte del Team dal 2024</p>
+            <p class="text-black leading-relaxed" style="font-size:.875rem;opacity:.6;">Entrata a far parte del team di Hair&amp;Barber Revolution nel 2024, collabora fianco a fianco con Veruska portando freschezza, precisione e passione per la cura dei capelli.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES / LISTINO -->
+  <section id="services" class="bg-black text-white px-6" style="padding-top:6rem;padding-bottom:6rem;">
+    <div class="container mx-auto">
+      <div class="text-center" style="margin-bottom:4rem;">
+        <h2 class="anim-up text-white uppercase" style="font-size:.75rem;letter-spacing:.25em;opacity:.4;margin-bottom:1rem;">Listino Prezzi</h2>
+        <h3 class="anim-up font-serif font-bold text-white" style="font-size:clamp(2rem,5vw,3rem);transition-delay:.1s;">I Nostri Servizi</h3>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+        <div class="anim-up" style="transition-delay:.15s;">
+          <div class="flex items-center" style="gap:.75rem;margin-bottom:1.5rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".5"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+            <h4 class="font-serif font-bold text-white" style="font-size:1.4rem;letter-spacing:.05em;">Donna</h4>
+          </div>
+          <table class="w-full price-table" id="table-donna">
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="anim-up" style="transition-delay:.25s;">
+          <div class="flex items-center" style="gap:.75rem;margin-bottom:1.5rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".5"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+            <h4 class="font-serif font-bold text-white" style="font-size:1.4rem;letter-spacing:.05em;">Uomo</h4>
+          </div>
+          <table class="w-full price-table" id="table-uomo">
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="anim-fade text-center text-white/30 text-xs uppercase tracking-widest" style="margin-top:3rem;letter-spacing:.15em;">
+        I prezzi possono variare in base alla lunghezza e alla complessità del servizio
+      </p>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" class="bg-white px-6" style="padding-top:6rem;padding-bottom:6rem;">
+    <div class="container mx-auto">
+      <div class="text-center" style="margin-bottom:4rem;">
+        <h2 class="anim-up text-black uppercase" style="font-size:.75rem;letter-spacing:.25em;opacity:.4;margin-bottom:1rem;">Le Nostre Creazioni</h2>
+        <h3 class="anim-up font-serif font-bold text-black" style="font-size:clamp(2rem,5vw,3rem);margin-bottom:1.5rem;transition-delay:.1s;">Galleria</h3>
+        <p class="anim-fade text-black max-w-xl mx-auto leading-relaxed" style="font-size:.875rem;opacity:.5;transition-delay:.2s;">
+          Sfoglia i nostri lavori divisi per donna e uomo.
+        </p>
+      </div>
+
+      <div class="anim-up flex justify-center" style="margin-bottom:3rem;">
+        <div class="flex border border-black">
+          <button id="tab-btn-donna" onclick="setTab('donna')"
+            class="text-xs uppercase font-medium transition-colors duration-200 bg-black text-white"
+            style="padding:.75rem 2.5rem;letter-spacing:.2em;">Donna</button>
+          <button id="tab-btn-uomo" onclick="setTab('uomo')"
+            class="text-xs uppercase font-medium transition-colors duration-200 bg-white text-black hover:bg-black/5 border-l border-black"
+            style="padding:.75rem 2.5rem;letter-spacing:.2em;">Uomo</button>
+        </div>
+      </div>
+
+      <div id="gallery-content"></div>
+
+      <div class="anim-up text-center border border-black max-w-3xl mx-auto" style="margin-top:5rem;padding:2.5rem;">
+        <h4 class="font-serif font-bold text-black" style="font-size:1.4rem;margin-bottom:.75rem;">Scopri tutte le nostre creazioni</h4>
+        <p class="text-black leading-relaxed" style="font-size:.875rem;opacity:.5;margin-bottom:2rem;">
+          Seguici su Facebook e Instagram per vedere in tempo reale i nostri lavori,
+          le ultime tendenze e le novità del salone.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center items-center" style="gap:1rem;">
+          <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer"
+            class="flex items-center bg-black text-white border border-black transition-colors duration-300 hover:bg-white hover:text-black"
+            style="gap:.5rem;padding:.75rem 2rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            <span>Facebook</span>
+          </a>
+          <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer"
+            class="flex items-center bg-white text-black border border-black transition-colors duration-300 hover:bg-black hover:text-white"
+            style="gap:.5rem;padding:.75rem 2rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+            <span>Instagram</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section id="booking" class="bg-white px-6 relative overflow-hidden" style="padding-top:6rem;padding-bottom:6rem;">
+    <div class="absolute top-0 right-0 h-full hidden lg:block" style="width:50%;background:rgba(0,0,0,.02);z-index:-1;"></div>
+    <div class="container mx-auto" style="max-width:64rem;">
+      <div class="grid grid-cols-1 lg:grid-cols-5" style="gap:3rem;">
+
+        <div class="anim-left lg:col-span-2 flex flex-col justify-center">
+          <h2 class="text-black uppercase" style="font-size:.75rem;letter-spacing:.25em;opacity:.5;margin-bottom:1rem;">Prenotazioni</h2>
+          <h3 class="font-serif font-bold text-black" style="font-size:clamp(2rem,4vw,3rem);margin-bottom:1.5rem;">Prenota il tuo appuntamento</h3>
+          <p class="text-black leading-relaxed" style="font-size:.875rem;opacity:.6;margin-bottom:2rem;">
+            Scegli i servizi desiderati e prenota comodamente tramite WhatsApp.
+            Il nostro team ti risponderà il prima possibile per confermare data e orario.
+          </p>
+          <div class="hidden lg:block">
+            <div class="flex items-center border-b border-black/10" style="gap:1rem;padding-bottom:1rem;margin-bottom:1rem;">
+              <div class="border border-black flex items-center justify-center font-serif shrink-0" style="width:2.25rem;height:2.25rem;font-size:1rem;">1</div>
+              <span class="text-black font-medium" style="font-size:.875rem;">Seleziona sesso e servizi</span>
+            </div>
+            <div class="flex items-center border-b border-black/10" style="gap:1rem;padding-bottom:1rem;margin-bottom:1rem;">
+              <div class="border border-black flex items-center justify-center font-serif shrink-0" style="width:2.25rem;height:2.25rem;font-size:1rem;">2</div>
+              <span class="text-black font-medium" style="font-size:.875rem;">Invia richiesta su WhatsApp</span>
+            </div>
+            <div class="flex items-center" style="gap:1rem;padding-bottom:1rem;">
+              <div class="border border-black flex items-center justify-center font-serif shrink-0" style="width:2.25rem;height:2.25rem;font-size:1rem;">3</div>
+              <span class="text-black font-medium" style="font-size:.875rem;">Attendi la nostra conferma</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="anim-up lg:col-span-3 bg-white border border-black" style="padding:2rem;transition-delay:.1s;">
+          <form id="booking-form" onsubmit="handleSubmit(event)">
+
+            <div style="margin-bottom:2rem;">
+              <label for="f-name" class="block text-black font-medium uppercase" style="font-size:.7rem;letter-spacing:.15em;margin-bottom:.75rem;">Nome e Cognome</label>
+              <input id="f-name" type="text" placeholder="Inserisci il tuo nome" required class="field-input" />
+            </div>
+
+            <div style="margin-bottom:2rem;">
+              <label class="block text-black font-medium uppercase" style="font-size:.7rem;letter-spacing:.15em;margin-bottom:.75rem;">Sesso</label>
+              <select id="f-gender" class="styled-select" onchange="onGenderChange()">
+                <option value="">Seleziona...</option>
+                <option value="Donna">Donna</option>
+                <option value="Uomo">Uomo</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom:2rem;">
+              <label class="block text-black font-medium uppercase" style="font-size:.7rem;letter-spacing:.15em;margin-bottom:1rem;">Servizi Desiderati</label>
+              <div id="services-container"></div>
+              <button type="button" onclick="addServiceRow()"
+                class="flex items-center text-black uppercase font-medium transition-opacity hover:opacity-50"
+                style="gap:.5rem;font-size:.7rem;letter-spacing:.1em;margin-top:1rem;">
+                <div class="border border-black flex items-center justify-center" style="width:1.75rem;height:1.75rem;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+                <span>Aggiungi un servizio</span>
+              </button>
+            </div>
+
+            <div class="border-t border-black/10" style="padding-top:1.5rem;">
+              <button type="submit" id="submit-btn"
+                class="w-full bg-black text-white border border-black transition-colors duration-300 hover:bg-white hover:text-black flex items-center justify-center"
+                style="height:3.5rem;font-size:.875rem;font-weight:500;gap:.75rem;text-transform:uppercase;letter-spacing:.15em;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span id="submit-label">Vai a WhatsApp</span>
+              </button>
+              <p class="text-center text-black/40 tracking-wide" style="font-size:.7rem;margin-top:1rem;">
+                Verrai reindirizzato a WhatsApp con un messaggio precompilato.
+              </p>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="bg-black text-white px-6" style="padding-top:6rem;padding-bottom:6rem;">
+    <div class="container mx-auto">
+      <div class="text-center" style="margin-bottom:4rem;">
+        <h2 class="anim-up text-white uppercase" style="font-size:.75rem;letter-spacing:.25em;opacity:.4;margin-bottom:1rem;">I Nostri Recapiti</h2>
+        <h3 class="anim-up font-serif font-bold text-white" style="font-size:clamp(2rem,5vw,3rem);transition-delay:.1s;">Contattaci</h3>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto" style="gap:3rem;margin-bottom:4rem;">
+
+        <!-- Address -->
+        <div class="anim-up text-center" style="transition-delay:.2s;">
+          <div class="mx-auto border border-white/20 flex items-center justify-center" style="width:3.5rem;height:3.5rem;margin-bottom:1.5rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <h4 class="font-serif font-bold text-white tracking-wide" style="font-size:1rem;margin-bottom:.75rem;">Indirizzo</h4>
+          <p class="text-white leading-relaxed" style="font-size:.875rem;opacity:.6;">Via Fornacetta 7<br />Costa Masnaga (LC)</p>
+        </div>
+
+        <!-- Phone -->
+        <div class="anim-up text-center" style="transition-delay:.3s;">
+          <div class="mx-auto border border-white/20 flex items-center justify-center" style="width:3.5rem;height:3.5rem;margin-bottom:1.5rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.59 1.23h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.73a16 16 0 0 0 6.29 6.29l.87-.87a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.98 16.92z"/></svg>
+          </div>
+          <h4 class="font-serif font-bold text-white tracking-wide" style="font-size:1rem;margin-bottom:1.25rem;">Prenota per telefono o WhatsApp</h4>
+          <div class="flex flex-col" style="gap:.6rem;">
+            <a href="tel:+393331355200"
+              class="flex items-center justify-center border border-white text-white transition-colors duration-200 hover:bg-white hover:text-black"
+              style="gap:.5rem;padding:.65rem 1.5rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.59 1.23h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.73a16 16 0 0 0 6.29 6.29l.87-.87a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.98 16.92z"/></svg>
+              Chiama Veruska
+            </a>
+            <a href="https://wa.me/393331355200" target="_blank" rel="noreferrer"
+              class="flex items-center justify-center border border-white/50 text-white/70 transition-colors duration-200 hover:border-white hover:text-white"
+              style="gap:.5rem;padding:.65rem 1.5rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+              WhatsApp Veruska
+            </a>
+            <a href="tel:+393381583431"
+              class="flex items-center justify-center border border-white text-white transition-colors duration-200 hover:bg-white hover:text-black"
+              style="gap:.5rem;padding:.65rem 1.5rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.59 1.23h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.73a16 16 0 0 0 6.29 6.29l.87-.87a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.98 16.92z"/></svg>
+              Chiama Max
+            </a>
+            <a href="https://wa.me/393381583431" target="_blank" rel="noreferrer"
+              class="flex items-center justify-center border border-white/50 text-white/70 transition-colors duration-200 hover:border-white hover:text-white"
+              style="gap:.5rem;padding:.65rem 1.5rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+              WhatsApp Max
+            </a>
+          </div>
+          <div style="margin-top:1rem;">
+            <p class="text-white" style="font-size:.7rem;opacity:.35;">Veruska: 333 135 5200</p>
+            <p class="text-white" style="font-size:.7rem;opacity:.35;margin-top:.2rem;">Max: 338 158 3431</p>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div class="anim-up text-center" style="transition-delay:.4s;">
+          <div class="mx-auto border border-white/20 flex items-center justify-center" style="width:3.5rem;height:3.5rem;margin-bottom:1.5rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+          </div>
+          <h4 class="font-serif font-bold text-white tracking-wide" style="font-size:1rem;margin-bottom:1rem;">Social</h4>
+          <div class="flex flex-col items-center" style="gap:.75rem;">
+            <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer"
+              class="flex items-center text-white transition-colors hover:opacity-100" style="gap:.5rem;font-size:.875rem;opacity:.6;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              Facebook Negozio
+            </a>
+            <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer"
+              class="flex items-center text-white transition-colors hover:opacity-100" style="gap:.5rem;font-size:.875rem;opacity:.6;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+              Instagram Negozio
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORARIO -->
+      <div class="anim-up max-w-5xl mx-auto border border-white/10" style="padding:2rem 2.5rem;margin-bottom:3rem;transition-delay:.5s;">
+        <div class="flex flex-col md:flex-row md:items-center justify-between" style="gap:1.5rem;">
+          <div>
+            <h4 class="font-serif font-bold text-white tracking-wide" style="font-size:1rem;margin-bottom:1rem;">Orari di apertura</h4>
+            <div style="display:grid;grid-template-columns:auto auto;gap:.35rem 2rem;">
+              <span style="font-size:.8rem;opacity:.55;">Lunedi</span><span style="font-size:.8rem;opacity:.45;">Chiuso</span>
+              <span style="font-size:.8rem;opacity:.55;">Martedi</span><span style="font-size:.8rem;opacity:.75;">09:00 - 19:00</span>
+              <span style="font-size:.8rem;opacity:.55;">Mercoledi</span><span style="font-size:.8rem;opacity:.75;">12:00 - 21:00</span>
+              <span style="font-size:.8rem;opacity:.55;">Giovedi</span><span style="font-size:.8rem;opacity:.75;">09:00 - 19:00</span>
+              <span style="font-size:.8rem;opacity:.55;">Venerdi</span><span style="font-size:.8rem;opacity:.75;">09:00 - 19:00</span>
+              <span style="font-size:.8rem;opacity:.55;">Sabato</span><span style="font-size:.8rem;opacity:.75;">08:00 - 18:00</span>
+              <span style="font-size:.8rem;opacity:.55;">Domenica</span><span style="font-size:.8rem;opacity:.45;">Chiuso</span>
+            </div>
+          </div>
+          <div id="orario-status" style="text-align:center;"></div>
+        </div>
+      </div>
+
+      <div class="anim-up max-w-5xl mx-auto border border-white/20 overflow-hidden" style="height:380px;transition-delay:.3s;">
+        <iframe
+          title="Hair&amp;Barber Revolution - Via Fornacetta 7, Costa Masnaga"
+          src="https://maps.google.com/maps?q=Via+Fornacetta+7,+Costa+Masnaga,+LC,+Italy&output=embed&z=16"
+          width="100%" height="100%"
+          style="border:0;filter:grayscale(100%) invert(90%) contrast(90%);"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <p class="anim-fade text-center text-white/30 text-xs uppercase tracking-widest" style="margin-top:1rem;">
+        Via Fornacetta 7, Costa Masnaga (LC)
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-black text-white border-t border-white/10 px-6" style="padding-top:2.5rem;padding-bottom:2.5rem;">
+  <div class="container mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center" style="gap:1.5rem;margin-bottom:1.5rem;">
+      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:3rem;width:auto;object-fit:contain;"
+        onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
+      <div class="flex flex-wrap justify-center" style="gap:.75rem;">
+        <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+        </a>
+        <a href="https://www.google.com/search?sa=X&sca_esv=d7a897ae2fa4bc83&rlz=1C5CHFA_enIT1162IT1162&sxsrf=APpeQntG2aU_eaiUI3zmi98G93WmNKITOg:1783459273975&q=Hair%26Barber+Revolution+Recensioni&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxIxNDYwMjUwMDEwsTS3MDYyNDA2M9vAyPiKUdEjMbNIzSmxKCm1SCEotSw_p7QkMz8PyExOzSsGsjIXsRJWAwD3RWPAYwAAAA&rldimm=13025804049783210366&tbm=lcl&hl=it-IT&ved=2ahUKEwjnkfzDv8GVAxX_9bsIHT_pD3gQ9fQKegQITRAG&biw=856&bih=862&dpr=2#lkt=LocalPoiReviews" target="_blank" rel="noreferrer"
+           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Google">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Recensioni Google
+        </a>
+        <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer"
+           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Facebook">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Recensioni Facebook
+        </a>
+      </div>
+      <div class="text-white/40 text-xs tracking-widest text-center md:text-right" style="line-height:1.8;">
+        Hair&amp;Barber Revolution, via Fornacetta 7 Costa Masnaga (LC), 23845<br>
+        &copy; <span id="footer-year"></span> HAIR&amp;BARBER REVOLUTION DI TOMA VERUSKA. TUTTI I DIRITTI RISERVATI.<br>
+        P.IVA 03667090132
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div><!-- #site -->
+
+<script>
+'use strict';
+
+/* ── Footer year ── */
+document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+/* ════════════════════════
+   NAVBAR: transparent over hero, black after scroll
+════════════════════════ */
+(function() {
+  var nb = document.getElementById('navbar');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 80) {
+      nb.classList.add('opaque');
+      nb.classList.remove('scrolled');
+    } else if (window.scrollY > 10) {
+      nb.classList.add('scrolled');
+      nb.classList.remove('opaque');
+    } else {
+      nb.classList.remove('scrolled', 'opaque');
+    }
+  }, { passive: true });
+})();
+
+/* ════════════════════════
+   SPLASH
+════════════════════════ */
+(function() {
+  var splash = document.getElementById('splash');
+  var site   = document.getElementById('site');
+  var hash   = window.location.hash;
+  var delay  = hash ? 0 : 2800;
+  var exitMs = hash ? 0 : 700;
+  setTimeout(function() {
+    if (!hash) splash.classList.add('splash-exit');
+    setTimeout(function() {
+      splash.style.display = 'none';
+      site.style.height   = '';
+      site.style.overflow = '';
+      checkAnimations();
+      if (hash) {
+        var target = document.querySelector(hash);
+        if (target) { setTimeout(function(){ target.scrollIntoView({ behavior: 'smooth' }); }, 80); }
+      }
+    }, exitMs);
+  }, delay);
+})();
+
+/* ════════════════════════
+   NAVIGATION
+════════════════════════ */
+function goTo(id) {
+  var el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ════════════════════════
+   MOBILE MENU
+════════════════════════ */
+function openMenu() {
+  var m = document.getElementById('mobile-menu');
+  m.classList.remove('closing');
+  m.classList.add('open');
+}
+function closeMenu() {
+  var m = document.getElementById('mobile-menu');
+  m.classList.add('closing');
+  setTimeout(function() { m.classList.remove('open', 'closing'); }, 400);
+}
+
+/* ════════════════════════
+   SCROLL ANIMATIONS
+════════════════════════ */
+function checkAnimations() {
+  var els = document.querySelectorAll('.anim-up, .anim-fade, .anim-left');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); }
+    });
+  }, { rootMargin: '-60px 0px' });
+  els.forEach(function(el) { observer.observe(el); });
+}
+document.addEventListener('DOMContentLoaded', checkAnimations);
+
+var SERVICES = {
+  donna: window.SERVIZI_DONNA_DATA || [],
+  uomo:  window.SERVIZI_UOMO_DATA  || []
+};
+
+function loadServices() {
+  renderPriceTables();
+  renderServiceRows();
+}
+
+function renderPriceTables() {
+  ['donna','uomo'].forEach(function(gender) {
+    var tbody = document.querySelector('#table-' + gender + ' tbody');
+    if (!tbody) return;
+    var list = SERVICES[gender];
+    tbody.innerHTML = list.map(function(s, i) {
+      var last = i === list.length - 1;
+      return '<tr class="' + (last ? '' : 'border-b border-white/10') + '">'
+        + '<td class="py-3 text-white/80" style="font-size:.875rem;">' + s.nome + '</td>'
+        + '<td class="py-3 text-right text-white font-medium" style="font-size:.875rem;">' + s.prezzo + '</td>'
+        + '</tr>';
+    }).join('');
+  });
+}
+
+/* ════════════════════════
+   GALLERY - load from JSON
+   Formato JSON: array di nomi file, es. ["foto.jpg","altra.png"]
+   Qualsiasi nome, qualsiasi estensione. Aggiungere una riga per ogni foto.
+════════════════════════ */
+var GALLERY = { donna: [], uomo: [] };
+var currentTab  = 'donna';
+var currentSort = { donna: 'order', uomo: 'order' };
+
+/* ── Carica galleria dai file GALLERIA_*.js ── */
+function loadGallery() {
+  var donnaFiles = window.GALLERIA_DONNA_DATA || [];
+  var uomoFiles  = window.GALLERIA_UOMO_DATA  || [];
+  GALLERY.donna = donnaFiles.map(function(name, i) {
+    return { url: 'IMMAGINI_DONNA/' + name, mtime: i, order: i };
+  });
+  GALLERY.uomo = uomoFiles.map(function(name, i) {
+    return { url: 'IMMAGINI_UOMO/' + name, mtime: i, order: i };
+  });
+  renderGallery();
+}
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function applySorted(arr, mode) {
+  if (mode === 'order')  return arr.slice().sort(function(a,b){ return a.order - b.order; });
+  if (mode === 'recent') return arr.slice().sort(function(a,b){ return b.mtime - a.mtime; });
+  if (mode === 'oldest') return arr.slice().sort(function(a,b){ return a.mtime - b.mtime; });
+  return shuffle(arr);
+}
+
+function setTab(tab) {
+  currentTab = tab;
+  var bD = document.getElementById('tab-btn-donna');
+  var bU = document.getElementById('tab-btn-uomo');
+  if (tab === 'donna') {
+    bD.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-black text-white';
+    bD.style.cssText = 'padding:.75rem 2.5rem;letter-spacing:.2em;';
+    bU.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-white text-black border-l border-black';
+    bU.style.cssText = 'padding:.75rem 2.5rem;letter-spacing:.2em;';
+  } else {
+    bU.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-black text-white border-l border-black';
+    bU.style.cssText = 'padding:.75rem 2.5rem;letter-spacing:.2em;';
+    bD.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-white text-black';
+    bD.style.cssText = 'padding:.75rem 2.5rem;letter-spacing:.2em;';
+  }
+  renderGallery();
+}
+
+var GALLERY_PREVIEW_MAX = 8; /* max foto visibili in home prima del tile "Vedi altre" */
+
+function btnCls(mode, m) {
+  var base = 'text-xs uppercase font-medium border transition-colors duration-200';
+  var st   = 'padding:.5rem 1rem;letter-spacing:.1em;';
+  return { cls: base + (mode === m ? ' bg-black text-white border-black' : ' bg-white text-black hover:border-black'), style: st };
+}
+
+function buildSortControls(tab, mode, prefix) {
+  prefix = prefix || '';
+  var b1 = btnCls(mode,'order'), b2 = btnCls(mode,'random');
+  var reshuffleBtn = mode === 'random'
+    ? '<button onclick="'+prefix+'setSort(\''+tab+'\',\'random\')" title="Rimescola" style="padding:.5rem;border:1px solid rgba(0,0,0,.3);" class="text-black hover:border-black transition-colors">'
+      + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></button>'
+    : '';
+  return '<button onclick="'+prefix+'setSort(\''+tab+'\',\'order\')"  class="'+b1.cls+'" style="'+b1.style+'">Ordine</button>'
+       + '<button onclick="'+prefix+'setSort(\''+tab+'\',\'random\')" class="'+b2.cls+'" style="'+b2.style+'">Casuale</button>'
+       + reshuffleBtn;
+}
+
+function renderGallery() {
+  var tab    = currentTab;
+  var mode   = currentSort[tab];
+  var images = applySorted(GALLERY[tab], mode);
+  var label  = tab === 'donna' ? 'Donna' : 'Uomo';
+  var total  = images.length;
+
+  var preview = total <= GALLERY_PREVIEW_MAX ? images : images.slice(0, GALLERY_PREVIEW_MAX);
+  var remaining = total - GALLERY_PREVIEW_MAX;
+
+  var gridHtml;
+  if (total === 0) {
+    gridHtml = '<div style="border:1px dashed rgba(0,0,0,.2);padding:4rem 1rem;text-align:center;">'
+      + '<p style="font-size:.875rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(0,0,0,.35);">Nessuna foto presente nella cartella IMMAGINI_'+tab.toUpperCase()+'</p>'
+      + '</div>';
+  } else {
+    var tiles = preview.map(function(img, i) {
+      return '<div class="gallery-item"><img src="'+img.url+'" alt="'+label+' '+(i+1)+'" loading="lazy" /><div class="gallery-overlay"></div></div>';
+    });
+    if (remaining > 0) {
+      var ninthImg = images[GALLERY_PREVIEW_MAX]; /* foto reale come sfondo del tile */
+      tiles.push(
+        '<div class="gallery-item" onclick="openGalleryModal()" style="cursor:pointer;">'
+        + '<img src="'+ninthImg.url+'" alt="altre foto" loading="lazy" />'
+        + '<div style="position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;">'
+        + '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>'
+        + '<span style="color:#fff;font-size:.8rem;text-transform:uppercase;letter-spacing:.2em;font-weight:600;">Vedi altre foto</span>'
+        + '<span style="color:rgba(255,255,255,.6);font-size:.7rem;">+ '+remaining+' in questa galleria</span>'
+        + '</div>'
+        + '</div>'
+      );
+    }
+    gridHtml = '<div class="gallery-grid tab-anim">' + tiles.join('') + '</div>';
+  }
+
+  document.getElementById('gallery-content').innerHTML =
+    '<div>'
+    + '<div class="flex flex-col sm:flex-row sm:items-center justify-between" style="margin-bottom:2rem;gap:1rem;">'
+    + '<h3 class="font-serif font-bold text-black" style="font-size:clamp(1.4rem,3vw,1.875rem);">'+label+' <span style="font-size:.8rem;font-family:sans-serif;font-weight:400;opacity:.4;">('+total+' foto)</span></h3>'
+    + '<div class="flex items-center flex-wrap" style="gap:.5rem;">'
+    + (total > 0 ? buildSortControls(tab, mode) : '')
+    + '</div></div>'
+    + gridHtml
+    + '</div>';
+}
+
+/* ════════════════════════
+   MODAL GALLERIA COMPLETA
+════════════════════════ */
+var modalTab  = 'donna';
+var modalSort = { donna: 'order', uomo: 'order' };
+
+function openGalleryModal() {
+  modalTab  = currentTab;
+  modalSort = { donna: currentSort.donna, uomo: currentSort.uomo };
+  renderModalGallery();
+  var m = document.getElementById('gallery-modal');
+  m.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGalleryModal() {
+  document.getElementById('gallery-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function setModalTab(tab) {
+  modalTab = tab;
+  var bD = document.getElementById('modal-tab-donna');
+  var bU = document.getElementById('modal-tab-uomo');
+  if (tab === 'donna') {
+    bD.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-black text-white';
+    bD.style.cssText = 'padding:.65rem 2rem;letter-spacing:.2em;';
+    bU.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-white text-black border-l border-black';
+    bU.style.cssText = 'padding:.65rem 2rem;letter-spacing:.2em;';
+  } else {
+    bU.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-black text-white border-l border-black';
+    bU.style.cssText = 'padding:.65rem 2rem;letter-spacing:.2em;';
+    bD.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-white text-black';
+    bD.style.cssText = 'padding:.65rem 2rem;letter-spacing:.2em;';
+  }
+  renderModalGallery();
+}
+
+function setSort(tab, mode) {
+  currentSort[tab] = mode;
+  renderGallery();
+  if (document.getElementById('gallery-modal').style.display === 'flex' && tab === modalTab) {
+    modalSort[tab] = mode;
+    renderModalGallery();
+  }
+}
+
+function setModalSort(tab, mode) {
+  modalSort[tab] = mode;
+  currentSort[tab] = mode;
+  renderModalGallery();
+  renderGallery();
+}
+
+function renderModalGallery() {
+  var tab    = modalTab;
+  var mode   = modalSort[tab];
+  var images = applySorted(GALLERY[tab], mode);
+  var label  = tab === 'donna' ? 'Donna' : 'Uomo';
+  var total  = images.length;
+
+  /* aggiorna stato tab buttons */
+  var bD = document.getElementById('modal-tab-donna');
+  var bU = document.getElementById('modal-tab-uomo');
+  if (bD && bU) {
+    if (tab === 'donna') {
+      bD.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-black text-white';
+      bD.style.cssText = 'padding:.65rem 2rem;letter-spacing:.2em;';
+      bU.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-white text-black border-l border-black';
+      bU.style.cssText = 'padding:.65rem 2rem;letter-spacing:.2em;';
+    } else {
+      bU.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-black text-white border-l border-black';
+      bU.style.cssText = 'padding:.65rem 2rem;letter-spacing:.2em;';
+      bD.className = 'text-xs uppercase font-medium transition-colors duration-200 bg-white text-black';
+      bD.style.cssText = 'padding:.65rem 2rem;letter-spacing:.2em;';
+    }
+  }
+
+  /* intestazione contatore + sort */
+  var b1 = btnCls(mode,'order'), b2 = btnCls(mode,'random');
+  var reshuffleBtn = mode === 'random'
+    ? '<button onclick="setModalSort(\''+tab+'\',\'random\')" title="Rimescola" style="padding:.5rem;border:1px solid rgba(0,0,0,.3);" class="text-black hover:border-black transition-colors">'
+      + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></button>'
+    : '';
+
+  var sortHtml = total > 0
+    ? '<button onclick="setModalSort(\''+tab+'\',\'order\')"  class="'+b1.cls+'" style="'+b1.style+'">Ordine</button>'
+      + '<button onclick="setModalSort(\''+tab+'\',\'random\')" class="'+b2.cls+'" style="'+b2.style+'">Casuale</button>'
+      + reshuffleBtn
+    : '';
+
+  var gridHtml = total === 0
+    ? '<div style="border:1px dashed rgba(0,0,0,.2);padding:4rem 1rem;text-align:center;">'
+      + '<p style="font-size:.875rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(0,0,0,.35);">Nessuna foto presente nella cartella IMMAGINI_'+tab.toUpperCase()+'</p>'
+      + '</div>'
+    : '<div class="gallery-grid">'
+      + images.map(function(img, i) {
+          return '<div class="gallery-item"><img src="'+img.url+'" alt="'+label+' '+(i+1)+'" loading="lazy"/><div class="gallery-overlay"></div></div>';
+        }).join('')
+      + '</div>';
+
+  var headerEl = document.getElementById('modal-header-info');
+  var gridEl   = document.getElementById('modal-gallery-grid');
+  if (headerEl) headerEl.innerHTML =
+    '<h3 class="font-serif font-bold text-black" style="font-size:clamp(1.2rem,3vw,1.6rem);">'+label
+    + ' <span style="font-size:.8rem;font-family:sans-serif;font-weight:400;opacity:.4;">('+total+' foto)</span></h3>'
+    + '<div class="flex items-center flex-wrap" style="gap:.5rem;">' + sortHtml + '</div>';
+  if (gridEl) gridEl.innerHTML = gridHtml;
+}
+
+/* ════════════════════════
+   BOOKING FORM
+════════════════════════ */
+var rowIds   = [0];
+var rowCount = 1;
+var formGender = '';
+
+function onGenderChange() {
+  formGender = document.getElementById('f-gender').value;
+  var name = formGender === 'Donna' ? 'Veruska' : formGender === 'Uomo' ? 'Max' : '';
+  document.getElementById('submit-label').textContent = name ? 'Vai a WhatsApp di ' + name : 'Vai a WhatsApp';
+  // I servizi donna e uomo sono completamente diversi: al cambio sesso
+  // manteniamo il numero di righe ma azzeriamo le selezioni in modo esplicito.
+  renderServiceRows(rowIds.map(function() { return ''; }));
+}
+
+function buildOptions(gender, selectedValue) {
+  var list = gender ? (SERVICES[gender.toLowerCase()] || []) : [];
+  var opts = '<option value="">Seleziona un servizio</option>'
+    + list.map(function(s) {
+        var sel = selectedValue && selectedValue === s.nome ? ' selected' : '';
+        return '<option value="' + s.nome + '"' + sel + '>' + s.nome + ' - ' + s.prezzo + '</option>';
+      }).join('');
+  return opts;
+}
+
+function buildRow(id, gender, selectedValue) {
+  return '<div class="service-row" id="srow-' + id + '">'
+    + '<select class="styled-select" id="sval-' + id + '">' + buildOptions(gender, selectedValue) + '</select>'
+    + (rowIds.length > 1
+       ? '<button type="button" onclick="removeRow(' + id + ')" style="flex-shrink:0;padding:.625rem;border:1px solid rgba(0,0,0,.2);color:rgba(0,0,0,.4);" class="hover:border-black hover:text-black transition-colors" aria-label="Rimuovi">'
+         + '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+         + '</button>'
+       : '')
+    + '</div>';
+}
+
+function renderServiceRows(savedSelections) {
+  var container = document.getElementById('services-container');
+  // If no savedSelections passed, read current values before re-rendering
+  if (!savedSelections) {
+    savedSelections = rowIds.map(function(id) {
+      var el = document.getElementById('sval-' + id);
+      return el ? el.value : '';
+    });
+  }
+  container.innerHTML = rowIds.map(function(id, idx) {
+    return buildRow(id, formGender, savedSelections[idx] || '');
+  }).join('');
+}
+
+function addServiceRow() {
+  // Save current selections before adding
+  var saved = rowIds.map(function(id) {
+    var el = document.getElementById('sval-' + id);
+    return el ? el.value : '';
+  });
+  saved.push('');
+  rowIds.push(rowCount++);
+  renderServiceRows(saved);
+}
+
+function removeRow(id) {
+  if (rowIds.length === 1) return;
+  var saved = rowIds.map(function(i) {
+    var el = document.getElementById('sval-' + i);
+    return el ? el.value : '';
+  });
+  var idx = rowIds.indexOf(id);
+  if (idx > -1) saved.splice(idx, 1);
+  rowIds = rowIds.filter(function(i) { return i !== id; });
+  renderServiceRows(saved);
+}
+
+function handleSubmit(e) {
+  e.preventDefault();
+  var name   = document.getElementById('f-name').value.trim();
+  var gender = document.getElementById('f-gender').value;
+  var chosen = rowIds
+    .map(function(id) { var el = document.getElementById('sval-' + id); return el ? el.value : ''; })
+    .filter(Boolean);
+
+  if (!name || !gender || chosen.length === 0) {
+    alert('Compila tutti i campi obbligatori');
+    return;
+  }
+
+  var phone = gender === 'Donna' ? '393331355200' : '393381583431';
+  var intro = gender === 'Donna' ? 'sarei interessata' : 'sarei interessato';
+  var msg   = 'Ciao, sono ' + name + ',\n'
+    + intro + ' a prendere un appuntamento per ' + chosen.join(', ')
+    + '\nPotrei sapere le disponibilità?\nGrazie!';
+  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+/* ════════════════════════
+   ORARIO STATUS
+════════════════════════ */
+(function() {
+  var schedule = [
+    null,                        // 0 = domenica - chiuso
+    null,                        // 1 = lunedi - chiuso
+    { open: 9*60,  close: 19*60 }, // 2 = martedi
+    { open: 12*60, close: 21*60 }, // 3 = mercoledi
+    { open: 9*60,  close: 19*60 }, // 4 = giovedi
+    { open: 9*60,  close: 19*60 }, // 5 = venerdi
+    { open: 8*60,  close: 18*60 }  // 6 = sabato
+  ];
+
+  function render() {
+    var el = document.getElementById('orario-status');
+    if (!el) return;
+    var now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Rome' }));
+    var day  = now.getDay();
+    var mins = now.getHours() * 60 + now.getMinutes();
+    var slot = schedule[day];
+
+    var dot, label, sub;
+    if (!slot) {
+      dot   = '#ef4444'; label = 'Chiuso ora'; sub = '';
+    } else if (mins < slot.open || mins >= slot.close) {
+      dot   = '#ef4444'; label = 'Chiuso ora';
+      if (mins < slot.open) { sub = 'Apre alle ' + pad(Math.floor(slot.open/60)) + ':' + pad(slot.open%60); }
+      else { sub = ''; }
+    } else if (mins >= slot.close - 60) {
+      dot   = '#eab308'; label = 'Chiude tra poco';
+      var diff = slot.close - mins;
+      sub = 'Chiude alle ' + pad(Math.floor(slot.close/60)) + ':' + pad(slot.close%60);
+    } else {
+      dot   = '#22c55e'; label = 'Aperto ora';
+      sub = 'Chiude alle ' + pad(Math.floor(slot.close/60)) + ':' + pad(slot.close%60);
+    }
+
+    el.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;gap:.4rem;">'
+      + '<div style="display:flex;align-items:center;gap:.5rem;">'
+      + '<span style="width:10px;height:10px;border-radius:50%;background:' + dot + ';flex-shrink:0;"></span>'
+      + '<span style="font-size:.85rem;font-weight:600;color:#fff;">' + label + '</span>'
+      + '</div>'
+      + (sub ? '<span style="font-size:.75rem;color:rgba(255,255,255,.45);">' + sub + '</span>' : '')
+      + '</div>';
+  }
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  render();
+  setInterval(render, 30000);
+})();
+
+/* ── Init ── */
+loadServices();
+loadGallery();
+</script>
+
+<!-- ══════════════════════════════════════════════════
+     MODAL GALLERIA COMPLETA
+══════════════════════════════════════════════════ -->
+<div id="gallery-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);flex-direction:column;align-items:stretch;overflow:hidden;">
+
+  <!-- header fisso -->
+  <div style="background:#fff;padding:1.25rem 1.5rem;flex-shrink:0;border-bottom:1px solid rgba(0,0,0,.1);">
+    <div style="max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;">
+
+      <!-- tab donna / uomo -->
+      <div style="display:flex;border:1px solid #000;">
+        <button id="modal-tab-donna" onclick="setModalTab('donna')"
+          class="text-xs uppercase font-medium transition-colors duration-200 bg-black text-white"
+          style="padding:.65rem 2rem;letter-spacing:.2em;">Donna</button>
+        <button id="modal-tab-uomo" onclick="setModalTab('uomo')"
+          class="text-xs uppercase font-medium transition-colors duration-200 bg-white text-black border-l border-black"
+          style="padding:.65rem 2rem;letter-spacing:.2em;">Uomo</button>
+      </div>
+
+      <!-- contatore + sort -->
+      <div id="modal-header-info" class="flex flex-col sm:flex-row sm:items-center" style="gap:.75rem;flex:1;justify-content:center;flex-wrap:wrap;"></div>
+
+      <!-- chiudi -->
+      <button onclick="closeGalleryModal()"
+        style="display:flex;align-items:center;gap:.4rem;padding:.6rem 1.25rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;border:1px solid #000;background:#000;color:#fff;cursor:pointer;flex-shrink:0;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Chiudi
+      </button>
+    </div>
+  </div>
+
+  <!-- griglia scrollabile -->
+  <div style="flex:1;overflow-y:auto;padding:1.5rem;">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div id="modal-gallery-grid"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* chiudi modal con tasto ESC */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeGalleryModal();
+});
+/* chiudi cliccando fuori dalla zona bianca (sul backdrop scuro) */
+document.getElementById('gallery-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeGalleryModal();
+});
+</script>
+
+</body>
+</html>
