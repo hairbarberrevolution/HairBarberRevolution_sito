@@ -258,6 +258,15 @@
         </p>
       </div>
 
+      <!-- TOTALE STIMATO (trattamento) -->
+      <div id="buoni-total-wrap" style="display:none;margin-bottom:1.5rem;padding:.875rem 1rem;border:1px solid rgba(0,0,0,.1);background:rgba(0,0,0,.025);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;">
+          <span class="uppercase text-black" style="font-size:.7rem;letter-spacing:.12em;opacity:.45;">Totale stimato</span>
+          <span id="buoni-total-amount" class="font-serif font-bold text-black" style="font-size:1.15rem;"></span>
+        </div>
+        <p id="buoni-total-note" class="text-black" style="font-size:.65rem;opacity:.4;margin-top:.3rem;display:none;"></p>
+      </div>
+
       <!-- 6. Dedica (opzionale) -->
       <div style="margin-bottom:2.5rem;">
         <label for="b-dedica" class="block text-black font-medium uppercase" style="font-size:.7rem;letter-spacing:.15em;margin-bottom:.6rem;">
@@ -410,12 +419,14 @@ function switchToAccredito() {
   document.getElementById('section-trattamento').style.display = 'none';
   document.getElementById('section-accredito').style.display = 'block';
   checkFormValidity();
+  updateBuoniTotal();
 }
 function switchToTrattamento() {
   MODE = 'trattamento';
   document.getElementById('section-accredito').style.display = 'none';
   document.getElementById('section-trattamento').style.display = 'block';
   checkFormValidity();
+  updateBuoniTotal();
 }
 
 function onSessoChange() {
@@ -439,7 +450,7 @@ function buildOptions(selectedValue) {
 function buildTRow(id, selectedValue) {
   var canRemove = tRowIds.length > 1;
   return '<div class="service-row" id="trow-' + id + '">'
-    + '<select class="styled-select" id="tval-' + id + '" onchange="checkFormValidity()">'
+    + '<select class="styled-select" id="tval-' + id + '" onchange="checkFormValidity();updateBuoniTotal();">'
     + buildOptions(selectedValue)
     + '</select>'
     + (canRemove
@@ -462,6 +473,7 @@ function renderTrattamenti(savedSelections) {
     return buildTRow(id, savedSelections[idx] || '');
   }).join('');
   checkFormValidity();
+  updateBuoniTotal();
 }
 
 function updateTrattamentoOptions() {
@@ -527,10 +539,86 @@ function checkFormValidity() {
 }
 
 // Live validation
-['b-nome','b-mittente','b-destinatario','b-accredito'].forEach(function(id) {
+['b-nome','b-mittente','b-destinatario'].forEach(function(id) {
   var el = document.getElementById(id);
   if (el) el.addEventListener('input', checkFormValidity);
 });
+var accreditoEl = document.getElementById('b-accredito');
+if (accreditoEl) accreditoEl.addEventListener('input', function() { checkFormValidity(); updateBuoniTotal(); });
+
+/* ════════════════════════
+   TOTALE STIMATO BUONI
+════════════════════════ */
+function parseEuro(priceStr) {
+  var amounts = [];
+  var re = /€(\d+)(?:,(\d{2}))?/g, m;
+  while ((m = re.exec(priceStr)) !== null) {
+    amounts.push(parseFloat(m[1]) + (m[2] ? parseFloat('0.' + m[2]) : 0));
+  }
+  if (!amounts.length) return null;
+  return {
+    min: amounts[0],
+    max: amounts[amounts.length - 1],
+    isRange: amounts.length > 1 || priceStr.indexOf('da') !== -1,
+    isPartial: priceStr.indexOf('+') !== -1
+  };
+}
+
+function updateBuoniTotal() {
+  var wrap     = document.getElementById('buoni-total-wrap');
+  var amountEl = document.getElementById('buoni-total-amount');
+  var noteEl   = document.getElementById('buoni-total-note');
+  if (!wrap) return;
+
+  var fmt = function(n) { return '€' + n.toFixed(2).replace('.', ','); };
+
+  /* Modalità accredito: mostra importo digitato */
+  if (MODE === 'accredito') {
+    var val = parseInt(document.getElementById('b-accredito').value, 10);
+    if (!val || val <= 0) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+    amountEl.textContent = '€' + val + ',00';
+    noteEl.style.display = 'none';
+    return;
+  }
+
+  /* Modalità trattamento */
+  var services = SERVICES[currentSesso.toLowerCase()] || [];
+  var totalMin = 0, totalMax = 0;
+  var hasRange = false, hasPartial = false, hasUnknown = false, hasAny = false;
+
+  tRowIds.forEach(function(id) {
+    var el = document.getElementById('tval-' + id);
+    if (!el || !el.value) return;
+    hasAny = true;
+    var svc = services.filter(function(s) { return s.nome === el.value; })[0];
+    if (!svc) return;
+    var p = parseEuro(svc.prezzo);
+    if (!p) { hasUnknown = true; return; }
+    totalMin += p.min;
+    totalMax += p.max;
+    if (p.isRange)   hasRange   = true;
+    if (p.isPartial) hasPartial = true;
+  });
+
+  if (!hasAny) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+
+  var text, note = '';
+  if (hasUnknown && totalMin === 0) {
+    text = 'Prezzo da preventivo';
+  } else if (hasRange || hasPartial || hasUnknown) {
+    text = 'da ' + fmt(totalMin);
+    if (totalMax !== totalMin && !hasUnknown && !hasPartial) text += ' a ' + fmt(totalMax);
+    note = 'Stima sul prezzo minimo — alcuni servizi richiedono preventivo';
+  } else {
+    text = fmt(totalMin);
+  }
+
+  amountEl.textContent = text;
+  if (note) { noteEl.textContent = note; noteEl.style.display = 'block'; }
+  else       { noteEl.style.display = 'none'; }
+}
 
 /* ════════════════════════
    FORM SUBMIT
