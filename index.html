@@ -106,6 +106,20 @@
       inset: 0;
       background: rgba(0,0,0,0.62);
     }
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%);
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      pointer-events: none;
+    }
+    .hero-video.ready {
+      opacity: 1;
+    }
     .hero-content {
       position: relative;
       z-index: 2;
@@ -315,6 +329,9 @@
   <!-- HERO BANNER -->
   <section id="home">
     <div class="hero-bg"></div>
+    <video id="hero-video" class="hero-video" autoplay muted loop playsinline preload="auto">
+      <source src="VIDEO_HBR/video.mp4" type="video/mp4">
+    </video>
     <div class="hero-overlay"></div>
     <div class="hero-content container mx-auto flex flex-col items-center">
       <h1 class="hero-title font-serif font-bold text-white" style="font-size:clamp(2.8rem,8vw,5.5rem);line-height:1.1;letter-spacing:.02em;text-shadow:0 2px 20px rgba(0,0,0,.4);margin-bottom:1.5rem;">
@@ -1201,6 +1218,57 @@ function handleSubmit(e) {
 /* ── Init ── */
 loadServices();
 loadGallery();
+
+/* ════════════════════════
+   VIDEO HERO
+   - parte in autoplay non appena il browser ha abbastanza dati
+   - preload="auto" fa sì che il browser scarichi in anticipo rispetto
+     alla posizione di riproduzione (buffering progressivo nativo)
+   - se il video va in errore o non si avvia entro 6s, resta visibile
+     il fallback con l'immagine di sfondo (hero-bg rimane sotto)
+════════════════════════ */
+(function() {
+  var v = document.getElementById('hero-video');
+  if (!v) return;
+
+  var shown = false;
+  var fallbackTimer = null;
+
+  function showVideo() {
+    if (shown) return;
+    shown = true;
+    clearTimeout(fallbackTimer);
+    v.classList.add('ready');
+  }
+
+  /* Il browser ha abbastanza dati per partire → mostra video */
+  v.addEventListener('canplay', showVideo, { once: true });
+
+  /* Errore caricamento → nessuna azione, hero-bg rimane visibile */
+  v.addEventListener('error', function() {
+    clearTimeout(fallbackTimer);
+    v.style.display = 'none';
+  });
+
+  /* Connessione lenta: se dopo 6 s non si è ancora avviato,
+     lasciamo l'immagine di sfondo e proviamo comunque in background.
+     Quando arriverà canplay, il video scatterà comunque. */
+  fallbackTimer = setTimeout(function() {
+    if (!shown) {
+      /* Continua a tentare in background — quando sarà pronto comparirà */
+      v.addEventListener('canplay', showVideo, { once: true });
+    }
+  }, 6000);
+
+  /* Assicurati che il loop riparta immediatamente a fine video */
+  v.addEventListener('ended', function() {
+    v.currentTime = 0;
+    v.play().catch(function(){});
+  });
+
+  /* Tenta il play (necessario su alcuni browser mobili) */
+  v.play().catch(function(){});
+})();
 </script>
 
 <!-- ══════════════════════════════════════════════════
