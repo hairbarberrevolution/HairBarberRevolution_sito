@@ -1268,6 +1268,14 @@ loadGallery();
 
   /* Tenta il play (necessario su alcuni browser mobili) */
   v.play().catch(function(){});
+
+  /* Quando l'utente torna sulla pagina (es. da un'altra app sul telefono)
+     il browser sospende il video. Qui lo riprendiamo subito. */
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+      v.play().catch(function(){});
+    }
+  });
 })();
 </script>
 
