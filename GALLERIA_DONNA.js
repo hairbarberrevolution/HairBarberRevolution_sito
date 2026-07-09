@@ -3,11 +3,24 @@
 // Formato: "nomefile.ext",   ← virgola dopo ogni riga tranne l'ultima
 // ────────────────────────────────────────────────────────────
 window.GALLERIA_DONNA_DATA = [
+  "1ff19ef4-b704-4bd7-893e-85afc417f5f7.jpeg",
+  "20d92adf-bd5c-401c-be38-7ed614d770fb.jpeg",
+  "30c2c891-134a-45a1-94c5-2ad5b9b77bdb.jpeg",
+  "3fb6f88f-c331-4a0b-81ac-cec7eca69172.jpeg",
+  "428cbd3b-8ec4-4757-be90-2608482dac13.jpeg",
   "486380622_1103189911820618_3287859500067101338_n.png",
   "486609519_1103189918487284_7125617272299099066_n.png",
   "486650359_1103189881820621_2031875622050690061_n.png",
   "486652962_1103190101820599_7843937987038468750_n.png",
   "487377202_1103189958487280_1306974082618466037_n.png",
-  "donna1.png",
-  "donna.png"
+  "579b99a8-0e53-4667-a505-aebdf705b2cf.jpeg",
+  "75eb88a0-909d-4bdc-9502-4aaf28a9b9a1.jpeg",
+  "8c87f29b-afb1-4186-b6ff-aed087b1e893.jpeg",
+  "977b71ea-17c9-40f0-8045-cd0335e44044.jpeg",
+  "9ba944c1-92e3-4e60-8107-34cce69cc273.jpeg",
+  "9e6b6edc-478f-4924-b0da-71794d35f7c1.jpeg",
+  "d3810b43-9838-4b3a-884d-792fc4836715.jpeg",
+  "d99fea3d-6b15-4a75-860a-187a31fdbc75.jpeg",
+  "donna.png",
+  "donna1.png"
 ];
