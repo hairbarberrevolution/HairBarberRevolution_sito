@@ -53,8 +53,8 @@
     #reviews-viewport {
       overflow: hidden;
       position: relative;
-      /* bleed past the page's side padding on mobile so the next card
-         clearly peeks in from the right edge of the screen */
+      /* bleed past the page's side padding on mobile so the active card
+         can sit centered with a peek of the previous/next card on both sides */
       margin-left: -1.5rem;
       margin-right: -1.5rem;
     }
@@ -68,8 +68,9 @@
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
-      padding: 0 1.5rem .5rem;
-      /* hide scrollbar but keep native scroll/drag */
+      padding: 0 0 .5rem;
+      /* left/right padding is set from JS on mobile so the active card is
+         perfectly centered with equal peeks of its neighbours either side */
       scrollbar-width: none;
     }
     @media (min-width: 768px) {
@@ -87,6 +88,9 @@
       padding: 1.75rem;
       display: flex;
       flex-direction: column;
+    }
+    @media (max-width: 767px) {
+      .review-card { scroll-snap-align: center; }
     }
     @media (min-width: 768px) {
       .review-card { width: 320px; }
@@ -152,6 +156,12 @@
     .review-btn-solid:hover { background: #fff; color: #000; }
     .review-btn-outline { background: #fff; color: #000; }
     .review-btn-outline:hover { background: #000; color: #fff; }
+
+    /* CTA buttons on the dark hero background */
+    .review-btn-hero-solid { background: #fff; color: #000; border-color: #fff; }
+    .review-btn-hero-solid:hover { background: transparent; color: #fff; }
+    .review-btn-hero-outline { background: transparent; color: #fff; border-color: #fff; }
+    .review-btn-hero-outline:hover { background: #fff; color: #000; }
   </style>
 </head>
 
@@ -234,6 +244,23 @@
     <p class="text-white leading-relaxed max-w-xl mx-auto" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;opacity:.7;">
       Quello che i nostri clienti dicono di noi, dopo ogni appuntamento.
     </p>
+
+    <!-- CTA -->
+    <div style="margin-top:2rem;">
+      <div class="flex flex-col sm:flex-row justify-center" style="gap:1rem;">
+        <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer" class="review-btn review-btn-hero-solid">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Lascia una recensione su Google
+        </a>
+        <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer" class="review-btn review-btn-hero-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Lascia una recensione su Facebook
+        </a>
+      </div>
+      <p class="text-white/40" style="font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-top:1.5rem;">
+        Recensioni verificate, raccolte da Google.
+      </p>
+    </div>
   </div>
 </div>
 
@@ -248,23 +275,6 @@
 
     <div id="reviews-viewport">
       <div id="reviews-track"></div>
-    </div>
-
-    <!-- CTA -->
-    <div class="text-center" style="margin-top:3.5rem;">
-      <div class="flex flex-col sm:flex-row justify-center" style="gap:1rem;">
-        <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer" class="review-btn review-btn-solid">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          Lascia una recensione su Google
-        </a>
-        <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer" class="review-btn review-btn-outline">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          Lascia una recensione su Facebook
-        </a>
-      </div>
-      <p class="text-black/40" style="font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-top:1.5rem;">
-        Recensioni verificate, raccolte da Google.
-      </p>
     </div>
 
   </div>
@@ -385,10 +395,27 @@ renderReviews();
 ════════════════════════════════ */
 (function() {
   var track = document.getElementById('reviews-track');
+  var viewport = document.getElementById('reviews-viewport');
   var index = 0;
   var userInteracting = false;
   var resumeTimeout = null;
   var autoInterval = null;
+
+  /* On mobile, pad the track left/right so the active card sits centered
+     in the viewport with an equal peek of the previous/next card on both
+     sides. On desktop the cards keep their original flush layout. */
+  function setCenteringPadding() {
+    if (window.innerWidth >= 768) {
+      track.style.paddingLeft = '';
+      track.style.paddingRight = '';
+      return;
+    }
+    var card = track.querySelector('.review-card');
+    if (!card) return;
+    var pad = Math.max(0, (viewport.clientWidth - card.getBoundingClientRect().width) / 2);
+    track.style.paddingLeft = pad + 'px';
+    track.style.paddingRight = pad + 'px';
+  }
 
   function cardStep() {
     var card = track.querySelector('.review-card');
@@ -397,10 +424,10 @@ renderReviews();
     return card.getBoundingClientRect().width + gap;
   }
 
-  function goToIndex(i) {
+  function goToIndex(i, behavior) {
     var max = REVIEWS.length - 1;
     index = i > max ? 0 : (i < 0 ? max : i);
-    track.scrollTo({ left: index * cardStep(), behavior: 'smooth' });
+    track.scrollTo({ left: index * cardStep(), behavior: behavior || 'smooth' });
   }
 
   function startAuto() {
@@ -427,8 +454,18 @@ renderReviews();
     }, { passive: true });
   });
 
+  setCenteringPadding();
+  goToIndex(0, 'auto');
   startAuto();
-  window.addEventListener('resize', function() { /* step is recomputed live from DOM */ });
+
+  var resizeTimeout = null;
+  window.addEventListener('resize', function() {
+    if (resizeTimeout) clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+      setCenteringPadding();
+      goToIndex(index, 'auto');
+    }, 150);
+  });
 })();
 </script>
 
