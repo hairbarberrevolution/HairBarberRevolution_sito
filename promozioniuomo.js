@@ -1,0 +1,1 @@
+window.PROMOZIONI_UOMO_DATA = [];
