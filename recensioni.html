@@ -82,7 +82,7 @@
       scroll-snap-align: start;
       width: 72vw;
       max-width: 340px;
-      border: 1px solid rgba(0,0,0,.1);
+      border: 2px solid #000;
       background: #fff;
       padding: 1.75rem;
       display: flex;
@@ -113,20 +113,6 @@
       .swipe-hint { display: none; }
     }
 
-    /* ── pagination dots ── */
-    #reviews-dots {
-      display: flex;
-      justify-content: center;
-      gap: .5rem;
-      margin-top: 1.25rem;
-    }
-    .review-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: rgba(0,0,0,.15);
-      border: none; padding: 0; cursor: pointer;
-      transition: background-color .25s, transform .25s;
-    }
-    .review-dot.active { background: #000; transform: scale(1.3); }
 
     .review-stars { display: flex; gap: .2rem; margin-bottom: 1rem; color: #000; }
 
@@ -264,8 +250,6 @@
       <div id="reviews-track"></div>
     </div>
 
-    <div id="reviews-dots"></div>
-
     <!-- CTA -->
     <div class="text-center" style="margin-top:3.5rem;">
       <div class="flex flex-col sm:flex-row justify-center" style="gap:1rem;">
@@ -401,28 +385,10 @@ renderReviews();
 ════════════════════════════════ */
 (function() {
   var track = document.getElementById('reviews-track');
-  var dotsEl = document.getElementById('reviews-dots');
   var index = 0;
   var userInteracting = false;
   var resumeTimeout = null;
   var autoInterval = null;
-
-  // dot indicators, so on mobile it's visually obvious there are more cards
-  dotsEl.innerHTML = REVIEWS.map(function(_, i) {
-    return '<button class="review-dot" aria-label="Vai alla recensione ' + (i + 1) + '"></button>';
-  }).join('');
-  var dots = Array.prototype.slice.call(dotsEl.querySelectorAll('.review-dot'));
-  dots.forEach(function(dot, i) {
-    dot.addEventListener('click', function() {
-      stopAuto();
-      goToIndex(i);
-      startAuto();
-    });
-  });
-
-  function updateDots() {
-    dots.forEach(function(dot, i) { dot.classList.toggle('active', i === index); });
-  }
 
   function cardStep() {
     var card = track.querySelector('.review-card');
@@ -435,7 +401,6 @@ renderReviews();
     var max = REVIEWS.length - 1;
     index = i > max ? 0 : (i < 0 ? max : i);
     track.scrollTo({ left: index * cardStep(), behavior: 'smooth' });
-    updateDots();
   }
 
   function startAuto() {
@@ -458,12 +423,9 @@ renderReviews();
         // sync index to nearest card after manual scroll
         var step = cardStep();
         if (step) index = Math.round(track.scrollLeft / step);
-        updateDots();
       }, 4500);
     }, { passive: true });
   });
-
-  updateDots();
 
   startAuto();
   window.addEventListener('resize', function() { /* step is recomputed live from DOM */ });
