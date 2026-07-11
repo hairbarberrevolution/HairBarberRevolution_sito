@@ -1,2 +1,1 @@
-window.PROMOZIONI_DONNA_DATA = [
-];
+window.PROMOZIONI_DONNA_DATA = [];
