@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy - Hair&amp;Barber Revolution</title>
+  <meta name="description" content="Informativa sulla privacy e sui cookie di Hair&amp;Barber Revolution - Salone Parrucchieri &amp; Barber Shop a Costa Masnaga (LC)." />
+  <!-- Google tag (gtag.js) — Consent Mode v2 -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', { analytics_storage: 'denied' });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E9R0TDFCKJ"></script>
+  <script>
+    gtag('js', new Date());
+    gtag('config', 'G-E9R0TDFCKJ');
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ["'Cormorant Garamond'", "serif"],
+            sans:  ["'Segoe UI'", "system-ui", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #fff; color: #111; }
+
+    #navbar { transition: background 0.3s, border-color 0.3s; }
+
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+    .page-in { animation: fadeInUp 0.6s ease 0.1s both; }
+
+    @keyframes menuIn  { from { opacity:0; transform:translateY(-100%); } to { opacity:1; transform:none; } }
+    @keyframes menuOut { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-100%); } }
+    #mobile-menu         { display: none; }
+    #mobile-menu.open    { display: flex; animation: menuIn  0.4s ease-in-out forwards; }
+    #mobile-menu.closing {                animation: menuOut 0.4s ease-in-out forwards; }
+
+    /* ── Contenuto privacy ── */
+    .privacy-section { margin-bottom: 2.75rem; }
+    .privacy-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.25rem, 3vw, 1.6rem);
+      font-weight: 600;
+      color: #000;
+      margin-bottom: .75rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid rgba(0,0,0,.1);
+    }
+    .privacy-section p,
+    .privacy-section li {
+      font-size: .875rem;
+      line-height: 1.85;
+      color: #333;
+      margin-bottom: .6rem;
+    }
+    .privacy-section ul {
+      list-style: disc;
+      padding-left: 1.4rem;
+      margin-bottom: .75rem;
+    }
+    .privacy-section a { color: #000; text-decoration: underline; }
+    .privacy-section a:hover { opacity: .6; }
+    .privacy-section strong { font-weight: 600; color: #111; }
+
+    /* Banner revisione consenso */
+    #revoke-btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: #000; color: #fff; border: 1px solid #000;
+      padding: .6rem 1.4rem;
+      font-size: .75rem; font-family: inherit; font-weight: 500;
+      text-transform: uppercase; letter-spacing: .15em;
+      cursor: pointer; transition: background .2s, color .2s;
+      margin-top: .75rem;
+    }
+    #revoke-btn:hover { background: #fff; color: #000; }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-black py-4 border-b border-white/10">
+  <div class="container mx-auto px-6 flex items-center justify-between">
+    <a href="index.html" class="focus:outline-none">
+      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:2.75rem;width:auto;object-fit:contain;"
+        onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
+    </a>
+
+    <nav class="hidden md:flex items-center" style="gap:1.75rem;">
+      <a href="index.html"                          class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Home</a>
+      <a href="index.html#about"                    class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Chi siamo</a>
+      <a href="index.html#services"                 class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Servizi</a>
+      <a href="index.html#gallery"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Galleria</a>
+      <a href="index.html#booking"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Prenota</a>
+      <a href="buoni.html"                          class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Buoni</a>
+      <a href="promozioni.html"                     class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Promozioni</a>
+      <a href="recensioni.html"                     class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Recensioni</a>
+      <a href="index.html#contact"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Contatti</a>
+    </nav>
+
+    <div class="hidden md:flex items-center" style="gap:1rem;">
+      <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/60 hover:text-white transition-colors" aria-label="Facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white/60 hover:text-white transition-colors" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+      </a>
+    </div>
+
+    <button onclick="openMenu()" class="md:hidden text-white focus:outline-none" aria-label="Apri menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6"  x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="fixed inset-0 z-50 bg-black flex-col justify-center items-center">
+  <button onclick="closeMenu()" class="absolute top-6 right-6 text-white p-2 focus:outline-none" aria-label="Chiudi menu">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+  <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:5rem;width:auto;object-fit:contain;margin-bottom:3rem;opacity:.9;"
+    onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
+  <nav class="flex flex-col items-center" style="gap:2rem;">
+    <a href="index.html"         onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Home</a>
+    <a href="index.html#about"   onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Chi siamo</a>
+    <a href="index.html#services" onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Servizi</a>
+    <a href="index.html#gallery" onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Galleria</a>
+    <a href="index.html#booking" onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Prenota</a>
+    <a href="buoni.html"         onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Buoni</a>
+    <a href="promozioni.html"    onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Promozioni</a>
+    <a href="recensioni.html"    onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Recensioni</a>
+    <a href="index.html#contact" onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Contatti</a>
+  </nav>
+  <div class="flex" style="gap:1.5rem;margin-top:4rem;">
+    <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="bg-black text-white" style="padding-top:7rem;padding-bottom:4rem;padding-left:1.5rem;padding-right:1.5rem;">
+  <div class="container mx-auto text-center page-in">
+    <p class="text-white uppercase" style="font-size:.75rem;letter-spacing:.3em;opacity:.45;margin-bottom:1rem;">Hair&amp;Barber Revolution</p>
+    <h1 class="font-serif font-bold text-white" style="font-size:clamp(2.4rem,6vw,4rem);margin-bottom:1.25rem;line-height:1.1;">Privacy Policy</h1>
+    <p class="text-white leading-relaxed max-w-xl mx-auto" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;opacity:.7;">
+      Informativa sul trattamento dei dati personali e sull'utilizzo dei cookie ai sensi del Regolamento UE 2016/679 (GDPR).
+    </p>
+  </div>
+</div>
+
+<!-- CONTENUTO -->
+<main class="px-6" style="padding-top:4rem;padding-bottom:6rem;">
+  <div class="container mx-auto" style="max-width:52rem;">
+
+    <div class="privacy-section">
+      <h2>1. Titolare del trattamento</h2>
+      <p>
+        <strong>Hair&amp;Barber Revolution di Toma Veruska</strong><br>
+        Via Fornacetta 7, 23845 Costa Masnaga (LC)<br>
+        P.IVA 03667090132<br>
+        Contatto: <a href="tel:+393331355200">+39 333 135 5200</a> &nbsp;|&nbsp;
+        <a href="https://wa.me/393331355200" target="_blank" rel="noreferrer">WhatsApp</a>
+      </p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>2. Dati raccolti e finalità</h2>
+      <p>Il sito raccoglie dati nelle seguenti modalità:</p>
+      <ul>
+        <li>
+          <strong>Dati di navigazione (automatici):</strong> indirizzo IP, tipo di browser, pagine visitate, orari di accesso.
+          Vengono utilizzati esclusivamente per finalità statistiche aggregate tramite Google Analytics (vedi sezione Cookie).
+        </li>
+        <li>
+          <strong>Dati forniti volontariamente:</strong> nome, tipologia di trattamento e dedica inseriti nei moduli di prenotazione
+          e di richiesta buoni regalo. Questi dati vengono trasmessi direttamente via WhatsApp al salone e non vengono memorizzati
+          su alcun server proprio del sito.
+        </li>
+      </ul>
+      <p>I dati non vengono ceduti, venduti o comunicati a terzi per finalità commerciali.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>3. Base giuridica del trattamento</h2>
+      <ul>
+        <li><strong>Statistiche di utilizzo (Google Analytics):</strong> consenso dell'utente (art. 6 lett. a GDPR).</li>
+        <li><strong>Richieste di prenotazione/buoni:</strong> esecuzione di un contratto o di misure precontrattuali (art. 6 lett. b GDPR).</li>
+      </ul>
+    </div>
+
+    <div class="privacy-section">
+      <h2>4. Cookie</h2>
+      <p>
+        Questo sito utilizza cookie tecnici essenziali (necessari al funzionamento della pagina) e,
+        <strong>solo previo tuo consenso</strong>, cookie analitici di Google Analytics.
+      </p>
+
+      <p style="margin-top:1rem;"><strong>Cookie tecnici</strong> (sempre attivi, non richiedono consenso)</p>
+      <ul>
+        <li><code style="background:#f5f5f5;padding:1px 5px;font-size:.8rem;">hbr_cookie_consent</code> — memorizza la tua scelta riguardo ai cookie analitici. Durata: persistente (localStorage, non trasmesso a server).</li>
+      </ul>
+
+      <p style="margin-top:1rem;"><strong>Cookie analitici — Google Analytics</strong> (solo se hai prestato il consenso)</p>
+      <ul>
+        <li><code style="background:#f5f5f5;padding:1px 5px;font-size:.8rem;">_ga</code>, <code style="background:#f5f5f5;padding:1px 5px;font-size:.8rem;">_ga_*</code> — identificano sessioni di navigazione per Google Analytics. Durata: 2 anni. Gestore: Google Ireland Ltd.</li>
+      </ul>
+      <p>
+        Google Analytics è configurato in modalità <em>Consent Mode v2</em>: nessun dato analitico viene trasmesso prima che
+        tu abbia accettato i cookie. Puoi consultare la
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">privacy policy di Google</a>.
+      </p>
+
+      <p style="margin-top:1.25rem;">
+        Puoi modificare o revocare il tuo consenso in qualsiasi momento. Cliccando il pulsante qui sotto potrai
+        rivedere le tue preferenze — la tua scelta verrà aggiornata immediatamente:
+      </p>
+      <button id="revoke-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Gestisci preferenze cookie
+      </button>
+    </div>
+
+    <div class="privacy-section">
+      <h2>5. Conservazione dei dati</h2>
+      <p>
+        I dati di navigazione raccolti tramite Google Analytics vengono conservati per un periodo massimo di 26 mesi,
+        secondo le impostazioni predefinite di Google. I dati delle richieste via WhatsApp sono gestiti direttamente
+        dal salone secondo le necessità operative.
+      </p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>6. Diritti dell'interessato</h2>
+      <p>Ai sensi degli artt. 15-22 del GDPR, hai il diritto di:</p>
+      <ul>
+        <li>Accedere ai tuoi dati personali (art. 15)</li>
+        <li>Richiedere la rettifica di dati inesatti (art. 16)</li>
+        <li>Ottenere la cancellazione dei dati (art. 17 — "diritto all'oblio")</li>
+        <li>Opporti al trattamento (art. 21)</li>
+        <li>Revocare il consenso in qualsiasi momento (art. 7, par. 3)</li>
+        <li>Proporre reclamo al Garante per la Protezione dei Dati Personali (<a href="https://www.garanteprivacy.it" target="_blank" rel="noreferrer">www.garanteprivacy.it</a>)</li>
+      </ul>
+      <p style="margin-top:.75rem;">
+        Per esercitare i tuoi diritti, contattaci via WhatsApp al
+        <a href="https://wa.me/393331355200" target="_blank" rel="noreferrer">+39 333 135 5200</a>.
+      </p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>7. Link a siti terzi</h2>
+      <p>
+        Il sito contiene link a piattaforme esterne (Facebook, Instagram, Google). Hair&amp;Barber Revolution
+        non è responsabile del trattamento dei dati effettuato da tali piattaforme. Ti invitiamo a consultare
+        le rispettive privacy policy.
+      </p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>8. Modifiche a questa informativa</h2>
+      <p>
+        Ci riserviamo il diritto di aggiornare questa informativa in qualsiasi momento.
+        La data dell'ultima revisione è indicata in fondo alla pagina.
+      </p>
+      <p style="margin-top:.75rem;opacity:.5;font-size:.8rem;">
+        Ultimo aggiornamento: luglio 2025
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-black text-white border-t border-white/10 px-6" style="padding-top:2.5rem;padding-bottom:2.5rem;">
+  <div class="container mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center" style="gap:1.5rem;margin-bottom:1.5rem;">
+      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:3rem;width:auto;object-fit:contain;"
+        onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
+      <div class="flex flex-wrap justify-center" style="gap:.75rem;">
+        <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+        </a>
+        <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer"
+           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Google">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Recensioni Google
+        </a>
+        <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer"
+           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Facebook">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Recensioni Facebook
+        </a>
+      </div>
+      <div class="text-white/40 text-xs tracking-widest text-center md:text-right" style="line-height:1.8;">
+        Hair&amp;Barber Revolution, via Fornacetta 7 Costa Masnaga (LC), 23845<br>
+        &copy; <span id="footer-year"></span> HAIR&amp;BARBER REVOLUTION DI TOMA VERUSKA. TUTTI I DIRITTI RISERVATI.<br>
+        P.IVA 03667090132<br>
+        <a href="privacy.html" class="text-white/30 hover:text-white/60 transition-colors underline underline-offset-2">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+/* ── Mobile menu ── */
+function openMenu() {
+  var m = document.getElementById('mobile-menu');
+  m.classList.remove('closing');
+  m.classList.add('open');
+}
+function closeMenu() {
+  var m = document.getElementById('mobile-menu');
+  m.classList.add('closing');
+  setTimeout(function () { m.classList.remove('open', 'closing'); }, 420);
+}
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') closeMenu();
+});
+
+/* ── Pulsante revoca consenso cookie ── */
+document.getElementById('revoke-btn').addEventListener('click', function () {
+  try { localStorage.removeItem('hbr_cookie_consent'); } catch (e) {}
+  /* Ricarica la pagina: il banner apparirà di nuovo */
+  location.reload();
+});
+</script>
+
+<script src="cookie-banner.js"></script>
+</body>
+</html>
