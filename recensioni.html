@@ -46,7 +46,7 @@
     @keyframes menuIn  { from { opacity:0; transform:translateY(-100%); } to { opacity:1; transform:none; } }
     @keyframes menuOut { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-100%); } }
     #mobile-menu         { display: none; }
-    #mobile-menu.open    { display: flex; animation: menuIn  0.4s ease-in-out forwards; }
+    #mobile-menu.open    { display: flex; overflow-y: auto; animation: menuIn  0.4s ease-in-out forwards; }
     #mobile-menu.closing {                animation: menuOut 0.4s ease-in-out forwards; }
 
     /* ════════════════════════════════
@@ -183,6 +183,7 @@
       <a href="index.html#services"                 class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Servizi</a>
       <a href="index.html#gallery"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Galleria</a>
       <a href="index.html#booking"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Prenota</a>
+      <a href="novita.html"                         class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Novità</a>
       <a href="buoni.html"                          class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Buoni</a>
       <a href="promozioni.html"                     class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Promozioni</a>
       <a href="recensioni.html"                     class="text-xs uppercase tracking-[0.15em] font-medium text-white border-b border-white pb-0.5">Recensioni</a>
@@ -208,32 +209,33 @@
   </div>
 </header>
 
-<!-- MOBILE MENU -->
-<div id="mobile-menu" class="fixed inset-0 z-50 bg-black flex-col justify-center items-center">
-  <button onclick="closeMenu()" class="absolute top-6 right-6 text-white p-2 focus:outline-none" aria-label="Chiudi menu">
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<!-- MOBILE MENU — scrollabile, tutto visibile -->
+<div id="mobile-menu" class="fixed inset-0 z-50 bg-black flex-col items-center" style="overflow-y:auto;padding-top:4.5rem;padding-bottom:2rem;">
+  <button onclick="closeMenu()" class="absolute top-4 right-5 text-white p-2 focus:outline-none" aria-label="Chiudi menu">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
     </svg>
   </button>
-  <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:5rem;width:auto;object-fit:contain;margin-bottom:3rem;opacity:.9;"
+  <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:4rem;width:auto;object-fit:contain;margin-bottom:1.75rem;opacity:.9;"
     onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
-  <nav class="flex flex-col items-center" style="gap:2rem;">
-    <a href="index.html"         onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Home</a>
-    <a href="index.html#about"   onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Chi siamo</a>
-    <a href="index.html#services" onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Servizi</a>
-    <a href="index.html#gallery" onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Galleria</a>
-    <a href="index.html#booking" onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Prenota</a>
-    <a href="buoni.html"         onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Buoni</a>
-    <a href="promozioni.html"    onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Promozioni</a>
-    <a href="recensioni.html"    onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Recensioni</a>
-    <a href="index.html#contact" onclick="closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Contatti</a>
+  <nav class="flex flex-col items-center" style="gap:1.1rem;">
+    <a href="index.html"          onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Home</a>
+    <a href="index.html#about"    onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Chi siamo</a>
+    <a href="index.html#services" onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Servizi</a>
+    <a href="index.html#gallery"  onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Galleria</a>
+    <a href="index.html#booking"  onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Prenota</a>
+    <a href="novita.html"         onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Novità</a>
+    <a href="buoni.html"          onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Buoni</a>
+    <a href="promozioni.html"     onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Promozioni</a>
+    <a href="recensioni.html"     onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white border-b border-white pb-0.5">Recensioni</a>
+    <a href="index.html#contact"  onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Contatti</a>
   </nav>
-  <div class="flex" style="gap:1.5rem;margin-top:4rem;">
+  <div class="flex" style="gap:1.5rem;margin-top:2rem;">
     <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
     </a>
     <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
     </a>
   </div>
 </div>
