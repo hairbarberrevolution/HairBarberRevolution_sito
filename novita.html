@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Novità - Hair&amp;Barber Revolution</title>
+  <meta name="description" content="Le ultime novità da Hair&amp;Barber Revolution - Salone Parrucchieri &amp; Barber Shop a Costa Masnaga (LC)." />
+  <!-- Google tag (gtag.js) — Consent Mode v2 -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', { analytics_storage: 'denied' });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E9R0TDFCKJ"></script>
+  <script>
+    gtag('js', new Date());
+    gtag('config', 'G-E9R0TDFCKJ');
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ["'Cormorant Garamond'", "serif"],
+            sans:  ["'Segoe UI'", "system-ui", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #fff; color: #111; }
+
+    #navbar { transition: background 0.3s, border-color 0.3s; }
+
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+    .page-in { animation: fadeInUp 0.6s ease 0.1s both; }
+
+    @keyframes menuIn  { from { opacity:0; transform:translateY(-100%); } to { opacity:1; transform:none; } }
+    @keyframes menuOut { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-100%); } }
+    #mobile-menu         { display: none; }
+    #mobile-menu.open    { display: flex; overflow-y: auto; animation: menuIn 0.4s ease-in-out forwards; }
+    #mobile-menu.closing {                animation: menuOut 0.4s ease-in-out forwards; }
+
+    /* ════════════════════════════════
+       NOVITÀ – VIEWPORT & TRACK
+       Mobile: scroll orizzontale (come Recensioni)
+       Desktop: griglia 3 colonne
+    ════════════════════════════════ */
+
+    /* Hint "scorri" — solo mobile */
+    .swipe-hint-novita {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      color: rgba(0,0,0,.45);
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 1rem;
+    }
+    .swipe-hint-novita svg { animation: swipeNudge 1.6s ease-in-out infinite; }
+    @keyframes swipeNudge {
+      0%, 100% { transform: translateX(0); opacity: .5; }
+      50%      { transform: translateX(6px); opacity: 1; }
+    }
+    @media (min-width: 768px) {
+      .swipe-hint-novita { display: none; }
+    }
+
+    /* Viewport e track */
+    #novita-viewport {
+      overflow: hidden;
+      margin-left: -1.5rem;
+      margin-right: -1.5rem;
+    }
+    @media (min-width: 768px) {
+      #novita-viewport { overflow: visible; margin-left: 0; margin-right: 0; }
+    }
+
+    #novita-track {
+      display: flex;
+      gap: 1.25rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 0 .75rem;
+      scrollbar-width: none;
+    }
+    #novita-track::-webkit-scrollbar { display: none; }
+    @media (min-width: 768px) {
+      #novita-track {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        overflow-x: visible;
+        scroll-snap-type: none;
+        padding: 0;
+      }
+    }
+
+    /* Card */
+    .novita-card {
+      flex: 0 0 auto;
+      width: 80vw;
+      max-width: 320px;
+      scroll-snap-align: center;
+      border: 1px solid rgba(0,0,0,.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    @media (min-width: 768px) {
+      .novita-card {
+        width: auto;
+        max-width: none;
+        scroll-snap-align: unset;
+      }
+    }
+    .novita-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.1);
+    }
+    .novita-card:focus {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+
+    /* Immagine quadrata — solo se c'è foto */
+    .novita-img-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #f0f0f0;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .novita-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.5s ease;
+    }
+    .novita-card:hover .novita-img-wrap img { transform: scale(1.04); }
+
+    /* Body card */
+    .novita-body {
+      padding: 1.1rem 1.25rem 1.35rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+    }
+    .novita-card-data {
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: rgba(0,0,0,.38);
+    }
+    .novita-card-titolo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #000;
+      line-height: 1.25;
+    }
+    .novita-card-desc {
+      font-size: .85rem;
+      line-height: 1.55;
+      color: rgba(0,0,0,.6);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .novita-card-leggi {
+      margin-top: .5rem;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-weight: 500;
+      color: #000;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      align-self: flex-start;
+    }
+
+    /* ════════════════════════════════
+       MODAL INSTAGRAM-STYLE
+    ════════════════════════════════ */
+    #novita-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0,0,0,.82);
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    #novita-modal.open { display: flex; }
+
+    @keyframes modalIn { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:none; } }
+    .modal-box {
+      background: #fff;
+      max-width: 800px;
+      width: 100%;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalIn 0.28s ease forwards;
+      position: relative;
+    }
+    @media (min-width: 700px) {
+      .modal-box {
+        flex-direction: row;
+        max-height: 86vh;
+      }
+    }
+
+    /* Immagine */
+    .modal-img-col {
+      flex-shrink: 0;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (max-width: 699px) {
+      .modal-img-col {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        max-height: 45vw;
+      }
+    }
+    @media (min-width: 700px) {
+      .modal-img-col {
+        width: 50%;
+        min-height: 400px;
+      }
+    }
+    .modal-img-col img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+
+    /* Contenuto */
+    .modal-content-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      /* Su mobile senza immagine, necessita di min-height */
+      min-height: 0;
+    }
+
+    .modal-header {
+      padding: 3.2rem 1.4rem 1rem;   /* top abbondante per lasciare spazio alla X */
+      border-bottom: 1px solid rgba(0,0,0,.08);
+    }
+    @media (min-width: 700px) {
+      .modal-header { padding: 1.4rem 1.6rem 1rem; }
+    }
+    .modal-data {
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      color: rgba(0,0,0,.38);
+      margin-bottom: .4rem;
+    }
+    .modal-titolo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: clamp(1.3rem, 3vw, 1.7rem);
+      color: #000;
+      line-height: 1.2;
+    }
+
+    .modal-desc-wrap {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.2rem 1.4rem 1.4rem;
+      -webkit-overflow-scrolling: touch;
+      min-height: 0;
+    }
+    @media (min-width: 700px) {
+      .modal-desc-wrap { padding: 1.2rem 1.6rem 1.4rem; }
+    }
+    .modal-desc {
+      font-size: .9rem;
+      line-height: 1.7;
+      color: rgba(0,0,0,.7);
+    }
+
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .85rem 1.4rem;
+      border-top: 1px solid rgba(0,0,0,.08);
+      gap: .75rem;
+      flex-shrink: 0;
+    }
+    @media (min-width: 700px) {
+      .modal-footer { padding: .85rem 1.6rem; }
+    }
+    .modal-nav-btn {
+      display: flex; align-items: center; justify-content: center; gap: .4rem;
+      height: 2.6rem; padding: 0 1.1rem;
+      font-size: .7rem; text-transform: uppercase; letter-spacing: .13em; font-weight: 500;
+      border: 1px solid rgba(0,0,0,.25);
+      background: #fff; color: #000;
+      cursor: pointer; transition: background .2s, color .2s;
+      white-space: nowrap;
+    }
+    .modal-nav-btn:hover:not(:disabled) { background: #000; color: #fff; border-color: #000; }
+    .modal-nav-btn:disabled { opacity: .25; cursor: default; }
+    .modal-counter {
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: rgba(0,0,0,.4);
+      flex-shrink: 0;
+    }
+
+    /* Pulsante X — sempre visibile, fuori da overflow */
+    .modal-close-btn {
+      position: absolute;
+      top: .7rem;
+      right: .7rem;
+      width: 2.2rem;
+      height: 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(0,0,0,.15);
+      border-radius: 0;
+      cursor: pointer;
+      transition: background .2s;
+      z-index: 20;
+    }
+    .modal-close-btn:hover { background: #000; color: #fff; }
+    .modal-close-btn:hover svg { stroke: #fff; }
+
+    /* ════════════════════════════════
+       EMPTY STATE
+    ════════════════════════════════ */
+    .empty-state {
+      text-align: center;
+      padding: 3.5rem 1.5rem;
+      border: 1px dashed rgba(0,0,0,.2);
+    }
+    .empty-state p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      color: rgba(0,0,0,.6);
+      margin-bottom: 1.5rem;
+    }
+    .social-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+      height: 3rem; padding: 0 1.75rem;
+      font-size: .75rem; text-transform: uppercase; letter-spacing: .15em; font-weight: 500;
+      border: 1px solid #000; transition: background-color .25s, color .25s;
+      text-decoration: none; color: #000; background: #fff;
+    }
+    .social-btn:hover { background: #000; color: #fff; }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-black py-4 border-b border-white/10">
+  <div class="container mx-auto px-6 flex items-center justify-between">
+    <a href="index.html" class="focus:outline-none">
+      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:2.75rem;width:auto;object-fit:contain;"
+        onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
+    </a>
+
+    <nav class="hidden md:flex items-center" style="gap:1.75rem;">
+      <a href="index.html"                          class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Home</a>
+      <a href="index.html#about"                    class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Chi siamo</a>
+      <a href="index.html#services"                 class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Servizi</a>
+      <a href="index.html#gallery"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Galleria</a>
+      <a href="index.html#booking"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Prenota</a>
+      <a href="novita.html"                         class="text-xs uppercase tracking-[0.15em] font-medium text-white border-b border-white pb-0.5">Novità</a>
+      <a href="buoni.html"                          class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Buoni</a>
+      <a href="promozioni.html"                     class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Promozioni</a>
+      <a href="recensioni.html"                     class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Recensioni</a>
+      <a href="index.html#contact"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Contatti</a>
+    </nav>
+
+    <div class="hidden md:flex items-center" style="gap:1rem;">
+      <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/60 hover:text-white transition-colors" aria-label="Facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white/60 hover:text-white transition-colors" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+      </a>
+    </div>
+
+    <button onclick="openMenu()" class="md:hidden text-white focus:outline-none" aria-label="Apri menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6"  x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU — scrollabile, tutto visibile -->
+<div id="mobile-menu" class="fixed inset-0 z-50 bg-black flex-col items-center" style="overflow-y:auto;padding-top:4.5rem;padding-bottom:2rem;">
+  <button onclick="closeMenu()" class="absolute top-4 right-5 text-white p-2 focus:outline-none" aria-label="Chiudi menu">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+  <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:4rem;width:auto;object-fit:contain;margin-bottom:1.75rem;opacity:.9;"
+    onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
+  <nav class="flex flex-col items-center" style="gap:1.1rem;">
+    <a href="index.html"          onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Home</a>
+    <a href="index.html#about"    onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Chi siamo</a>
+    <a href="index.html#services" onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Servizi</a>
+    <a href="index.html#gallery"  onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Galleria</a>
+    <a href="index.html#booking"  onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Prenota</a>
+    <a href="novita.html"         onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white border-b border-white pb-0.5">Novità</a>
+    <a href="buoni.html"          onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Buoni</a>
+    <a href="promozioni.html"     onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Promozioni</a>
+    <a href="recensioni.html"     onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Recensioni</a>
+    <a href="index.html#contact"  onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Contatti</a>
+  </nav>
+  <div class="flex" style="gap:1.5rem;margin-top:2rem;">
+    <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="bg-black text-white" style="padding-top:7rem;padding-bottom:3rem;padding-left:1.5rem;padding-right:1.5rem;">
+  <div class="container mx-auto text-center page-in">
+    <p class="text-white uppercase" style="font-size:.75rem;letter-spacing:.3em;opacity:.45;margin-bottom:1rem;">Hair&amp;Barber Revolution</p>
+    <h1 class="font-serif font-bold text-white" style="font-size:clamp(2.4rem,6vw,4rem);margin-bottom:1.25rem;line-height:1.1;">Novità</h1>
+    <p class="text-white leading-relaxed max-w-xl mx-auto" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;opacity:.7;">
+      Aggiornamenti, eventi e tutto quello che succede nel salone.
+    </p>
+  </div>
+</div>
+
+<!-- GRID / SCROLL NOVITÀ -->
+<main class="px-6" style="padding-top:2.5rem;padding-bottom:6rem;">
+  <div class="container mx-auto" style="max-width:72rem;">
+    <div id="novita-content"></div>
+  </div>
+</main>
+
+<!-- ══════════════════════════════════════════════
+     MODAL
+══════════════════════════════════════════════ -->
+<div id="novita-modal" role="dialog" aria-modal="true" aria-labelledby="modal-titolo-text">
+
+  <div class="modal-box" role="document">
+
+    <!-- X chiudi — sempre visibile, sfondo bianco -->
+    <button class="modal-close-btn" onclick="closeModal()" aria-label="Chiudi">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <!-- Immagine (visibile solo se il post ha una foto) -->
+    <div class="modal-img-col" id="modal-img-col" style="display:none;">
+      <img id="modal-img-tag" src="" alt="" />
+    </div>
+
+    <!-- Testo -->
+    <div class="modal-content-col">
+      <div class="modal-header">
+        <p class="modal-data" id="modal-data-text"></p>
+        <h2 class="modal-titolo" id="modal-titolo-text"></h2>
+      </div>
+      <div class="modal-desc-wrap">
+        <p class="modal-desc" id="modal-desc-text"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-nav-btn" id="modal-prev" onclick="navigateModal(-1)" aria-label="Post precedente">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Prec
+        </button>
+        <span class="modal-counter" id="modal-counter"></span>
+        <button class="modal-nav-btn" id="modal-next" onclick="navigateModal(1)" aria-label="Post successivo">
+          Succ
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Dati novità: window.NOVITA_DATA da NOVITA.js -->
+<script src="NOVITA.js"></script>
+
+<!-- FOOTER -->
+<footer class="bg-black text-white border-t border-white/10 px-6" style="padding-top:2.5rem;padding-bottom:2.5rem;">
+  <div class="container mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center" style="gap:1.5rem;margin-bottom:1.5rem;">
+      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:3rem;width:auto;object-fit:contain;"
+        onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
+      <div class="flex flex-wrap justify-center" style="gap:.75rem;">
+        <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+        </a>
+        <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer"
+           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Google">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Recensioni Google
+        </a>
+        <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer"
+           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Facebook">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Recensioni Facebook
+        </a>
+      </div>
+      <div class="text-white/40 text-xs tracking-widest text-center md:text-right" style="line-height:1.8;">
+        Hair&amp;Barber Revolution, via Fornacetta 7 Costa Masnaga (LC), 23845<br>
+        &copy; <span id="footer-year"></span> HAIR&amp;BARBER REVOLUTION DI TOMA VERUSKA. TUTTI I DIRITTI RISERVATI.<br>
+        P.IVA 03667090132<br>
+        <a href="privacy.html" class="text-white/30 hover:text-white/60 transition-colors underline underline-offset-2">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+/* ── Mobile menu ── */
+function openMenu() {
+  var m = document.getElementById('mobile-menu');
+  m.classList.remove('closing');
+  m.classList.add('open');
+  m.scrollTop = 0;
+}
+function closeMenu() {
+  var m = document.getElementById('mobile-menu');
+  m.classList.add('closing');
+  setTimeout(function() { m.classList.remove('open','closing'); }, 400);
+}
+
+/* ════════════════════════════════
+   NOVITÀ
+════════════════════════════════ */
+var POSTS = Array.isArray(window.NOVITA_DATA) ? window.NOVITA_DATA : [];
+var currentIndex = 0;
+
+var SOCIAL_HTML =
+  '<div class="flex justify-center" style="gap:1rem;flex-wrap:wrap;">' +
+    '<a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="social-btn">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>' +
+      'Instagram' +
+    '</a>' +
+    '<a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="social-btn">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>' +
+      'Facebook' +
+    '</a>' +
+  '</div>';
+
+/* Strip HTML per anteprima */
+function stripHtml(str) {
+  return str.replace(/<[^>]*>/g, '');
+}
+
+/* Render griglia / track */
+function render() {
+  var container = document.getElementById('novita-content');
+
+  if (POSTS.length === 0) {
+    container.innerHTML =
+      '<div class="empty-state">' +
+        '<p>Nessuna novità al momento. Resta aggiornato sui nostri social:</p>' +
+        SOCIAL_HTML +
+      '</div>';
+    return;
+  }
+
+  var cardsHtml = '';
+  for (var i = 0; i < POSTS.length; i++) {
+    var p = POSTS[i];
+
+    /* Immagine — solo se c'è foto */
+    var imgHtml = '';
+    if (p.foto && p.foto.trim() !== '') {
+      imgHtml = '<div class="novita-img-wrap">' +
+        '<img src="IMMAGINI_NOVITA/' + p.foto + '" alt="' + (p.titolo || '') + '" loading="lazy" ' +
+        'onerror="this.parentElement.style.display=\'none\';" />' +
+        '</div>';
+    }
+
+    cardsHtml +=
+      '<div class="novita-card" tabindex="0" role="button" ' +
+           'aria-label="Apri post: ' + (p.titolo || '') + '" ' +
+           'onclick="openModal(' + i + ')" ' +
+           'onkeydown="if(event.key===\'Enter\'||event.key===\' \')openModal(' + i + ')">' +
+        imgHtml +
+        '<div class="novita-body">' +
+          (p.data ? '<p class="novita-card-data">' + p.data + '</p>' : '') +
+          '<h3 class="novita-card-titolo">' + (p.titolo || '') + '</h3>' +
+          '<p class="novita-card-desc">' + stripHtml(p.descrizione || '') + '</p>' +
+          '<span class="novita-card-leggi">Leggi tutto →</span>' +
+        '</div>' +
+      '</div>';
+  }
+
+  container.innerHTML =
+    '<p class="swipe-hint-novita">' +
+      'Scorri per vedere altre novità' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
+    '</p>' +
+    '<div id="novita-viewport"><div id="novita-track">' + cardsHtml + '</div></div>';
+
+  /* Centra il track su mobile (come recensioni) */
+  initScroll();
+}
+
+function initScroll() {
+  var track = document.getElementById('novita-track');
+  var viewport = document.getElementById('novita-viewport');
+  if (!track || !viewport) return;
+
+  function setCenterPad() {
+    if (window.innerWidth >= 768) {
+      track.style.paddingLeft = '';
+      track.style.paddingRight = '';
+      return;
+    }
+    var card = track.querySelector('.novita-card');
+    if (!card) return;
+    var pad = Math.max(0, (viewport.clientWidth - card.getBoundingClientRect().width) / 2);
+    track.style.paddingLeft = pad + 'px';
+    track.style.paddingRight = pad + 'px';
+  }
+  setCenterPad();
+  window.addEventListener('resize', setCenterPad);
+}
+
+/* ── Modal ── */
+function openModal(index) {
+  currentIndex = index;
+  renderModal();
+  document.getElementById('novita-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('novita-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function navigateModal(dir) {
+  var next = currentIndex + dir;
+  if (next < 0 || next >= POSTS.length) return;
+  currentIndex = next;
+  renderModal();
+}
+
+function renderModal() {
+  var p = POSTS[currentIndex];
+  if (!p) return;
+
+  /* Immagine: mostra la colonna solo se c'è foto */
+  var imgCol = document.getElementById('modal-img-col');
+  var imgTag = document.getElementById('modal-img-tag');
+  if (p.foto && p.foto.trim() !== '') {
+    imgTag.src = 'IMMAGINI_NOVITA/' + p.foto;
+    imgTag.alt = p.titolo || '';
+    imgTag.onerror = function() { imgCol.style.display = 'none'; };
+    imgCol.style.display = '';
+  } else {
+    imgCol.style.display = 'none';
+  }
+
+  /* Testo */
+  document.getElementById('modal-data-text').textContent   = p.data || '';
+  document.getElementById('modal-titolo-text').textContent  = p.titolo || '';
+  document.getElementById('modal-desc-text').innerHTML     = p.descrizione || '';
+
+  /* Counter e pulsanti */
+  document.getElementById('modal-counter').textContent = (currentIndex + 1) + ' / ' + POSTS.length;
+  document.getElementById('modal-prev').disabled = (currentIndex === 0);
+  document.getElementById('modal-next').disabled = (currentIndex === POSTS.length - 1);
+
+  /* Scroll descrizione in cima */
+  var wrap = document.querySelector('.modal-desc-wrap');
+  if (wrap) wrap.scrollTop = 0;
+}
+
+/* Chiudi cliccando fuori dal box */
+document.getElementById('novita-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+/* Tasto Escape / frecce */
+document.addEventListener('keydown', function(e) {
+  var modal = document.getElementById('novita-modal');
+  if (!modal.classList.contains('open')) return;
+  if (e.key === 'Escape')     closeModal();
+  if (e.key === 'ArrowLeft')  navigateModal(-1);
+  if (e.key === 'ArrowRight') navigateModal(1);
+});
+
+render();
+</script>
+
+<script src="cookie-banner.js"></script>
+</body>
+</html>
