@@ -165,7 +165,7 @@
     @keyframes menuIn  { from { opacity:0; transform:translateY(-100%); } to { opacity:1; transform:none; } }
     @keyframes menuOut { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-100%); } }
     #mobile-menu         { display: none; }
-    #mobile-menu.open    { display: flex; animation: menuIn  0.4s ease-in-out forwards; }
+    #mobile-menu.open    { display: flex; overflow-y: auto; animation: menuIn  0.4s ease-in-out forwards; }
     #mobile-menu.closing {                animation: menuOut 0.4s ease-in-out forwards; }
 
     /* ════════════════════════════════
@@ -224,6 +224,26 @@
     ════════════════════════════════ */
     .service-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .service-row .styled-select { flex: 1; }
+
+    /* ════════════════════════════════
+       SERVIZI TOGGLE (mobile only)
+    ════════════════════════════════ */
+    @media (max-width: 767px) {
+      #col-uomo { display: none; }
+    }
+    .srv-toggle-btn {
+      padding: .75rem 2.25rem;
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .2em;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background .25s, color .25s;
+    }
+    .srv-active   { background: #fff; color: #000; }
+    .srv-inactive { background: transparent; color: rgba(255,255,255,.5); }
+    .srv-inactive:hover { color: rgba(255,255,255,.85); }
   </style>
 </head>
 
@@ -282,6 +302,7 @@
       <button onclick="goTo('services')" class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Servizi</button>
       <button onclick="goTo('gallery')"  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Galleria</button>
       <button onclick="goTo('booking')"  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Prenota</button>
+      <a href="novita.html"             class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Novità</a>
       <a href="buoni.html"               class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Buoni</a>
       <a href="promozioni.html"          class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Promozioni</a>
       <a href="recensioni.html"          class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Recensioni</a>
@@ -307,32 +328,33 @@
   </div>
 </header>
 
-<!-- MOBILE MENU -->
-<div id="mobile-menu" class="fixed inset-0 z-50 bg-black flex-col justify-center items-center">
-  <button onclick="closeMenu()" class="absolute top-6 right-6 text-white p-2 focus:outline-none" aria-label="Chiudi menu">
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<!-- MOBILE MENU — scrollabile, tutto visibile -->
+<div id="mobile-menu" class="fixed inset-0 z-50 bg-black flex-col items-center" style="overflow-y:auto;padding-top:4.5rem;padding-bottom:2rem;">
+  <button onclick="closeMenu()" class="absolute top-4 right-5 text-white p-2 focus:outline-none" aria-label="Chiudi menu">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
     </svg>
   </button>
-  <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:5rem;width:auto;object-fit:contain;margin-bottom:3rem;opacity:.9;"
+  <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:4rem;width:auto;object-fit:contain;margin-bottom:1.75rem;opacity:.9;"
     onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
-  <nav class="flex flex-col items-center" style="gap:2rem;">
-    <button onclick="goTo('home');closeMenu()"     class="text-3xl font-serif uppercase tracking-widest text-white">Home</button>
-    <button onclick="goTo('about');closeMenu()"    class="text-3xl font-serif uppercase tracking-widest text-white">Chi siamo</button>
-    <button onclick="goTo('services');closeMenu()" class="text-3xl font-serif uppercase tracking-widest text-white">Servizi</button>
-    <button onclick="goTo('gallery');closeMenu()"  class="text-3xl font-serif uppercase tracking-widest text-white">Galleria</button>
-    <button onclick="goTo('booking');closeMenu()"  class="text-3xl font-serif uppercase tracking-widest text-white">Prenota</button>
-    <a href="buoni.html"                           class="text-3xl font-serif uppercase tracking-widest text-white">Buoni</a>
-    <a href="promozioni.html"                      class="text-3xl font-serif uppercase tracking-widest text-white">Promozioni</a>
-    <a href="recensioni.html"                      class="text-3xl font-serif uppercase tracking-widest text-white">Recensioni</a>
-    <button onclick="goTo('contact');closeMenu()"  class="text-3xl font-serif uppercase tracking-widest text-white">Contatti</button>
+  <nav class="flex flex-col items-center" style="gap:1.1rem;">
+    <button onclick="goTo('home');closeMenu()"     class="text-2xl font-serif uppercase tracking-widest text-white">Home</button>
+    <button onclick="goTo('about');closeMenu()"    class="text-2xl font-serif uppercase tracking-widest text-white">Chi siamo</button>
+    <button onclick="goTo('services');closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Servizi</button>
+    <button onclick="goTo('gallery');closeMenu()"  class="text-2xl font-serif uppercase tracking-widest text-white">Galleria</button>
+    <button onclick="goTo('booking');closeMenu()"  class="text-2xl font-serif uppercase tracking-widest text-white">Prenota</button>
+    <a href="novita.html"                          class="text-2xl font-serif uppercase tracking-widest text-white">Novità</a>
+    <a href="buoni.html"                           class="text-2xl font-serif uppercase tracking-widest text-white">Buoni</a>
+    <a href="promozioni.html"                      class="text-2xl font-serif uppercase tracking-widest text-white">Promozioni</a>
+    <a href="recensioni.html"                      class="text-2xl font-serif uppercase tracking-widest text-white">Recensioni</a>
+    <button onclick="goTo('contact');closeMenu()"  class="text-2xl font-serif uppercase tracking-widest text-white">Contatti</button>
   </nav>
-  <div class="flex" style="gap:1.5rem;margin-top:4rem;">
+  <div class="flex" style="gap:1.5rem;margin-top:2rem;">
     <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
     </a>
     <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
     </a>
   </div>
 </div>
@@ -437,8 +459,16 @@
         <h3 class="anim-up font-serif font-bold text-white" style="font-size:clamp(2rem,5vw,3rem);transition-delay:.1s;">I Nostri Servizi</h3>
       </div>
 
+      <!-- Toggle donna/uomo — solo mobile -->
+      <div class="md:hidden flex justify-center" style="margin-bottom:2.5rem;">
+        <div class="flex border border-white/30">
+          <button id="srv-btn-donna" class="srv-toggle-btn srv-active" onclick="setServizio('donna')">Donna</button>
+          <button id="srv-btn-uomo"  class="srv-toggle-btn srv-inactive" onclick="setServizio('uomo')" style="border-left:1px solid rgba(255,255,255,.3);">Uomo</button>
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-        <div class="anim-up" style="transition-delay:.15s;">
+        <div class="anim-up" id="col-donna" style="transition-delay:.15s;">
           <div class="flex items-center" style="gap:.75rem;margin-bottom:1.5rem;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".5"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
             <h4 class="font-serif font-bold text-white" style="font-size:1.4rem;letter-spacing:.05em;">Donna</h4>
@@ -447,7 +477,7 @@
             <tbody></tbody>
           </table>
         </div>
-        <div class="anim-up" style="transition-delay:.25s;">
+        <div class="anim-up" id="col-uomo" style="transition-delay:.25s;">
           <div class="flex items-center" style="gap:.75rem;margin-bottom:1.5rem;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".5"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
             <h4 class="font-serif font-bold text-white" style="font-size:1.4rem;letter-spacing:.05em;">Uomo</h4>
@@ -458,7 +488,10 @@
         </div>
       </div>
 
-      <p class="anim-fade text-center text-white/30 text-xs uppercase tracking-widest" style="margin-top:3rem;letter-spacing:.15em;">
+      <p class="anim-fade text-center" style="margin-top:2.75rem;margin-bottom:.65rem;">
+        <a href="#booking" onclick="goTo('booking')" style="color:rgba(255,255,255,.65);text-decoration:underline;text-underline-offset:3px;font-size:.85rem;letter-spacing:.06em;">Prenota il tuo appuntamento</a>
+      </p>
+      <p class="anim-fade text-center text-white/30 text-xs uppercase tracking-widest" style="margin-top:0;letter-spacing:.15em;">
         I prezzi possono variare in base alla lunghezza e alla complessità del servizio
       </p>
     </div>
@@ -819,6 +852,31 @@ function closeMenu() {
   m.classList.add('closing');
   setTimeout(function() { m.classList.remove('open', 'closing'); }, 400);
 }
+
+/* ════════════════════════
+   SERVIZI TOGGLE MOBILE
+════════════════════════ */
+function setServizio(g) {
+  if (window.innerWidth < 768) {
+    document.getElementById('col-donna').style.display = g === 'donna' ? 'block' : 'none';
+    document.getElementById('col-uomo').style.display  = g === 'uomo'  ? 'block' : 'none';
+  }
+  var bD = document.getElementById('srv-btn-donna');
+  var bU = document.getElementById('srv-btn-uomo');
+  if (bD && bU) {
+    bD.className = 'srv-toggle-btn ' + (g === 'donna' ? 'srv-active' : 'srv-inactive');
+    bU.className = 'srv-toggle-btn ' + (g === 'uomo'  ? 'srv-active' : 'srv-inactive');
+  }
+}
+/* Al resize (passaggio mobile↔desktop) ripristina visibilità colonne */
+window.addEventListener('resize', function() {
+  if (window.innerWidth >= 768) {
+    var cD = document.getElementById('col-donna');
+    var cU = document.getElementById('col-uomo');
+    if (cD) cD.style.display = '';
+    if (cU) cU.style.display = '';
+  }
+});
 
 /* ════════════════════════
    SCROLL ANIMATIONS
