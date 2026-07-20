@@ -3,7 +3,7 @@
 // Formato: "nomefile.ext",   ← virgola dopo ogni riga tranne l'ultima
 // ────────────────────────────────────────────────────────────
 window.GALLERIA_UOMO_DATA = [
-  "3693b730-0857-472e-8dd3-5ac9f785a7e7.jpg",
+  "3693b730-0857-472e-8dd3-5ac9f785a7e72.jpg",
   "03364dd2-1b67-4b72-95cb-1f8236812a93.jpeg",
   "1bfe3df8-2e10-4bbb-8611-1ddf10d5b806.jpeg",
   "21754b3f-0215-4acd-aea8-a05f22c3673c.jpeg",
