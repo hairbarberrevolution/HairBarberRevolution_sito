@@ -5,17 +5,16 @@ ga<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Promozioni - Hair&amp;Barber Revolution</title>
   <meta name="description" content="Le promozioni del mese da Hair&amp;Barber Revolution - Salone Parrucchieri &amp; Barber Shop a Costa Masnaga (LC)." />
-    <!-- Google tag (gtag.js) — Consent Mode v2 -->
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('consent', 'default', { analytics_storage: 'denied' });
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E9R0TDFCKJ"></script>
-    <script>
-      gtag('js', new Date());
-      gtag('config', 'G-E9R0TDFCKJ');
-    </script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', { analytics_storage: 'denied' });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E9R0TDFCKJ"></script>
+  <script>
+    gtag('js', new Date());
+    gtag('config', 'G-E9R0TDFCKJ');
+  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -52,20 +51,11 @@ ga<!DOCTYPE html>
     /* ════════════════════════════════
        SELETTORE DONNA / UOMO
     ════════════════════════════════ */
-    .gender-toggle {
-      display: inline-flex;
-      border: 1px solid #000;
-    }
+    .gender-toggle { display: inline-flex; border: 1px solid #000; }
     .gender-btn {
       padding: .75rem 2.25rem;
-      font-size: .75rem;
-      text-transform: uppercase;
-      letter-spacing: .15em;
-      font-weight: 500;
-      background: #fff;
-      color: #000;
-      border: none;
-      cursor: pointer;
+      font-size: .75rem; text-transform: uppercase; letter-spacing: .15em; font-weight: 500;
+      background: #fff; color: #000; border: none; cursor: pointer;
       transition: background-color .25s, color .25s;
     }
     .gender-btn.active { background: #000; color: #fff; }
@@ -88,43 +78,94 @@ ga<!DOCTYPE html>
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      cursor: pointer;
+      transition: transform .25s ease, box-shadow .25s ease;
     }
+    .promo-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.1);
+    }
+    .promo-card:focus {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+
+    /* Media wrapper — 4:3, sfondo bianco (per video verticali con bande) */
     .promo-photo-wrap {
       width: 100%;
       aspect-ratio: 4 / 3;
-      background: #f3f3f3;
+      background: #fff;
       overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
     }
     .promo-photo-wrap img {
       width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .5s ease;
     }
-    .promo-body { padding: 1.5rem 1.75rem 1.85rem; }
+    .promo-card:hover .promo-photo-wrap img { transform: scale(1.04); }
+
+    /* Thumbnail video nella card */
+    .promo-video-thumb {
+      width: 100%; height: 100%;
+      object-fit: contain; /* bande bianche per verticali */
+      display: block;
+      pointer-events: none;
+    }
+
+    /* Overlay play sui video */
+    .video-play-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.18);
+      transition: background .2s;
+    }
+    .promo-card:hover .video-play-overlay { background: rgba(0,0,0,.32); }
+    .video-play-btn-circle {
+      width: 3.5rem; height: 3.5rem; border-radius: 50%;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,.25);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .promo-card:hover .video-play-btn-circle {
+      transform: scale(1.08);
+      box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    }
+    .video-badge {
+      position: absolute; bottom: .6rem; left: .6rem;
+      background: #000; color: #fff;
+      font-size: .6rem; letter-spacing: .12em; text-transform: uppercase;
+      padding: .25rem .55rem;
+    }
+
+    /* Body card */
+    .promo-body { padding: 1.25rem 1.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; gap: .35rem; }
     .promo-name {
       font-family: 'Cormorant Garamond', serif;
-      font-weight: 700;
-      font-size: 1.4rem;
-      margin-bottom: .6rem;
-      color: #000;
+      font-weight: 700; font-size: 1.25rem; color: #000; line-height: 1.2;
     }
     .promo-desc {
-      font-size: .9rem;
-      line-height: 1.6;
-      color: rgba(0,0,0,.65);
+      font-size: .85rem; line-height: 1.55; color: rgba(0,0,0,.6);
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .promo-card-leggi {
+      margin-top: .5rem;
+      font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; font-weight: 500;
+      color: #000; text-decoration: underline; text-underline-offset: 3px;
+      align-self: flex-start;
     }
 
     /* ════════════════════════════════
        EMPTY STATE
     ════════════════════════════════ */
     .empty-state {
-      text-align: center;
-      padding: 3.5rem 1.5rem;
+      text-align: center; padding: 3.5rem 1.5rem;
       border: 1px dashed rgba(0,0,0,.2);
     }
     .empty-state p {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      color: rgba(0,0,0,.6);
-      margin-bottom: 1.5rem;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.25rem;
+      color: rgba(0,0,0,.6); margin-bottom: 1.5rem;
     }
     .social-btn {
       display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
@@ -134,6 +175,204 @@ ga<!DOCTYPE html>
       text-decoration: none; color: #000; background: #fff;
     }
     .social-btn:hover { background: #000; color: #fff; }
+
+    /* ════════════════════════════════
+       MODALE PROMOZIONE (stile Novità)
+    ════════════════════════════════ */
+    #promo-modal {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,.82);
+      align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    #promo-modal.open { display: flex; }
+
+    @keyframes modalIn { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:none; } }
+    .modal-box {
+      background: #fff;
+      max-width: 860px; width: 100%;
+      max-height: 92vh;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      animation: modalIn .25s ease forwards;
+      position: relative;
+    }
+    @media (min-width: 700px) {
+      .modal-box { flex-direction: row; max-height: 88vh; }
+    }
+
+    /* Colonna media (sinistra) */
+    .modal-media-col {
+      flex-shrink: 0;
+      background: #fff; /* bande bianche per video verticali */
+      display: flex; flex-direction: column;
+      align-items: stretch; justify-content: center;
+    }
+    @media (max-width: 699px) {
+      .modal-media-col { width: 100%; }
+    }
+    @media (min-width: 700px) {
+      .modal-media-col { width: 50%; min-height: 380px; }
+    }
+
+    /* Immagine nella modale */
+    #modal-img-tag {
+      width: 100%; display: block;
+      object-fit: cover;
+    }
+    @media (max-width: 699px) {
+      #modal-img-tag { max-height: 52vw; object-fit: cover; }
+    }
+    @media (min-width: 700px) {
+      #modal-img-tag { height: 100%; }
+    }
+
+    /* Video nella modale */
+    .modal-video-wrap {
+      width: 100%;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    @media (max-width: 699px) {
+      .modal-video-wrap { max-height: 55vw; }
+    }
+    @media (min-width: 700px) {
+      .modal-video-wrap { flex: 1; min-height: 0; }
+    }
+
+    #modal-video {
+      width: 100%; height: 100%;
+      object-fit: contain; /* bande bianche per verticali */
+      display: block; outline: none;
+    }
+    @media (max-width: 699px) {
+      #modal-video { max-height: 55vw; }
+    }
+
+    /* Controlli video */
+    .modal-video-controls {
+      background: #fff;
+      padding: .5rem .9rem .6rem;
+      display: flex; flex-direction: column; gap: .45rem;
+      border-top: 1px solid rgba(0,0,0,.07);
+      flex-shrink: 0;
+    }
+
+    .progress-row {
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .time-label {
+      font-size: .65rem; letter-spacing: .03em; color: rgba(0,0,0,.45);
+      white-space: nowrap; min-width: 2.6rem;
+    }
+    .time-label.right { text-align: right; }
+    .progress-track {
+      flex: 1; height: .22rem; background: rgba(0,0,0,.12);
+      position: relative; cursor: pointer; border-radius: 2px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .progress-fill {
+      height: 100%; background: #000; border-radius: 2px;
+      width: 0%; pointer-events: none;
+    }
+    .progress-thumb {
+      position: absolute; top: 50%; left: 0%;
+      transform: translate(-50%,-50%);
+      width: .7rem; height: .7rem; border-radius: 50%;
+      background: #000; pointer-events: none;
+    }
+
+    .ctrl-row {
+      display: flex; align-items: center; justify-content: center; gap: .4rem;
+    }
+    .ctrl-btn {
+      width: 2.2rem; height: 2.2rem;
+      border: 1px solid rgba(0,0,0,.18); background: #fff; color: #000;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .15s, color .15s, border-color .15s;
+      flex-shrink: 0; -webkit-tap-highlight-color: transparent;
+    }
+    .ctrl-btn:hover  { background: #000; color: #fff; border-color: #000; }
+    .ctrl-btn:active { background: #222; color: #fff; border-color: #222; }
+    .ctrl-btn.primary {
+      width: 2.7rem; height: 2.7rem;
+      background: #000; color: #fff; border-color: #000;
+    }
+    .ctrl-btn.primary:hover { background: #333; border-color: #333; }
+
+    .ctrl-group { display: flex; flex-direction: column; align-items: center; gap: .15rem; }
+    .ctrl-label {
+      font-size: .58rem; letter-spacing: .09em; text-transform: uppercase;
+      color: rgba(0,0,0,.38);
+    }
+    @media (max-width: 360px) {
+      .ctrl-btn { width: 1.95rem; height: 1.95rem; }
+      .ctrl-btn.primary { width: 2.4rem; height: 2.4rem; }
+      .ctrl-label { display: none; }
+    }
+
+    /* Colonna testo (destra) */
+    .modal-content-col {
+      flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0;
+    }
+    .modal-header {
+      padding: 3rem 1.4rem 1rem;
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      flex-shrink: 0;
+    }
+    @media (min-width: 700px) {
+      .modal-header { padding: 1.4rem 1.6rem 1rem; }
+    }
+    .modal-titolo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700; font-size: clamp(1.25rem,3vw,1.65rem);
+      color: #000; line-height: 1.2;
+    }
+
+    .modal-desc-wrap {
+      flex: 1; overflow-y: auto; padding: 1.1rem 1.4rem 1.2rem;
+      -webkit-overflow-scrolling: touch; min-height: 0;
+    }
+    @media (min-width: 700px) {
+      .modal-desc-wrap { padding: 1.1rem 1.6rem 1.2rem; }
+    }
+    .modal-desc { font-size: .9rem; line-height: 1.7; color: rgba(0,0,0,.7); }
+
+    .modal-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .8rem 1.4rem; border-top: 1px solid rgba(0,0,0,.08);
+      gap: .6rem; flex-shrink: 0;
+    }
+    @media (min-width: 700px) {
+      .modal-footer { padding: .8rem 1.6rem; }
+    }
+    .modal-nav-btn {
+      display: flex; align-items: center; justify-content: center; gap: .4rem;
+      height: 2.5rem; padding: 0 1rem;
+      font-size: .7rem; text-transform: uppercase; letter-spacing: .13em; font-weight: 500;
+      border: 1px solid rgba(0,0,0,.25); background: #fff; color: #000;
+      cursor: pointer; transition: background .2s, color .2s;
+      white-space: nowrap;
+    }
+    .modal-nav-btn:hover:not(:disabled) { background: #000; color: #fff; border-color: #000; }
+    .modal-nav-btn:disabled { opacity: .25; cursor: default; }
+    .modal-counter {
+      font-size: .7rem; text-transform: uppercase; letter-spacing: .12em;
+      color: rgba(0,0,0,.4); flex-shrink: 0;
+    }
+
+    /* X chiudi */
+    .modal-close-btn {
+      position: absolute; top: .7rem; right: .7rem;
+      width: 2.2rem; height: 2.2rem;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,.95); border: 1px solid rgba(0,0,0,.15);
+      cursor: pointer; transition: background .2s; z-index: 20;
+    }
+    .modal-close-btn:hover { background: #000; color: #fff; }
+    .modal-close-btn:hover svg { stroke: #fff; }
   </style>
 </head>
 
@@ -148,16 +387,16 @@ ga<!DOCTYPE html>
     </a>
 
     <nav class="hidden md:flex items-center" style="gap:1.75rem;">
-      <a href="index.html"                          class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Home</a>
-      <a href="index.html#about"                    class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Chi siamo</a>
-      <a href="index.html#services"                 class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Servizi</a>
-      <a href="index.html#gallery"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Galleria</a>
-      <a href="index.html#booking"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Prenota</a>
-      <a href="novita.html"                         class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Novità</a>
-      <a href="buoni.html"                          class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Buoni</a>
-      <a href="promozioni.html"                     class="text-xs uppercase tracking-[0.15em] font-medium text-white border-b border-white pb-0.5">Promozioni</a>
-      <a href="recensioni.html"                     class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Recensioni</a>
-      <a href="index.html#contact"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Contatti</a>
+      <a href="index.html"         class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Home</a>
+      <a href="index.html#about"   class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Chi siamo</a>
+      <a href="index.html#services"class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Servizi</a>
+      <a href="index.html#gallery" class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Galleria</a>
+      <a href="index.html#booking" class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Prenota</a>
+      <a href="novita.html"        class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Novità</a>
+      <a href="buoni.html"         class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Buoni</a>
+      <a href="promozioni.html"    class="text-xs uppercase tracking-[0.15em] font-medium text-white border-b border-white pb-0.5">Promozioni</a>
+      <a href="recensioni.html"    class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Recensioni</a>
+      <a href="index.html#contact" class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Contatti</a>
     </nav>
 
     <div class="hidden md:flex items-center" style="gap:1rem;">
@@ -179,7 +418,7 @@ ga<!DOCTYPE html>
   </div>
 </header>
 
-<!-- MOBILE MENU — scrollabile, tutto visibile -->
+<!-- MOBILE MENU -->
 <div id="mobile-menu" class="fixed inset-0 z-50 bg-black flex-col items-center" style="overflow-y:auto;padding-top:4.5rem;padding-bottom:2rem;">
   <button onclick="closeMenu()" class="absolute top-4 right-5 text-white p-2 focus:outline-none" aria-label="Chiudi menu">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -238,10 +477,127 @@ ga<!DOCTYPE html>
   </div>
 </main>
 
-<!-- Dati promozioni: file .js con window.PROMOZIONI_DONNA_DATA / window.PROMOZIONI_UOMO_DATA.
-     Usiamo file .js (come per la galleria) e non .json: aprendo la pagina in locale
-     con doppio clic (file://) il browser blocca la lettura dei file .json, mentre
-     un file .js caricato con <script src> funziona sempre, anche offline. -->
+<!-- ════════════════════════════════
+     MODALE PROMOZIONE
+════════════════════════════════ -->
+<div id="promo-modal" role="dialog" aria-modal="true" aria-labelledby="modal-titolo-text">
+  <div class="modal-box" role="document">
+
+    <!-- X chiudi — sempre visibile -->
+    <button class="modal-close-btn" onclick="closeModal()" aria-label="Chiudi">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <!-- Colonna media (immagine OPPURE video+controlli) -->
+    <div class="modal-media-col" id="modal-media-col" style="display:none;">
+
+      <!-- Immagine -->
+      <img id="modal-img-tag" src="" alt="" style="display:none;" />
+
+      <!-- Video + controlli -->
+      <div id="modal-video-section" style="display:none; flex-direction:column; flex:1; min-height:0;">
+        <div class="modal-video-wrap">
+          <video id="modal-video" preload="auto" playsinline webkit-playsinline></video>
+        </div>
+
+        <!-- Controlli video -->
+        <div class="modal-video-controls">
+          <!-- Barra progresso -->
+          <div class="progress-row">
+            <span id="time-current" class="time-label">0:00</span>
+            <div class="progress-track" id="progress-track">
+              <div class="progress-fill" id="progress-fill"></div>
+              <div class="progress-thumb" id="progress-thumb"></div>
+            </div>
+            <span id="time-total" class="time-label right">0:00</span>
+          </div>
+          <!-- Pulsanti -->
+          <div class="ctrl-row">
+
+            <div class="ctrl-group">
+              <button class="ctrl-btn" id="btn-mute" onclick="toggleMute()" aria-label="Muto / Audio">
+                <svg id="icon-sound" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                </svg>
+                <svg id="icon-mute" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                  <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+                </svg>
+              </button>
+              <span class="ctrl-label">Audio</span>
+            </div>
+
+            <div class="ctrl-group">
+              <button class="ctrl-btn" onclick="seekBy(-10)" aria-label="Indietro 10s">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="1 4 1 10 7 10"/>
+                  <path d="M3.51 15a9 9 0 1 0 .49-4.91"/>
+                </svg>
+              </button>
+              <span class="ctrl-label">-10s</span>
+            </div>
+
+            <div class="ctrl-group">
+              <button class="ctrl-btn primary" id="btn-playpause" onclick="togglePlay()" aria-label="Play / Pausa">
+                <svg id="icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <svg id="icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+                  <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+                </svg>
+              </button>
+              <span class="ctrl-label">Play</span>
+            </div>
+
+            <div class="ctrl-group">
+              <button class="ctrl-btn" onclick="seekBy(10)" aria-label="Avanti 10s">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 4 23 10 17 10"/>
+                  <path d="M20.49 15a9 9 0 1 1-.49-4.91"/>
+                </svg>
+              </button>
+              <span class="ctrl-label">+10s</span>
+            </div>
+
+            <div class="ctrl-group">
+              <button class="ctrl-btn" onclick="stopVideo()" aria-label="Stop">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18"/></svg>
+              </button>
+              <span class="ctrl-label">Stop</span>
+            </div>
+
+          </div><!-- /ctrl-row -->
+        </div><!-- /modal-video-controls -->
+      </div><!-- /modal-video-section -->
+    </div><!-- /modal-media-col -->
+
+    <!-- Colonna testo (destra) -->
+    <div class="modal-content-col">
+      <div class="modal-header">
+        <h2 class="modal-titolo" id="modal-titolo-text"></h2>
+      </div>
+      <div class="modal-desc-wrap">
+        <p class="modal-desc" id="modal-desc-text"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-nav-btn" id="modal-prev" onclick="navigateModal(-1)" aria-label="Promozione precedente">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Prec
+        </button>
+        <span class="modal-counter" id="modal-counter"></span>
+        <button class="modal-nav-btn" id="modal-next" onclick="navigateModal(1)" aria-label="Promozione successiva">
+          Succ
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /modal-box -->
+</div><!-- /promo-modal -->
+
+<!-- Dati promozioni -->
 <script src="promozionidonna.js"></script>
 <script src="promozioniuomo.js"></script>
 
@@ -297,19 +653,14 @@ function closeMenu() {
 }
 
 /* ════════════════════════════════
-   PROMOZIONI
-   I dati arrivano da promozionidonna.js e promozioniuomo.js (caricati sopra
-   con <script src>), che impostano window.PROMOZIONI_DONNA_DATA e
-   window.PROMOZIONI_UOMO_DATA. Usiamo file .js invece di .json/fetch perche'
-   funzionano anche aprendo la pagina in locale (file://), esattamente come
-   fa la galleria con GALLERIA_UOMO.js / GALLERIA_DONNA.js.
-   Ogni promozione ha: nome, descrizione, foto (nome del file dentro PROMOZIONI_FOTO/).
+   DATI
 ════════════════════════════════ */
 var PROMO = {
   donna: Array.isArray(window.PROMOZIONI_DONNA_DATA) ? window.PROMOZIONI_DONNA_DATA : [],
   uomo:  Array.isArray(window.PROMOZIONI_UOMO_DATA)  ? window.PROMOZIONI_UOMO_DATA  : []
 };
 var currentGender = 'donna';
+var currentIndex  = 0;
 
 var SOCIAL_HTML =
   '<div class="flex justify-center" style="gap:1rem;flex-wrap:wrap;">' +
@@ -323,56 +674,284 @@ var SOCIAL_HTML =
     '</a>' +
   '</div>';
 
-function promoCardHtml(p) {
-  var img = p.foto ? 'PROMOZIONI_FOTO/' + p.foto : '';
-  return '<div class="promo-card">' +
-    (img
-      ? '<div class="promo-photo-wrap"><img src="' + img + '" alt="' + p.nome + '" loading="lazy" onerror="this.parentElement.style.display=\'none\';" /></div>'
-      : '') +
+/* Rimuove tag HTML per anteprima card */
+function stripHtml(s) { return String(s).replace(/<[^>]*>/g, ''); }
+
+function escAttr(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ════════════════════════════════
+   RENDER GRIGLIA CARD
+════════════════════════════════ */
+function promoCardHtml(p, idx) {
+  var isVideo = !!p.video;
+  var mediaHtml = '';
+
+  if (isVideo) {
+    var vsrc = 'VIDEO_HBR/' + escAttr(p.video);
+    mediaHtml =
+      '<div class="promo-photo-wrap">' +
+        '<video class="promo-video-thumb" src="' + vsrc + '" preload="metadata" muted playsinline webkit-playsinline></video>' +
+        '<div class="video-play-overlay">' +
+          '<div class="video-play-btn-circle">' +
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg>' +
+          '</div>' +
+        '</div>' +
+        '<div class="video-badge">Video</div>' +
+      '</div>';
+  } else if (p.foto) {
+    mediaHtml =
+      '<div class="promo-photo-wrap" style="background:#f3f3f3;">' +
+        '<img src="PROMOZIONI_FOTO/' + escAttr(p.foto) + '" alt="' + escAttr(p.nome) + '" loading="lazy" onerror="this.parentElement.style.display=\'none\';" />' +
+      '</div>';
+  }
+
+  return '<div class="promo-card" tabindex="0" role="button"' +
+         ' aria-label="Apri promozione: ' + escAttr(p.nome) + '"' +
+         ' onclick="openModal(' + idx + ')"' +
+         ' onkeydown="if(event.key===\'Enter\'||event.key===\' \')openModal(' + idx + ')">' +
+    mediaHtml +
     '<div class="promo-body">' +
       '<h3 class="promo-name">' + p.nome + '</h3>' +
-      '<p class="promo-desc">' + p.descrizione + '</p>' +
+      '<p class="promo-desc">' + stripHtml(p.descrizione || '') + '</p>' +
+      '<span class="promo-card-leggi">Scopri →</span>' +
     '</div>' +
   '</div>';
 }
 
 function render() {
   var container = document.getElementById('promo-content');
-
   var donnaEmpty = PROMO.donna.length === 0;
   var uomoEmpty  = PROMO.uomo.length  === 0;
 
-  // Nessuna promozione, ne' per uomo ne' per donna
   if (donnaEmpty && uomoEmpty) {
     container.innerHTML =
-      '<div class="empty-state">' +
-        '<p>Promozioni in arrivo... Resta aggiornato sui nostri social:</p>' +
-        SOCIAL_HTML +
-      '</div>';
+      '<div class="empty-state"><p>Promozioni in arrivo... Resta aggiornato sui nostri social:</p>' + SOCIAL_HTML + '</div>';
     return;
   }
 
   var list = PROMO[currentGender] || [];
   if (list.length === 0) {
     container.innerHTML =
-      '<div class="empty-state">' +
-        '<p>Ancora nessuna promozione. Resta aggiornato sui nostri social:</p>' +
-        SOCIAL_HTML +
-      '</div>';
+      '<div class="empty-state"><p>Ancora nessuna promozione. Resta aggiornato sui nostri social:</p>' + SOCIAL_HTML + '</div>';
     return;
   }
 
   container.innerHTML = '<div class="promo-grid">' + list.map(promoCardHtml).join('') + '</div>';
+
+  /* Seek thumbnail video a metà durata */
+  document.querySelectorAll('.promo-video-thumb').forEach(function(v) {
+    function seekMid() {
+      if (v.duration && isFinite(v.duration) && v.duration > 0) v.currentTime = v.duration / 2;
+    }
+    if (v.readyState >= 1 && v.duration) seekMid();
+    else v.addEventListener('loadedmetadata', seekMid, { once: true });
+  });
 }
 
 function selectGender(g) {
   currentGender = g;
   document.getElementById('btn-donna').classList.toggle('active', g === 'donna');
   document.getElementById('btn-uomo').classList.toggle('active', g === 'uomo');
+  /* Se il modal è aperto, chiudilo quando si cambia categoria */
+  if (document.getElementById('promo-modal').classList.contains('open')) closeModal();
   render();
 }
 
 render();
+
+/* ════════════════════════════════
+   MODALE
+════════════════════════════════ */
+var modalEl        = document.getElementById('promo-modal');
+var modalMediaCol  = document.getElementById('modal-media-col');
+var modalImgTag    = document.getElementById('modal-img-tag');
+var modalVideoSec  = document.getElementById('modal-video-section');
+var modalVideo     = document.getElementById('modal-video');
+var progressFill   = document.getElementById('progress-fill');
+var progressThumb  = document.getElementById('progress-thumb');
+var timeCurrent    = document.getElementById('time-current');
+var timeTotal      = document.getElementById('time-total');
+var progressTrack  = document.getElementById('progress-track');
+var iconPlay       = document.getElementById('icon-play');
+var iconPause      = document.getElementById('icon-pause');
+var iconSound      = document.getElementById('icon-sound');
+var iconMute       = document.getElementById('icon-mute');
+
+/* ── Helpers tempo ── */
+function formatTime(s) {
+  if (!isFinite(s) || isNaN(s)) return '0:00';
+  s = Math.floor(s);
+  return Math.floor(s / 60) + ':' + (s % 60 < 10 ? '0' : '') + (s % 60);
+}
+
+/* ── Aggiorna barra progresso ── */
+function updateProgress() {
+  var dur = modalVideo.duration;
+  var cur = modalVideo.currentTime;
+  if (!dur || !isFinite(dur)) return;
+  var pct = (cur / dur) * 100;
+  progressFill.style.width = pct + '%';
+  progressThumb.style.left = pct + '%';
+  timeCurrent.textContent  = formatTime(cur);
+}
+
+modalVideo.addEventListener('timeupdate', updateProgress);
+modalVideo.addEventListener('loadedmetadata', function() {
+  timeTotal.textContent = formatTime(modalVideo.duration);
+  updateProgress();
+});
+modalVideo.addEventListener('play',  function() { iconPlay.style.display='none'; iconPause.style.display=''; });
+modalVideo.addEventListener('pause', function() { iconPlay.style.display='';    iconPause.style.display='none'; });
+modalVideo.addEventListener('ended', function() { iconPlay.style.display='';    iconPause.style.display='none'; });
+
+/* ── Render modale per indice corrente ── */
+function renderModal() {
+  var list = PROMO[currentGender] || [];
+  var p = list[currentIndex];
+  if (!p) return;
+
+  var isVideo = !!p.video;
+  var hasImg  = !!p.foto && !isVideo;
+
+  /* --- Colonna media --- */
+  if (isVideo) {
+    /* Ferma e resetta prima di cambiare src */
+    modalVideo.pause();
+    modalVideo.src = 'VIDEO_HBR/' + p.video;
+    modalVideo.currentTime = 0;
+    modalVideo.muted = false;
+    iconSound.style.display = ''; iconMute.style.display = 'none';
+    progressFill.style.width = '0%'; progressThumb.style.left = '0%';
+    timeCurrent.textContent = '0:00'; timeTotal.textContent = '0:00';
+
+    modalImgTag.style.display    = 'none';
+    modalVideoSec.style.display  = 'flex';
+    modalMediaCol.style.display  = '';
+
+    /* Auto-play */
+    var playPromise = modalVideo.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(function() {
+        /* Auto-play bloccato dal browser: rimane in pausa, utente clicca play */
+      });
+    }
+  } else if (hasImg) {
+    /* Ferma il video precedente se presente */
+    modalVideo.pause();
+    modalVideo.src = '';
+    modalVideoSec.style.display = 'none';
+
+    modalImgTag.src   = 'PROMOZIONI_FOTO/' + p.foto;
+    modalImgTag.alt   = p.nome;
+    modalImgTag.onerror = function() { modalMediaCol.style.display = 'none'; };
+    modalImgTag.style.display = 'block';
+    modalMediaCol.style.display = '';
+  } else {
+    /* Nessun media */
+    modalVideo.pause();
+    modalVideo.src = '';
+    modalImgTag.style.display    = 'none';
+    modalVideoSec.style.display  = 'none';
+    modalMediaCol.style.display  = 'none';
+  }
+
+  /* --- Testo --- */
+  document.getElementById('modal-titolo-text').textContent = p.nome || '';
+  document.getElementById('modal-desc-text').innerHTML     = p.descrizione || '';
+
+  /* --- Navigazione --- */
+  document.getElementById('modal-counter').textContent  = (currentIndex + 1) + ' / ' + list.length;
+  document.getElementById('modal-prev').disabled = (currentIndex === 0);
+  document.getElementById('modal-next').disabled = (currentIndex === list.length - 1);
+
+  /* Scroll testo in cima */
+  var wrap = document.querySelector('.modal-desc-wrap');
+  if (wrap) wrap.scrollTop = 0;
+}
+
+function openModal(idx) {
+  currentIndex = idx;
+  renderModal();
+  modalEl.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  modalVideo.pause();
+  modalVideo.src = '';
+  modalEl.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function navigateModal(dir) {
+  var list = PROMO[currentGender] || [];
+  var next = currentIndex + dir;
+  if (next < 0 || next >= list.length) return;
+  currentIndex = next;
+  renderModal();
+}
+
+/* Chiudi cliccando fuori dal box */
+modalEl.addEventListener('click', function(e) {
+  if (e.target === modalEl) closeModal();
+});
+
+/* Tastiera: ESC chiude, frecce navigano */
+document.addEventListener('keydown', function(e) {
+  if (!modalEl.classList.contains('open')) return;
+  if (e.key === 'Escape')     closeModal();
+  if (e.key === 'ArrowLeft')  navigateModal(-1);
+  if (e.key === 'ArrowRight') navigateModal(1);
+});
+
+/* ── Controlli video ── */
+function togglePlay() {
+  if (modalVideo.paused || modalVideo.ended) modalVideo.play();
+  else modalVideo.pause();
+}
+function toggleMute() {
+  modalVideo.muted = !modalVideo.muted;
+  iconSound.style.display = modalVideo.muted ? 'none' : '';
+  iconMute.style.display  = modalVideo.muted ? '' : 'none';
+}
+function seekBy(sec) {
+  modalVideo.currentTime = Math.max(0, Math.min(modalVideo.duration || 0, modalVideo.currentTime + sec));
+}
+function stopVideo() {
+  modalVideo.pause();
+  modalVideo.currentTime = 0;
+}
+
+/* ── Seek sulla barra di avanzamento (mouse + touch) ── */
+function getSeekPct(e, track) {
+  var rect = track.getBoundingClientRect();
+  var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+}
+var isSeeking = false;
+
+progressTrack.addEventListener('mousedown', function(e) {
+  isSeeking = true;
+  if (modalVideo.duration) modalVideo.currentTime = getSeekPct(e, progressTrack) * modalVideo.duration;
+  e.preventDefault();
+});
+progressTrack.addEventListener('touchstart', function(e) {
+  isSeeking = true;
+  if (modalVideo.duration) modalVideo.currentTime = getSeekPct(e, progressTrack) * modalVideo.duration;
+  e.preventDefault();
+}, { passive: false });
+document.addEventListener('mousemove', function(e) {
+  if (!isSeeking) return;
+  if (modalVideo.duration) modalVideo.currentTime = getSeekPct(e, progressTrack) * modalVideo.duration;
+});
+document.addEventListener('touchmove', function(e) {
+  if (!isSeeking) return;
+  if (modalVideo.duration) modalVideo.currentTime = getSeekPct(e, progressTrack) * modalVideo.duration;
+}, { passive: true });
+document.addEventListener('mouseup',  function() { isSeeking = false; });
+document.addEventListener('touchend', function() { isSeeking = false; });
 </script>
 
 <script src="cookie-banner.js"></script>
