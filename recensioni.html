@@ -119,7 +119,6 @@
       .swipe-hint { display: none; }
     }
 
-
     .review-stars { display: flex; gap: .2rem; margin-bottom: 1rem; color: #000; }
 
     .review-quote {
@@ -130,6 +129,24 @@
       flex: 1;
       margin-bottom: 1.25rem;
     }
+
+    /* ── "Leggi Tutto" button ── */
+    .leggi-tutto-btn {
+      display: inline;
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: rgba(0,0,0,.85);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      cursor: pointer;
+    }
+    .leggi-tutto-btn:hover { color: #000; }
 
     .review-name {
       font-weight: 600;
@@ -164,6 +181,91 @@
     .review-btn-hero-solid:hover { background: transparent; color: #fff; }
     .review-btn-hero-outline { background: transparent; color: #fff; border-color: #fff; }
     .review-btn-hero-outline:hover { background: #fff; color: #000; }
+
+    /* ════════════════════════════════
+       MODALE RECENSIONE
+    ════════════════════════════════ */
+    #review-modal {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,.82);
+      align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    #review-modal.open { display: flex; }
+
+    @keyframes modalIn { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:none; } }
+
+    .rmodal-box {
+      background: #fff;
+      max-width: 480px; width: 100%;
+      max-height: 88vh;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      animation: modalIn .25s ease forwards;
+      position: relative;
+    }
+
+    /* X chiudi */
+    .rmodal-close-btn {
+      position: absolute; top: .7rem; right: .7rem;
+      width: 2.2rem; height: 2.2rem;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,.95); border: 1px solid rgba(0,0,0,.15);
+      cursor: pointer; transition: background .2s; z-index: 20;
+    }
+    .rmodal-close-btn:hover { background: #000; }
+    .rmodal-close-btn:hover svg { stroke: #fff; }
+
+    .rmodal-header {
+      padding: 2.25rem 1.4rem 1rem;
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      flex-shrink: 0;
+    }
+    .rmodal-stars {
+      display: flex; gap: .2rem; color: #000;
+      margin-bottom: .75rem;
+    }
+    .rmodal-name-header {
+      font-weight: 700;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-family: 'Cormorant Garamond', serif;
+      color: #000; line-height: 1.2;
+    }
+
+    .rmodal-text-wrap {
+      flex: 1; overflow-y: auto; padding: 1.25rem 1.4rem;
+      -webkit-overflow-scrolling: touch; min-height: 0;
+    }
+    .rmodal-quote-full {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: rgba(0,0,0,.75);
+      white-space: pre-line; /* rispetta i \n nel testo */
+    }
+
+    .rmodal-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 1.4rem;
+      border-top: 1px solid rgba(0,0,0,.08);
+      flex-shrink: 0; gap: .6rem;
+    }
+    .rmodal-source-label {
+      font-size: .65rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,.35);
+    }
+    .rmodal-close-footer {
+      display: flex; align-items: center; justify-content: center; gap: .4rem;
+      height: 2.5rem; padding: 0 1.25rem;
+      font-size: .7rem; text-transform: uppercase; letter-spacing: .13em; font-weight: 500;
+      border: 1px solid #000; background: #000; color: #fff;
+      cursor: pointer; transition: background .2s, color .2s;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .rmodal-close-footer:hover { background: #fff; color: #000; }
   </style>
 </head>
 
@@ -318,6 +420,43 @@
   </div>
 </footer>
 
+<!-- ════════════════════════════════
+     MODALE RECENSIONE COMPLETA
+════════════════════════════════ -->
+<div id="review-modal" role="dialog" aria-modal="true" aria-labelledby="rmodal-name-text">
+
+  <!-- Backdrop: click per chiudere -->
+  <div style="position:absolute;inset:0;z-index:0;" onclick="closeReviewModal()"></div>
+
+  <div class="rmodal-box" role="document" style="position:relative;z-index:1;">
+
+    <!-- X chiudi in alto a destra -->
+    <button class="rmodal-close-btn" onclick="closeReviewModal()" aria-label="Chiudi">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <!-- Intestazione: stelle + nome -->
+    <div class="rmodal-header">
+      <div class="rmodal-stars" id="rmodal-stars"></div>
+      <p class="rmodal-name-header" id="rmodal-name-text"></p>
+    </div>
+
+    <!-- Testo completo scrollabile -->
+    <div class="rmodal-text-wrap">
+      <p class="rmodal-quote-full" id="rmodal-quote-full"></p>
+    </div>
+
+    <!-- Footer: fonte + bottone chiudi -->
+    <div class="rmodal-footer">
+      <span class="rmodal-source-label">Recensione verificata &middot; Google</span>
+      <button class="rmodal-close-footer" onclick="closeReviewModal()">Chiudi</button>
+    </div>
+
+  </div>
+</div>
+
 <script>
 'use strict';
 
@@ -340,91 +479,105 @@ function closeMenu() {
    Recensioni verificate raccolte da Google.
 ════════════════════════════════ */
 var REVIEWS = [
-                      {
+  {
+    nome: "Chiara P.",
+    stelle: 5,
+    testo: "Ambiente pulito e confortevole, Veruska, Massy e Gaia sono Superrr professionali e gentilissimi! Il taglio di Veruska per i miei capelli è il top, sà consigliarti i trattamenti giusti da fare! Fortemente consigliato! ❤️ Chiara P."
+  },
+  {
+    nome: "Cinzia e S.",
+    stelle: 5,
+    testo: "Non potrei consigliare questo salone più di così! Sono arrivata da Veruska con i capelli molto impoveriti e rovinati. Grazie alle sue schiariture, ai gloss e ai trattamenti alla cheratina ho finalmente ritrovato i miei capelli biondi: sani, luminosi e curati.\nVeruska è una professionista preparata, attenta e sempre disponibile a trovare la soluzione migliore per ogni esigenza. Gaia, invece, realizza delle pieghe ondulate semplicemente meravigliose, che valorizzano tantissimo i capelli e durano nel tempo.\nUn aspetto che ho apprezzato tantissimo è la loro disponibilità e il loro entusiasmo anche fuori dal salone: sono venute nel mio asilo nido per far vivere ai bambini un'esperienza speciale, giocando con loro 'alla parrucchiera'. È stato un laboratorio bellissimo, coinvolgente e molto apprezzato sia dai bambini che da noi educatrici.\nProfessionalità, passione e tanta dolcezza: un salone che consiglio davvero con il cuore!"
+  },
+  {
+    nome: "Patrizia C.",
+    stelle: 5,
+    testo: "Servizio molto professionale e attenzione al cliente 😊"
+  },
+  {
     nome: "Giulia M.",
     stelle: 5,
     testo: "Sono 8 anni che vado. Mi trovo molto bene!!! Mi sento come a casa."
   },
-                      {
+  {
     nome: "Ornella R.",
     stelle: 5,
     testo: "Ė ormai da tempo che frequento Hair&Barber Revolution e Veruska e Gaia sono gentilissime e molto professionali, facendoti sentire a tuo agio creando un'atmosfera amichevole. Consiglio tantissimo!!"
   },
-                    {
+  {
     nome: "Loredana D.",
     stelle: 5,
     testo: "Team estremamente professionale competente e disponibile, ti fanno sentire a tuo agio."
   },
-                    {
+  {
     nome: "Luisella F.",
     stelle: 5,
     testo: "Esperienza molto positiva che consiglio sicuramente. Sempre puntuali, ambiente accogliente e ottima professionalità."
   },
-                  {
+  {
     nome: "Erika P.",
     stelle: 5,
     testo: "Super soddisfatta. Veruska attenta alle esigenze del cliente e molto professionale."
   },
-                {
+  {
     nome: "Silvia C.",
     stelle: 5,
     testo: "Tutto top. Accoglienza, professionalità, qualità del lavoro. Lo consiglio vivamente."
   },
-                {
+  {
     nome: "Maria B.",
     stelle: 5,
     testo: "Frequento Hair&Barber revolution da più di 7 anni e sono sempre rimasta soddisfatta. Professionalità, attenzione al cliente e grande capacità nel consigliare il taglio e il colore più adatti. Ogni volta esco contenta del risultato. Un punto di riferimento per me da tanti anni, lo consiglio vivamente!"
   },
-              {
+  {
     nome: "Sergio M.",
     stelle: 5,
     testo: "Veruska e Massimo sono 2 persone speciali .. preparate e molto professionali!! 10 anni che I nostri capelli ( hanno ripreso vigore ) e NOI ringraziamo . Sono una bella squadra con Gaia .. continuate così !"
   },
-            {
+  {
     nome: "Manuela D. T.",
     stelle: 5,
     testo: "Veruska è davvero bravissima! Molto competente, ascolta con attenzione le esigenze del cliente e sa sempre consigliare la soluzione migliore. Ti fa sentire a tuo agio e il risultato è sempre impeccabile. La consiglio vivamente a chi cerca professionalità, disponibilità e grande cura per i dettagli."
   },
-          {
+  {
     nome: "Monica V.",
     stelle: 5,
     testo: "Ho scoperto questo fantastico team ai tempi del covid e mi trovo benissimo, la loro forza è la professionalità, serietà, simpatia e prezzi onesti. Il tempo trascorso in salone è sempre piacevole, rilassante e anche divertente, ti senti a casa. Lo consiglio vivamente ✌️"
   },
-        {
+  {
     nome: "Marta C.",
     stelle: 5,
     testo: "Sono loro cliente da parecchi anni, ambiente solare, professionalità e tanta voglia di tenersi sempre aggiornate ed al passo con i tempi. Riescono sempre a rendermi felice con i colori, tagli e pieghe che amo."
   },
-      {
+  {
     nome: "Clara S.",
     stelle: 5,
     testo: "Se cercate un posto con personale competente, professionale e con una gran passione dove venire qui da Hair & barber revolution! Per me ormai è un appuntamento fisso , mi sento come a casa, ti coccolano, ti seguono, ti consigliano. Reparto femminile e maschile. Grande cura dei dettagli e aggiornati con le ultime tendenze."
   },
-      {
+  {
     nome: "Elena B.",
     stelle: 5,
     testo: "Sono anni che curo i miei capelli da Veruska! Professionalita' e competenza rendono tutto perfetto,grazie anche a Gaia,per la bravura e gentilezza che la rende unica!"
   },
-      {
-      nome: "Simona G.",
+  {
+    nome: "Simona G.",
     stelle: 5,
     testo: "Sono davvero molto soddisfatta! È una parrucchiera bravissima, sempre disponibile e attenta alle esigenze delle sue clienti. Sa consigliarti al meglio e trova sempre la soluzione più adatta a valorizzarti. Le mie schiariture sono venute bellissime, naturali e luminose, proprio come le desideravo. Oltre alla sua grande professionalità, ti fa sentire sempre a tuo agio. La consiglio assolutamente a chi cerca qualità, competenza e un servizio fatto con passione!"
   },
-      {
+  {
     nome: "Maria C.",
     stelle: 5,
     testo: "Veruska e Gaia sono sempre disponibili e cortesi... Fanno sentire le loro clienti a loro agio in un ambiente confortevole."
   },
-      {
+  {
     nome: "Annalisa A.",
     stelle: 5,
     testo: "Team magnifico Professionalita' eccellente! Sono cliente da quando è stato aperto il negozio e sono soddisfatta della scelta effettuata!"
   },
-  
-    {
+  {
     nome: "Fabiano O.",
     stelle: 5,
-    testo: "Servizio barberia davvero al top! Ambiente pulito, personale molto professionale e atmosfera accogliente e rilassante. Un’esperienza piacevole dall’inizio alla fine. Assolutamente consigliato!"
+    testo: "Servizio barberia davvero al top! Ambiente pulito, personale molto professionale e atmosfera accogliente e rilassante. Un'esperienza piacevole dall'inizio alla fine. Assolutamente consigliato!"
   },
   {
     nome: "Cinzia D.",
@@ -439,7 +592,7 @@ var REVIEWS = [
   {
     nome: "Walter R.",
     stelle: 5,
-    testo: "Mix perfetto di professionalità e simpatia. Ogni taglio è un momento di relax e se appena dopo l'appuntamento viene da dire “che barba!”, in realtà non è affatto per la noia: qui non ci si annoia mai. È un'esclamazione di approvazione per la modellatura fatta da Max, il barber numero 1!"
+    testo: "Mix perfetto di professionalità e simpatia. Ogni taglio è un momento di relax e se appena dopo l'appuntamento viene da dire \"che barba!\", in realtà non è affatto per la noia: qui non ci si annoia mai. È un'esclamazione di approvazione per la modellatura fatta da Max, il barber numero 1!"
   },
   {
     nome: "Federica G.",
@@ -459,31 +612,87 @@ var REVIEWS = [
   {
     nome: "Francesca R.",
     stelle: 5,
-    testo: ""
+    testo: " "
   },
   {
     nome: "Stefano R.",
     stelle: 5,
-    testo: ""
+    testo: " "
   },
     {
     nome: "Gina C.",
     stelle: 5,
-    testo: ""
+    testo: " "
   }
 ];
 
+/* ════════════════════════════════
+   MODALE RECENSIONE
+════════════════════════════════ */
+var currentReviewIdx = 0;
+
+function openReviewModal(idx) {
+  currentReviewIdx = idx;
+  var r = REVIEWS[idx];
+  document.getElementById('rmodal-stars').innerHTML = starsSvg(r.stelle);
+  document.getElementById('rmodal-name-text').textContent = r.nome;
+  document.getElementById('rmodal-quote-full').textContent = '\u201C' + r.testo + '\u201D';
+  var modal = document.getElementById('review-modal');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeReviewModal() {
+  var modal = document.getElementById('review-modal');
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* Chiudi con tasto Esc */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeReviewModal();
+});
+
+/* ════════════════════════════════
+   STELLE SVG
+════════════════════════════════ */
 function starsSvg(count) {
   var full = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>';
   return full.repeat(count);
 }
 
+/* ════════════════════════════════
+   RENDER CARDS CON TRUNCATION
+   Limite: 150 caratteri. Oltre quel limite
+   il testo viene tagliato e appare "...Leggi Tutto"
+════════════════════════════════ */
+var TRUNCATE_LIMIT = 220;
+
+function buildQuoteHtml(testo, idx) {
+  if (!testo) return '';
+  /* Prendi solo la prima riga per il troncamento (per testi con \n) */
+  var firstLine = testo.split('\n')[0];
+  if (firstLine.length <= TRUNCATE_LIMIT && testo.length <= TRUNCATE_LIMIT) {
+    /* Testo breve: mostra tutto */
+    return '\u201C' + testo + '\u201D';
+  }
+  /* Testo lungo: tronca a TRUNCATE_LIMIT caratteri sulla prima riga */
+  var cutAt = Math.min(firstLine.length, TRUNCATE_LIMIT);
+  /* Torna indietro fino all'ultimo spazio per non tagliare a metà parola */
+  while (cutAt > 80 && firstLine[cutAt] !== ' ') cutAt--;
+  var preview = firstLine.substring(0, cutAt).trimEnd();
+  return '\u201C' + preview
+    + '... <button class="leggi-tutto-btn" onclick="openReviewModal(' + idx + ')" aria-label="Leggi la recensione completa di ' + testo.substring(0,30).replace(/"/g,'') + '">'
+    + 'Leggi Tutto</button>';
+}
+
 function renderReviews() {
   var track = document.getElementById('reviews-track');
-  track.innerHTML = REVIEWS.map(function(r) {
+  track.innerHTML = REVIEWS.map(function(r, idx) {
+    if (!r.testo) return ''; /* salta recensioni senza testo */
     return '<div class="review-card">'
       + '<div class="review-stars">' + starsSvg(r.stelle) + '</div>'
-      + '<p class="review-quote">\u201C' + r.testo + '\u201D</p>'
+      + '<p class="review-quote">' + buildQuoteHtml(r.testo, idx) + '</p>'
       + '<div>'
       + '<p class="review-name">' + r.nome + '</p>'
       + '<p class="review-source">Recensione verificata &middot; Google</p>'
