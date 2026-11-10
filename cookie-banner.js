@@ -8,10 +8,18 @@
 
   var STORAGE_KEY = 'hbr_cookie_consent';
 
-  /* ── Applica il consenso a Google Analytics ── */
+  /* ── Applica il consenso a Google Analytics ──
+     La libreria gtag.js si scarica solo dopo "Accetta": prima del consenso
+     il browser non contatta Google in nessun modo. */
   function applyConsent(value) {
     if (typeof gtag === 'function') {
       gtag('consent', 'update', { analytics_storage: value });
+    }
+    if (value === 'granted' && !document.getElementById('hbr-gtag')) {
+      var g = document.createElement('script');
+      g.id = 'hbr-gtag'; g.async = true;
+      g.src = 'https://www.googletagmanager.com/gtag/js?id=G-E9R0TDFCKJ';
+      document.head.appendChild(g);
     }
   }
 
@@ -37,8 +45,8 @@
     '  color: #fff;',
     '  padding: 1.1rem 1.5rem;',
     '  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;',
-    '  font-family: \'Segoe UI\', system-ui, sans-serif;',
-    '  font-size: .8rem;',
+    '  font-family: \'Jost\', \'Segoe UI\', system-ui, sans-serif;',
+    '  font-size: .85rem;',
     '  line-height: 1.5;',
     '  box-shadow: 0 -4px 24px rgba(0,0,0,.4);',
     '}',
@@ -62,7 +70,7 @@
     '}',
     '#hbr-cb-reject:hover { color: #fff; border-color: rgba(255,255,255,.7); }',
     '@keyframes hbrBannerIn { from { transform: translateY(100%); opacity: 0; } to { transform: none; opacity: 1; } }',
-    '#hbr-cookie-banner { animation: hbrBannerIn .4s ease; }'
+    '#hbr-cookie-banner { animation: hbrBannerIn .7s cubic-bezier(.16,1,.3,1); }'
   ].join('\n');
   document.head.appendChild(style);
 
