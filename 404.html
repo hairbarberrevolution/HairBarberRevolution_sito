@@ -9,9 +9,8 @@
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', { analytics_storage: 'denied' });
+    gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', wait_for_update: 500 });
   </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E9R0TDFCKJ"></script>
   <script>
     gtag('js', new Date());
     gtag('config', 'G-E9R0TDFCKJ');
@@ -19,15 +18,16 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          colors: { black: '#0d0d0d', white: '#fafafa' },
           fontFamily: {
             serif: ["'Cormorant Garamond'", "serif"],
-            sans:  ["'Segoe UI'", "system-ui", "sans-serif"]
+            sans:  ["'Jost'", "'Segoe UI'", "system-ui", "sans-serif"]
           }
         }
       }
@@ -36,7 +36,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #fff; color: #111; }
+    body { font-family: 'Jost', 'Segoe UI', system-ui, sans-serif; background: #fafafa; color: #0d0d0d; }
 
     #navbar { transition: background 0.3s, border-color 0.3s; }
 
@@ -97,13 +97,13 @@
     @media (min-width: 480px) { .quick-grid { grid-template-columns: repeat(2,1fr); } }
     @media (min-width: 768px) { .quick-grid { grid-template-columns: repeat(4,1fr); } }
 
-    .quick-link {
+    .quick-link { min-height: 3.4rem; background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: .85rem 1rem;
       border: 1px solid rgba(0,0,0,.12);
-      color: rgba(0,0,0,.55);
+      color: #0d0d0d;
       text-decoration: none;
       font-size: .68rem;
       text-transform: uppercase;
@@ -113,19 +113,21 @@
     }
     .quick-link:hover { background: #000; color: #fff; border-color: #000; }
   </style>
+  <link rel="stylesheet" href="hbr.css" />
+  <script src="hbr-sub.js"></script>
 </head>
 
 <body>
 
 <!-- NAVBAR -->
-<header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-black py-4 border-b border-white/10">
+<header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-black py-3 border-b border-white/10">
   <div class="container mx-auto px-6 flex items-center justify-between">
     <a href="index.html" class="focus:outline-none">
-      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:2.75rem;width:auto;object-fit:contain;"
+      <img src="logo-white-small.png" alt="Hair&amp;Barber Revolution" style="height:3.25rem;width:auto;object-fit:contain;"
         onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
     </a>
 
-    <nav class="hidden md:flex items-center" style="gap:1.75rem;">
+    <nav class="hidden xl:flex items-center" style="gap:1.75rem;">
       <a href="index.html"           class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Home</a>
       <a href="index.html#about"     class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Chi siamo</a>
       <a href="index.html#services"  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Servizi</a>
@@ -138,7 +140,7 @@
       <a href="index.html#contact"   class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Contatti</a>
     </nav>
 
-    <div class="hidden md:flex items-center" style="gap:1rem;">
+    <div class="hidden xl:flex items-center" style="gap:1rem;">
       <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/60 hover:text-white transition-colors" aria-label="Facebook">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
       </a>
@@ -147,7 +149,7 @@
       </a>
     </div>
 
-    <button onclick="openMenu()" class="md:hidden text-white focus:outline-none" aria-label="Apri menu">
+    <button onclick="openMenu()" class="xl:hidden text-white focus:outline-none p-2 -mr-2" aria-label="Apri menu">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="3" y1="6"  x2="21" y2="6"/>
         <line x1="3" y1="12" x2="21" y2="12"/>
@@ -164,7 +166,7 @@
       <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
     </svg>
   </button>
-  <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:4rem;width:auto;object-fit:contain;margin-bottom:1.75rem;opacity:.9;"
+  <img src="logo-white-small.png" alt="Hair&amp;Barber Revolution" style="height:4rem;width:auto;object-fit:contain;margin-bottom:1.75rem;opacity:.9;"
     onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
   <nav class="flex flex-col items-center" style="gap:1.1rem;">
     <a href="index.html"          onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Home</a>
@@ -189,77 +191,82 @@
 </div>
 
 <!-- CONTENUTO 404 -->
-<div class="bg-white" style="padding-top:7rem;padding-bottom:6rem;padding-left:1.5rem;padding-right:1.5rem;">
-  <div class="container mx-auto text-center">
+<main class="px-6" style="padding-top:clamp(7.5rem,13vw,10rem);padding-bottom:clamp(4rem,8vw,7rem);">
+  <div class="container mx-auto">
 
-    <p class="uppercase page-in" style="font-size:.72rem;letter-spacing:.3em;color:rgba(0,0,0,.38);margin-bottom:1rem;">
-      Hair&amp;Barber Revolution
-    </p>
+    <p class="nf-code" aria-hidden="true"><span style="--i:0">4</span><span style="--i:1">0</span><span style="--i:2">4</span></p>
 
-    <h1 class="font-serif font-bold page-in-2" style="font-size:clamp(2.2rem,7vw,4.2rem);line-height:1.1;margin-bottom:1rem;color:#000;">
-      Questa pagina non esiste...
-    </h1>
+    <div class="grid grid-cols-1 lg:grid-cols-2" style="gap:clamp(2rem,5vw,5rem);margin-top:clamp(1.5rem,3vw,2.5rem);align-items:end;">
+      <div>
+        <h1 class="page-title" style="font-size:clamp(2.4rem,5.5vw,4.4rem);margin-bottom:1.25rem;">Questa pagina non esiste</h1>
+        <p class="page-sub">
+          Forse il link è cambiato, la pagina è stata rimossa o c'è un errore di battitura. <strong class="hl">Nessun problema</strong>, sai dove trovarci.
+        </p>
+        <div class="page-hero-extra flex flex-wrap" style="gap:.75rem;margin-top:2rem;">
+          <a href="index.html" class="btn btn-dark">Torna alla home</a>
+          <a href="index.html#booking" class="btn btn-ghost-dark">Prenota un appuntamento</a>
+        </div>
+      </div>
 
-    <div class="err-divider page-in-2"></div>
-
-    <p class="page-in-3" style="font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.2rem);color:rgba(0,0,0,.6);max-width:38rem;margin:0 auto 2rem;line-height:1.7;">
-      Forse il link è cambiato, la pagina è stata rimossa o hai digitato qualcosa di sbagliato.<br>
-      Nessun problema, sai dove trovarci.
-    </p>
-
-    <!-- CTA principali -->
-    <div class="page-in-4 flex flex-wrap justify-center" style="gap:.85rem;margin-bottom:3.5rem;">
-      <a href="index.html"        class="cta-btn cta-btn-primary">Torna alla home</a>
-      <a href="novita.html"       class="cta-btn cta-btn-ghost">Vedi le novità</a>
-      <a href="index.html#booking" class="cta-btn cta-btn-ghost">Prenota ora</a>
-    </div>
-
-    <!-- Quick links -->
-    <div class="page-in-4" style="max-width:48rem;margin:0 auto;">
-      <p class="uppercase" style="font-size:.63rem;letter-spacing:.25em;color:rgba(0,0,0,.3);margin-bottom:1rem;">
-        Oppure vai direttamente a
-      </p>
-      <div class="quick-grid">
-        <a href="index.html#services" class="quick-link">Servizi</a>
-        <a href="promozioni.html"     class="quick-link">Promozioni</a>
-        <a href="recensioni.html"     class="quick-link">Recensioni</a>
-        <a href="index.html#contact"  class="quick-link">Come trovarci</a>
+      <div data-reveal style="--d:3;">
+        <p class="eyebrow" style="margin-bottom:1rem;">Oppure vai direttamente a</p>
+        <div class="quick-grid" style="grid-template-columns:repeat(2,1fr);">
+          <a href="index.html#services" class="quick-link">Servizi</a>
+          <a href="novita.html"         class="quick-link">Novità</a>
+          <a href="promozioni.html"     class="quick-link">Promozioni</a>
+          <a href="buoni.html"          class="quick-link">Buoni regalo</a>
+          <a href="recensioni.html"     class="quick-link">Recensioni</a>
+          <a href="index.html#contact"  class="quick-link">Come trovarci</a>
+        </div>
       </div>
     </div>
 
   </div>
-</div>
-
+</main>
 <!-- FOOTER -->
-<footer class="bg-black text-white border-t border-white/10 px-6" style="padding-top:2.5rem;padding-bottom:2.5rem;">
-  <div class="container mx-auto">
-    <div class="flex flex-col md:flex-row justify-between items-center" style="gap:1.5rem;margin-bottom:1.5rem;">
-      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:3rem;width:auto;object-fit:contain;"
-        onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
-      <div class="flex flex-wrap justify-center" style="gap:.75rem;">
-        <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Facebook">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </a>
-        <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Instagram">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-        </a>
-        <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer"
-           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Google">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          Recensioni Google
-        </a>
-        <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer"
-           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Facebook">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          Recensioni Facebook
-        </a>
+<footer class="site-footer">
+  <div class="container mx-auto px-6">
+
+    <!-- Invito finale -->
+    <div class="ft-cta">
+      <p class="ft-cta-title">Il tuo prossimo look<br>inizia da qui.</p>
+      <div class="ft-cta-btns">
+        <a href="index.html#booking" class="btn btn-light">Prenota un appuntamento</a>
+        <a href="buoni.html" class="btn btn-ghost-light">Regala un buono</a>
       </div>
-      <div class="text-white/40 text-xs tracking-widest text-center md:text-right" style="line-height:1.8;">
-        Hair&amp;Barber Revolution, via Fornacetta 7 Costa Masnaga (LC), 23845<br>
-        &copy; <span id="footer-year"></span> HAIR&amp;BARBER REVOLUTION DI TOMA VERUSKA. TUTTI I DIRITTI RISERVATI.<br>
-        P.IVA 03667090132<br>
-        <a href="privacy.html" class="text-white/30 hover:text-white/60 transition-colors underline underline-offset-2">Privacy Policy</a>
+    </div>
+
+    <div class="ft-grid">
+      <div class="ft-col">
+        <p class="ft-h">Salone</p>
+        <p>Via Fornacetta 7<br>23845 Costa Masnaga (LC)</p>
+        <a class="ft-link" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via+Fornacetta+7,+23845+Costa+Masnaga+LC" target="_blank" rel="noreferrer">Indicazioni stradali</a>
       </div>
+      <div class="ft-col">
+        <p class="ft-h">Prenota</p>
+        <p><a class="ft-plain ft-tel" href="tel:+393331355200"><span class="ft-dim">Veruska</span> 333 135 5200</a><a class="ft-plain ft-tel" href="tel:+393381583431"><span class="ft-dim">Max</span> 338 158 3431</a></p>
+        <a class="ft-link" href="https://wa.me/393331355200" target="_blank" rel="noreferrer">Scrivi su WhatsApp</a>
+      </div>
+      <div class="ft-col">
+        <p class="ft-h">Orari</p>
+        <p class="ft-hours"><span><span class="ft-dim">Mar, Gio, Ven</span> 9:00-19:00</span><span><span class="ft-dim">Mer</span> 12:00-21:00</span><span><span class="ft-dim">Sab</span> 8:00-16:00</span><span class="ft-dim">Dom e Lun chiuso</span></p>
+      </div>
+      <div class="ft-col">
+        <p class="ft-h">Esplora</p>
+        <p class="ft-nav"><a href="novita.html">Novità</a><a href="buoni.html">Buoni regalo</a><a href="promozioni.html">Promozioni</a><a href="recensioni.html">Recensioni</a></p>
+      </div>
+    </div>
+
+    <div class="ft-social">
+      <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></a>
+      <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer" class="ft-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>Recensisci su Google</a>
+      <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer" class="ft-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Recensisci su Facebook</a>
+    </div>
+
+    <div class="ft-bottom">
+      <span>&copy; <span id="footer-year"></span> Hair&amp;Barber Revolution di Toma Veruska · P.IVA 03667090132</span>
+      <a href="privacy.html">Privacy e cookie</a>
     </div>
   </div>
 </footer>
