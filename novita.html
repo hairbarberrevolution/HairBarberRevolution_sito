@@ -3,6 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Rete di sicurezza per le immagini: se un file non c'è sul server
+       (es. una .jpg nuova non ancora caricata) usa la versione che c'è già. -->
+  <script>
+    document.addEventListener('error', function (e) {
+      var el = e.target;
+      if (!el || el.tagName !== 'IMG' || el.getAttribute('data-fb')) return;
+      var src = el.getAttribute('src') || '', alt = null;
+      var map = { 'logo-small.png': 'logo.png', 'logo-white-small.png': 'logo-white.png', 'IMMAGINI_GENERALI/banner.jpg': 'IMMAGINI_GENERALI/banner.png' };
+      if (map[src]) alt = map[src];
+      else if (/\.jpe?g$/i.test(src)) alt = src.replace(/\.jpe?g$/i, '.png');
+      if (!alt) return;
+      el.setAttribute('data-fb', '1');
+      el.src = alt;
+    }, true);
+  </script>
   <title>Novità - Hair&amp;Barber Revolution</title>
   <meta name="description" content="Le ultime novità da Hair&amp;Barber Revolution - Salone Parrucchieri &amp; Barber Shop a Costa Masnaga (LC)." />
   <!-- Google tag (gtag.js) — Consent Mode v2 -->
