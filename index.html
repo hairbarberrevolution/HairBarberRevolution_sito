@@ -216,7 +216,7 @@
   <section id="home">
     <div class="hero-media">
       <img class="hero-bg" src="IMMAGINI_GENERALI/banner.jpg" alt="" width="1920" height="1097" fetchpriority="high" decoding="async" />
-      <video id="hero-video" class="hero-video" muted loop playsinline preload="none" data-src="VIDEO_HBR/video.mp4" aria-hidden="true"></video>
+      <video id="hero-video" class="hero-video" muted loop playsinline preload="none" data-src="VIDEO_HBR/video-hd.mp4" data-src-mobile="VIDEO_HBR/video-mobile.mp4" aria-hidden="true"></video>
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-content container mx-auto px-6">
@@ -251,9 +251,9 @@
         <!-- Ponte verso il team: compare nella parte vuota della scena, alla fine della frase -->
         <a href="#team" class="stmt-team" onclick="event.preventDefault();document.querySelector('.team-grid').scrollIntoView({behavior:'smooth',block:'center'})">
           <span class="stmt-faces" aria-hidden="true">
-            <img src="IMMAGINI_NOI/veruska.jpg" alt="" width="900" height="873" loading="lazy" style="object-position:72% 30%;" />
-            <img src="IMMAGINI_NOI/max.jpg" alt="" width="900" height="900" loading="lazy" style="object-position:50% 20%;" />
-            <img src="IMMAGINI_NOI/gaia.jpg" alt="" width="900" height="1200" loading="lazy" style="object-position:50% 35%;" />
+            <img src="IMMAGINI_NOI/veruska.jpg" alt="" width="900" height="873" decoding="async" style="object-position:72% 30%;" />
+            <img src="IMMAGINI_NOI/max.jpg" alt="" width="900" height="900" decoding="async" style="object-position:50% 20%;" />
+            <img src="IMMAGINI_NOI/gaia.jpg" alt="" width="900" height="1200" decoding="async" style="object-position:50% 35%;" />
           </span>
           <span class="stmt-team-txt"><b>Veruska, Max e Gaia</b><span>Conosci il team</span></span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
@@ -268,7 +268,7 @@
         <!-- Veruska -->
         <article class="team-card anim-up">
           <div class="team-photo">
-            <img src="IMMAGINI_NOI/veruska.jpg" alt="Veruska con gli attestati di gara" width="900" height="873" loading="lazy" style="object-position:72% 30%;"
+            <img src="IMMAGINI_NOI/veruska.jpg" alt="Veruska con gli attestati di gara" width="900" height="873" decoding="async" style="object-position:72% 30%;"
               onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'team-placeholder\'>V</div>'" />
           </div>
           <div>
@@ -281,7 +281,7 @@
         <!-- Max -->
         <article class="team-card anim-up" style="transition-delay:.12s;">
           <div class="team-photo">
-            <img src="IMMAGINI_NOI/max.jpg" alt="Max" width="900" height="900" loading="lazy" style="object-position:50% 20%;"
+            <img src="IMMAGINI_NOI/max.jpg" alt="Max" width="900" height="900" decoding="async" style="object-position:50% 20%;"
               onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'team-placeholder\'>M</div>'" />
           </div>
           <div>
@@ -294,7 +294,7 @@
         <!-- Gaia -->
         <article class="team-card anim-up" style="transition-delay:.24s;">
           <div class="team-photo">
-            <img src="IMMAGINI_NOI/gaia.jpg" alt="Gaia" width="900" height="1200" loading="lazy" style="object-position:50% 35%;"
+            <img src="IMMAGINI_NOI/gaia.jpg" alt="Gaia" width="900" height="1200" decoding="async" style="object-position:50% 35%;"
               onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'team-placeholder\'>G</div>'" />
           </div>
           <div>
@@ -304,6 +304,9 @@
           </div>
         </article>
 
+      </div>
+      <div class="team-bar" aria-hidden="true"><span><i></i></span>Scorri
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </div>
       </div></div>
     </div>
@@ -734,6 +737,69 @@ function checkAnimations() {
   els.forEach(function(el) { observer.observe(el); });
 }
 onPageReady(checkAnimations);
+
+/* Team su telefono: scorrimento laterale con il dito e, con la scena ferma,
+   anche con lo scorrimento verticale. Le due posizioni restano allineate. */
+(function() {
+  var scene = document.querySelector('.team-scene');
+  if (!scene) return;
+  var grid = scene.querySelector('.team-grid'), bar = scene.querySelector('.team-bar i');
+  var cards = grid.querySelectorAll('.team-card');
+  var mq = window.matchMedia('(max-width: 767.98px)');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var live = false, settleT = null, lastSet = null, shown = false;
+  var EDGE = .06;                                   /* margine all'inizio e alla fine della scena */
+
+  function clamp(v) { return Math.max(0, Math.min(1, v)); }
+  function maxX() { return Math.max(1, grid.scrollWidth - grid.clientWidth); }
+  function geo() { return { top: scene.getBoundingClientRect().top + window.scrollY, len: Math.max(1, scene.offsetHeight - window.innerHeight) }; }
+  function setBar(p) { bar.style.transform = 'scaleX(' + (1 / cards.length + p * (1 - 1 / cards.length)).toFixed(3) + ')'; }
+
+  /* le schede si scoprono appena la sezione arriva (non dipende da quale scheda è visibile) */
+  function reveal() {
+    if (shown || scene.getBoundingClientRect().top > window.innerHeight * 1.2) return;
+    shown = true;
+    Array.prototype.forEach.call(cards, function(c) { c.classList.add('in'); });
+  }
+
+  /* pagina → schede */
+  function fromPage() {
+    reveal();
+    if (!live) return;
+    var g = geo(), p = clamp(((window.scrollY - g.top) / g.len - EDGE) / (1 - 2 * EDGE));
+    var x = Math.round(p * maxX());
+    if (Math.abs(x - grid.scrollLeft) > 1) { lastSet = x; grid.scrollLeft = x; }
+    setBar(p);
+  }
+  window.addEventListener('scroll', fromPage, { passive: true });
+
+  /* schede → pagina (quando è il dito a scorrerle) */
+  grid.addEventListener('scroll', function() {
+    var p = grid.scrollLeft / maxX();
+    setBar(p);
+    if (!live || (lastSet !== null && Math.abs(grid.scrollLeft - lastSet) <= 2)) return;
+    lastSet = null;
+    var g = geo(), inScene = window.scrollY >= g.top - 2 && window.scrollY <= g.top + g.len + 2;
+    if (!inScene) return;
+    window.scrollTo(0, g.top + (EDGE + p * (1 - 2 * EDGE)) * g.len);
+    /* a dito fermo, si allinea alla scheda più vicina */
+    clearTimeout(settleT);
+    settleT = setTimeout(function() {
+      var i = Math.round(grid.scrollLeft / maxX() * (cards.length - 1)), q = i / (cards.length - 1), g2 = geo();
+      window.scrollTo({ top: g2.top + (EDGE + q * (1 - 2 * EDGE)) * g2.len, behavior: 'smooth' });
+    }, 160);
+  }, { passive: true });
+
+  function apply() {
+    live = mq.matches && !reduce;
+    scene.classList.toggle('is-live', live);
+    fromPage();
+    if (!live) setBar(grid.scrollLeft / maxX());
+  }
+  if (mq.addEventListener) mq.addEventListener('change', apply); else mq.addListener(apply);
+  window.addEventListener('resize', function() { if (live) fromPage(); });
+  apply();
+})();
 
 /* Parole in evidenza: ogni parola diventa un .hlw che riserva la larghezza del grassetto,
    poi diventa grassetto quando il testo entra nello schermo */
@@ -1278,9 +1344,12 @@ loadGallery();
 
 /* ════════════════════════
    VIDEO HERO
-   - il video (16 MB) NON blocca più il caricamento: la sorgente viene
-     assegnata solo quando la pagina è pronta, sopra l'immagine già visibile
-   - non viene scaricato con risparmio dati attivo o movimento ridotto
+   - il video NON blocca il caricamento: la sorgente viene assegnata solo
+     a pagina pronta e dopo un attimo di respiro, così foto e testi hanno
+     la precedenza, sopra l'immagine già visibile
+   - telefono: versione leggera (2 MB, 960x540, 16 s in loop);
+     computer: versione 720p (10 MB)
+   - non viene scaricato con risparmio dati, rete 2G o movimento ridotto
    - se va in errore resta l'immagine di sfondo (hero-bg rimane sotto)
 ════════════════════════ */
 onPageReady(function() {
@@ -1288,8 +1357,12 @@ onPageReady(function() {
   if (!v) return;
   var conn = navigator.connection || {};
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (conn.saveData || reduce) return;
-  v.src = v.getAttribute('data-src');
+  if (conn.saveData || reduce || /2g$/.test(conn.effectiveType || '')) return;
+  var small = window.matchMedia('(max-width: 900px)').matches;
+  setTimeout(function() {
+    v.src = v.getAttribute(small ? 'data-src-mobile' : 'data-src');
+    v.play().catch(function(){});
+  }, small ? 1200 : 400);
 
   var shown = false;
   var fallbackTimer = null;
@@ -1326,8 +1399,6 @@ onPageReady(function() {
     v.play().catch(function(){});
   });
 
-  /* Tenta il play (necessario su alcuni browser mobili) */
-  v.play().catch(function(){});
 
   /* Quando l'utente torna sulla pagina (es. da un'altra app sul telefono)
      il browser sospende il video. Qui lo riprendiamo subito. */
