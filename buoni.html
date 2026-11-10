@@ -9,9 +9,8 @@
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('consent', 'default', { analytics_storage: 'denied' });
+      gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', wait_for_update: 500 });
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E9R0TDFCKJ"></script>
     <script>
       gtag('js', new Date());
       gtag('config', 'G-E9R0TDFCKJ');
@@ -19,15 +18,16 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          colors: { black: '#0d0d0d', white: '#fafafa' },
           fontFamily: {
             serif: ["'Cormorant Garamond'", "serif"],
-            sans:  ["'Segoe UI'", "system-ui", "sans-serif"]
+            sans:  ["'Jost'", "'Segoe UI'", "system-ui", "sans-serif"]
           }
         }
       }
@@ -36,99 +36,264 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #fff; color: #111; }
+    body { font-family: 'Jost', 'Segoe UI', system-ui, sans-serif; background: #fafafa; color: #0d0d0d; }
 
-    #navbar { transition: background 0.3s, border-color 0.3s; }
-
-    .field-input {
-      width: 100%; height: 48px; padding: 0 12px;
-      border: 1px solid rgba(0,0,0,.3); outline: none;
-      font-size: .875rem; font-family: inherit; background: #fff;
-      transition: border-color .2s;
-    }
-    .field-input:focus { border-color: #000; }
-    .field-input.error { border-color: #c00; }
-
-    .field-textarea {
-      width: 100%; padding: 12px;
-      border: 1px solid rgba(0,0,0,.3); outline: none;
-      font-size: .875rem; font-family: inherit; background: #fff;
-      resize: vertical; min-height: 100px;
-      transition: border-color .2s;
-    }
-    .field-textarea:focus { border-color: #000; }
-
-    .styled-select {
-      appearance: none; -webkit-appearance: none;
-      width: 100%; height: 48px; padding: 0 40px 0 12px;
-      border: 1px solid rgba(0,0,0,.3); outline: none;
-      font-size: .875rem; font-family: inherit;
-      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;
-      cursor: pointer; color: #000; transition: border-color .2s;
-    }
-    .styled-select:focus { border-color: #000; }
-    .styled-select.placeholder { color: rgba(0,0,0,.4); }
-
-    .service-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .service-row .styled-select { flex: 1; }
-
-    /* Toggle link */
-    .switch-link {
-      display: inline;
-      color: #000;
-      text-decoration: underline;
-      cursor: pointer;
-      font-size: .8rem;
-      opacity: .7;
-    }
-    .switch-link:hover { opacity: 1; }
-
-    /* Popup overlay */
-    #popup-overlay {
-      display: none;
-      position: fixed; inset: 0; z-index: 100;
-      background: rgba(0,0,0,.55);
-      align-items: center; justify-content: center;
-    }
-    #popup-overlay.open { display: flex; }
-
-    #popup-box {
-      background: #fff;
-      border: 1px solid #000;
-      max-width: 36rem;
-      width: calc(100% - 2rem);
-      padding: 2.5rem;
-      position: relative;
-    }
-
-    /* Submit btn states */
-    #submit-btn:disabled {
-      opacity: .35;
-      cursor: not-allowed;
-    }
-
-    @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
-    .page-in { animation: fadeInUp 0.6s ease 0.1s both; }
-
-    @keyframes menuIn  { from { opacity:0; transform:translateY(-100%); } to { opacity:1; transform:none; } }
-    @keyframes menuOut { from { opacity:1; transform:none; } to { opacity:0; transform:translateY(-100%); } }
     #mobile-menu         { display: none; }
-    #mobile-menu.open    { display: flex; overflow-y: auto; animation: menuIn  0.4s ease-in-out forwards; }
-    #mobile-menu.closing {                animation: menuOut 0.4s ease-in-out forwards; }
+    #mobile-menu.open    { display: flex; overflow-y: auto; }
+
+    /* ═══════════════════════════════════════════════
+       BUONO REGALO: il buono si compone mentre si compila
+    ═══════════════════════════════════════════════ */
+    .gv-layout { display: grid; grid-template-columns: 1fr; gap: clamp(2.5rem, 5vw, 5rem); align-items: start; }
+    @media (min-width: 1024px) {
+      .gv-layout { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
+      .gv-aside { position: sticky; top: 6.5rem; }
+    }
+
+    /* Palco del buono: prospettiva per inclinazione e rotazione */
+    .gv-stage { perspective: 1400px; }
+    .gv-tilt {
+      transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+      transition: transform .6s var(--ease);
+      transform-style: preserve-3d;
+    }
+    .gv-stage.is-tracking .gv-tilt { transition: transform .12s linear; }
+    .gv-flip {
+      position: relative; aspect-ratio: 1.62 / 1;
+      transform-style: preserve-3d;
+      transition: transform 1s var(--ease-inout);
+    }
+    .gv-flip.is-flipped { transform: rotateY(180deg); }
+    .gv-face {
+      position: absolute; inset: 0; overflow: hidden;
+      -webkit-backface-visibility: hidden; backface-visibility: hidden;
+      box-shadow: 0 30px 60px -28px rgba(13,13,13,.55), 0 2px 6px rgba(13,13,13,.12);
+    }
+
+    /* Il buono è bianco con dettagli neri su entrambi i lati, come la versione da stampare
+       (poco inchiostro). La versione da stampare si crea in gestione-buoni.html. */
+    .gv-face { background: #fff; color: #0d0d0d; }
+    .gv-face::after {
+      content: ""; position: absolute; inset: 2.1%; border: 1px solid #0d0d0d; pointer-events: none;
+    }
+    .gv-front { display: block; }
+    .gv-pole {
+      position: absolute; top: 2.1%; bottom: 2.1%; left: 2.1%; width: 4.6%;
+      overflow: hidden; border-right: 1px solid #0d0d0d;
+    }
+    .gv-pole::before {
+      content: ""; position: absolute; left: -60%; right: -60%; top: -60px; bottom: -60px;
+      background: repeating-linear-gradient(-45deg, #0d0d0d 0 5px, #fff 5px 13px);
+      animation: poleUp 3s linear infinite;
+    }
+    @keyframes poleUp { to { transform: translateY(-18.4px); } }
+    .gv-front-body {
+      position: absolute; top: 9.6%; bottom: 9.6%; left: 11%; right: 6.4%;
+      display: flex; flex-direction: column;
+    }
+    .gv-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-shrink: 0; }
+    .gv-logo { height: 17.7cqw; width: auto; margin-top: -1.5cqw; }
+    .gv-kicker { font-size: 1.45cqw; letter-spacing: .3em; text-transform: uppercase; color: #555; text-align: right; line-height: 1.6; }
+    .gv-gift {
+      flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; overflow: hidden;
+      font-family: 'Cormorant Garamond', serif; font-weight: 600; line-height: 1.12; padding: 1.2cqw 0;
+    }
+    .gv-gift-empty { font-size: 4.6cqw; color: #9a9a9a; font-style: italic; font-weight: 400; }
+    .gv-amount { font-size: 13.5cqw; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+    .gv-items { list-style: none; display: flex; flex-direction: column; font-size: 5.2cqw; }
+    .gv-items li { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; animation: inkIn .7s var(--ease) both; }
+    .gv-flow { font-size: 4.2cqw; line-height: 1.22; animation: inkIn .6s var(--ease) both; }
+    .gv-value { margin-top: .8cqw; font-family: 'Jost', sans-serif; font-weight: 400; font-size: 1.45cqw; letter-spacing: .16em; text-transform: uppercase; color: #555; flex-shrink: 0; }
+    @keyframes inkIn { from { opacity: 0; transform: translateY(.4em); } to { opacity: 1; transform: none; } }
+
+    .gv-lines { display: grid; grid-template-columns: 1fr 1fr; gap: 0 4cqw; flex-shrink: 0; }
+    .gv-line { display: flex; align-items: baseline; gap: 1.2cqw; position: relative; padding-bottom: .9cqw; min-width: 0; }
+    .gv-line::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: #bdbdbd; }
+    .gv-line::before {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; z-index: 1;
+      background: #0d0d0d; transform: scaleX(0); transform-origin: left; transition: transform .8s var(--ease);
+    }
+    .gv-line.is-filled::before { transform: scaleX(1); }
+    .gv-lab { font-size: 1.35cqw; letter-spacing: .24em; text-transform: uppercase; color: #555; flex-shrink: 0; }
+    .gv-val {
+      font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 3.6cqw; line-height: 1.2;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1;
+    }
+    .gv-val:empty::before { content: attr(data-ph); color: #9a9a9a; font-style: italic; font-weight: 400; }
+    .gv-val.ink { animation: inkIn .6s var(--ease) both; }
+
+    /* Timbro "Pronto da regalare" quando il buono è completo (solo nell'anteprima, non si stampa) */
+    .gv-seal {
+      position: absolute; right: 2cqw; top: 36%;
+      width: 15cqw; aspect-ratio: 1; border-radius: 50%;
+      border: 1px solid #0d0d0d; display: flex; align-items: center; justify-content: center; text-align: center;
+      font-size: 1.25cqw; letter-spacing: .18em; text-transform: uppercase; line-height: 1.5; background: rgba(255,255,255,.85);
+      opacity: 0; transform: scale(1.6) rotate(-30deg); pointer-events: none;
+      transition: opacity .35s ease, transform .7s var(--ease);
+    }
+    .gv-seal::before { content: ""; position: absolute; inset: 5px; border-radius: 50%; border: 1px dashed rgba(13,13,13,.5); }
+    .gv-flip.is-complete .gv-seal { opacity: 1; transform: rotate(-12deg); }
+
+    /* Riflesso che segue il puntatore */
+    .gv-shine {
+      position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .5s ease; z-index: 2;
+      background: radial-gradient(520px circle at var(--sx, 50%) var(--sy, 50%), rgba(13,13,13,.05), transparent 50%);
+    }
+    .gv-stage.is-tracking .gv-shine { opacity: 1; }
+
+    /* Retro: dedica, firma e indirizzo del salone */
+    .gv-back { transform: rotateY(180deg); }
+    .gv-back-body { position: absolute; top: 9.6%; bottom: 11%; left: 6.4%; right: 6.4%; display: flex; flex-direction: column; }
+    .gv-back .gv-kicker { text-align: left; }
+    .gv-dedica {
+      flex: 1; display: flex; align-items: center; min-height: 0; overflow: hidden;
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400;
+      font-size: 4.6cqw; line-height: 1.25; padding: 1cqw 0;
+    }
+    .gv-dedica.is-empty { color: #9a9a9a; }
+    .gv-sign { font-size: 1.45cqw; letter-spacing: .2em; text-transform: uppercase; color: #555; padding-bottom: 2.2cqw; border-bottom: 1px solid #bdbdbd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .gv-info { margin-top: 2cqw; font-size: 1.45cqw; line-height: 1.6; color: #333; }
+    .gv-back-pole {
+      position: absolute; left: 2.1%; right: 2.1%; bottom: 2.1%; height: 2.4%;
+      border-top: 1px solid #0d0d0d;
+      background: repeating-linear-gradient(90deg, #0d0d0d 0 1.2cqw, #fff 1.2cqw 2.6cqw);
+    }
+
+    .gv-card-wrap { container-type: inline-size; }
+    .gv-stage { cursor: pointer; }
+
+    /* Telefono e tablet: quando il buono esce dallo schermo resta agganciato in alto,
+       in piccolo, con avanzamento e "gira" accanto. L'.gv-aside conserva la sua altezza
+       (min-height dal JS), così la pagina non salta. */
+    @media (max-width: 1023.98px) {
+      .gv-aside.is-docked .gv-dock {
+        position: fixed; left: 0; right: 0; top: var(--dock-top, 4.5rem); z-index: 30;
+        display: grid; grid-template-columns: minmax(0, min(58%, 16rem)) minmax(0, 1fr); gap: 1rem; align-items: center;
+        padding: .7rem 1rem .8rem;
+        background: rgba(250,250,250,.96); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(13,13,13,.12); box-shadow: 0 14px 28px -22px rgba(13,13,13,.55);
+        animation: dockIn .5s var(--ease) both;
+      }
+      .gv-aside.is-docked .gv-face { box-shadow: 0 10px 20px -12px rgba(13,13,13,.5), 0 1px 3px rgba(13,13,13,.12); }
+      .gv-aside.is-docked .gv-under { margin-top: 0; flex-direction: column; align-items: flex-start; gap: .3rem; }
+      .gv-aside.is-docked .gv-progress { flex-direction: column; align-items: flex-start; gap: .4rem; font-size: .76rem; line-height: 1.3; }
+      .gv-aside.is-docked .gv-steps i { width: 1.15rem; }
+      .gv-aside.is-docked .gv-flip-btn { font-size: .68rem; padding: .35rem 0; }
+    }
+    @keyframes dockIn { from { transform: translateY(-100%); opacity: 0; } to { transform: none; opacity: 1; } }
+
+    /* Sotto il buono: avanzamento e "gira" */
+    .gv-under { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .gv-progress { display: flex; align-items: center; gap: .9rem; font-size: .82rem; }
+    .gv-steps { display: flex; gap: 4px; }
+    .gv-steps i { width: 1.6rem; height: 3px; background: rgba(13,13,13,.15); position: relative; overflow: hidden; }
+    .gv-steps i::after { content: ""; position: absolute; inset: 0; background: #0d0d0d; transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease); }
+    .gv-steps i.done::after { transform: scaleX(1); }
+    .gv-flip-btn { display: inline-flex; align-items: center; gap: .55rem; font-size: .74rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; padding: .5rem 0; }
+    .gv-flip-btn svg { transition: transform .8s var(--ease-inout); }
+    .gv-flip-btn[aria-pressed="true"] svg { transform: rotate(180deg); }
+
+    /* ── Modulo ── */
+    .gv-form fieldset { border: 0; padding: 0 0 2.25rem; margin: 0 0 2.25rem; border-bottom: 1px solid rgba(13,13,13,.12); }
+    .gv-form fieldset:last-of-type { border-bottom: 0; margin-bottom: 1.5rem; padding-bottom: 0; }
+    .gv-form legend { display: flex; align-items: baseline; gap: .8rem; margin-bottom: 1.4rem; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(1.6rem, 2.8vw, 2.1rem); line-height: 1.1; }
+    .gv-form legend .gv-check {
+      width: 1.35rem; height: 1.35rem; flex-shrink: 0; align-self: center; border: 1px solid #0d0d0d; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center; transition: background-color .4s ease, color .4s ease;
+      color: transparent;
+    }
+    .gv-form fieldset.is-done legend .gv-check { background: #0d0d0d; color: #fafafa; }
+    .gv-form fieldset.is-done legend .gv-check svg { animation: inkIn .5s var(--ease) both; }
+    .gv-field { margin-bottom: 1.25rem; }
+    .gv-field:last-child { margin-bottom: 0; }
+    .req { font-weight: 400; opacity: .55; }
+    .field-textarea {
+      width: 100%; padding: 14px; border: 1px solid rgba(13,13,13,.32); border-radius: 0; outline: none;
+      font-size: .95rem; font-family: inherit; background: #fff; resize: vertical; min-height: 110px; color: #0d0d0d;
+      transition: border-color .25s ease, box-shadow .25s ease;
+    }
+    .field-textarea:focus { border-color: #0d0d0d; box-shadow: 0 0 0 3px rgba(13,13,13,.1); }
+    .field-hint { font-size: .78rem; opacity: .6; margin-top: .45rem; display: flex; justify-content: space-between; gap: 1rem; }
+    .two { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+    @media (min-width: 560px) { .two { grid-template-columns: 1fr 1fr; } }
+
+    /* Scelta Donna / Uomo e tipo di regalo: tessere grandi */
+    .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+    .tile { position: relative; }
+    .tile input { position: absolute; opacity: 0; pointer-events: none; }
+    .tile span {
+      display: flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.4rem; padding: .6rem 1rem;
+      border: 1px solid rgba(13,13,13,.32); background: #fff; cursor: pointer; text-align: center;
+      font-size: .78rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
+      transition: background-color .35s ease, color .35s ease, border-color .35s ease;
+    }
+    .tile span:hover { border-color: #0d0d0d; }
+    .tile input:checked + span { background: #0d0d0d; color: #fafafa; border-color: #0d0d0d; }
+    .tile input:focus-visible + span { outline: 2px solid #0d0d0d; outline-offset: 3px; }
+
+    /* Servizi da regalare: pillole selezionabili */
+    .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .chip {
+      display: inline-flex; align-items: baseline; gap: .55rem; padding: .6rem .95rem; text-align: left;
+      border: 1px solid rgba(13,13,13,.28); background: #fff; cursor: pointer; font-size: .88rem; line-height: 1.3;
+      transition: background-color .3s ease, color .3s ease, border-color .3s ease, transform .2s ease;
+      animation: inkIn .5s var(--ease) both; animation-delay: calc(var(--i, 0) * 22ms);
+    }
+    .chip small { font-size: .74rem; opacity: .6; white-space: nowrap; }
+    .chip:hover { border-color: #0d0d0d; }
+    .chip[aria-pressed="true"] { background: #0d0d0d; color: #fafafa; border-color: #0d0d0d; }
+    .chip[aria-pressed="true"] small { opacity: .75; }
+    .chip:active { transform: scale(.97); }
+    .chips-empty { font-size: .9rem; opacity: .6; padding: 1rem 0; }
+
+    .amounts { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-bottom: .75rem; }
+    @media (min-width: 560px) { .amounts { grid-template-columns: repeat(5, 1fr); } }
+    .amount-btn {
+      min-height: 3.2rem; border: 1px solid rgba(13,13,13,.28); background: #fff; cursor: pointer;
+      font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.35rem;
+      transition: background-color .3s ease, color .3s ease, border-color .3s ease;
+    }
+    .amount-btn:hover { border-color: #0d0d0d; }
+    .amount-btn[aria-pressed="true"] { background: #0d0d0d; color: #fafafa; border-color: #0d0d0d; }
+    .euro-input { position: relative; }
+    .euro-input::before { content: "€"; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); opacity: .55; }
+    .euro-input .field-input { padding-left: 2rem; }
+
+    .gv-panel[hidden] { display: none; }
+    .gv-panel { animation: inkIn .5s var(--ease) both; }
+
+    .gv-total { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 1rem 1.1rem; margin-top: 1.25rem; border: 1px solid rgba(13,13,13,.14); background: #f1f1f0; }
+    .gv-total[hidden] { display: none; }
+    .gv-total-lab { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; opacity: .65; }
+    .gv-total-val { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.4rem; }
+    .gv-total-note { font-size: .78rem; opacity: .65; margin-top: .35rem; }
+
+    #submit-btn:disabled { opacity: .35; cursor: not-allowed; }
+    #submit-btn:disabled::before { display: none; }
+    .gv-missing { font-size: .85rem; margin-top: .9rem; min-height: 1.3em; opacity: .7; text-align: center; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gv-pole::before { animation: none; }
+      .gv-flip { transition-duration: .01ms; }
+    }
   </style>
+  <link rel="stylesheet" href="hbr.css" />
+  <script src="hbr-sub.js"></script>
+  <script src="SERVIZI_DONNA.js"></script>
+  <script src="SERVIZI_UOMO.js"></script>
 </head>
 
 <body>
 
 <!-- NAVBAR -->
-<header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-black py-4 border-b border-white/10">
+<header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-black py-3 border-b border-white/10">
   <div class="container mx-auto px-6 flex items-center justify-between">
     <a href="index.html" class="focus:outline-none">
-      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:2.75rem;width:auto;object-fit:contain;"
+      <img src="logo-white-small.png" alt="Hair&amp;Barber Revolution" style="height:3.25rem;width:auto;object-fit:contain;"
         onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
     </a>
 
-    <nav class="hidden md:flex items-center" style="gap:1.75rem;">
+    <nav class="hidden xl:flex items-center" style="gap:1.75rem;">
       <a href="index.html"                          class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Home</a>
       <a href="index.html#about"                    class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Chi siamo</a>
       <a href="index.html#services"                 class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Servizi</a>
@@ -141,7 +306,7 @@
       <a href="index.html#contact"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Contatti</a>
     </nav>
 
-    <div class="hidden md:flex items-center" style="gap:1rem;">
+    <div class="hidden xl:flex items-center" style="gap:1rem;">
       <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/60 hover:text-white transition-colors" aria-label="Facebook">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
       </a>
@@ -150,7 +315,7 @@
       </a>
     </div>
 
-    <button onclick="openMenu()" class="md:hidden text-white focus:outline-none" aria-label="Apri menu">
+    <button onclick="openMenu()" class="xl:hidden text-white focus:outline-none p-2 -mr-2" aria-label="Apri menu">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="3" y1="6"  x2="21" y2="6"/>
         <line x1="3" y1="12" x2="21" y2="12"/>
@@ -167,7 +332,7 @@
       <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
     </svg>
   </button>
-  <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:4rem;width:auto;object-fit:contain;margin-bottom:1.75rem;opacity:.9;"
+  <img src="logo-white-small.png" alt="Hair&amp;Barber Revolution" style="height:4rem;width:auto;object-fit:contain;margin-bottom:1.75rem;opacity:.9;"
     onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
   <nav class="flex flex-col items-center" style="gap:1.1rem;">
     <a href="index.html"          onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Home</a>
@@ -192,172 +357,215 @@
 </div>
 
 <!-- HERO -->
-<div class="bg-black text-white" style="padding-top:7rem;padding-bottom:4rem;padding-left:1.5rem;padding-right:1.5rem;">
-  <div class="container mx-auto text-center page-in">
-    <p class="text-white uppercase" style="font-size:.75rem;letter-spacing:.3em;opacity:.45;margin-bottom:1rem;">Hair&amp;Barber Revolution</p>
-    <h1 class="font-serif font-bold text-white" style="font-size:clamp(2.4rem,6vw,4rem);margin-bottom:1.25rem;line-height:1.1;">Buoni Regalo</h1>
-    <p class="text-white leading-relaxed max-w-xl mx-auto" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;opacity:.7;">
-      Regala un'esperienza di bellezza unica. Compila il modulo e ti metterai in contatto con il salone per l'acquisto del buono.
+<div class="page-hero">
+  <div class="container mx-auto">
+    <p class="page-eyebrow">Hair&amp;Barber Revolution</p>
+    <h1 class="page-title">Buoni Regalo</h1>
+    <p class="page-sub">
+      Regala <strong class="hl">un'esperienza di bellezza unica</strong>. Componi il buono qui sotto: lo vedi <strong class="hl">prendere forma mentre scrivi</strong>, poi lo richiedi al salone su <strong class="hl">WhatsApp</strong>.
     </p>
   </div>
 </div>
 
-<!-- FORM -->
-<main class="px-6" style="padding-top:4rem;padding-bottom:6rem;">
-  <div class="container mx-auto" style="max-width:42rem;">
-    <form id="buono-form" novalidate>
+<!-- BUONO + MODULO -->
+<main class="px-6" style="padding-top:clamp(3rem,6vw,5.5rem);padding-bottom:clamp(4rem,8vw,7rem);">
+  <div class="container mx-auto gv-layout">
 
-      <!-- 1. Nome richiedente -->
-      <div style="margin-bottom:1.75rem;">
-        <label for="b-nome" class="block text-black font-medium uppercase" style="font-size:.7rem;letter-spacing:.15em;margin-bottom:.6rem;">
-          Il tuo nome e cognome <span style="color:#c00;">*</span>
-        </label>
-        <input id="b-nome" type="text" placeholder="Es. Mario Rossi" class="field-input" />
-      </div>
+    <!-- Il buono, che si aggiorna in tempo reale -->
+    <div class="gv-aside" data-reveal>
+      <div class="gv-dock" id="gv-dock">
+      <div class="gv-stage" id="gv-stage" title="Tocca per girare il buono">
+        <div class="gv-card-wrap">
+          <div class="gv-tilt" id="gv-tilt">
+            <div class="gv-flip" id="gv-flip" role="img" aria-label="Anteprima del buono regalo">
 
-      <!-- 2. Nome di chi regala -->
-      <div style="margin-bottom:1.75rem;">
-        <label for="b-mittente" class="block text-black font-medium uppercase" style="font-size:.7rem;letter-spacing:.15em;margin-bottom:.6rem;">
-          Nome di chi regala il buono <span style="color:#c00;">*</span>
-        </label>
-        <input id="b-mittente" type="text" placeholder="Es. Anna Bianchi" class="field-input" />
-      </div>
+              <div class="gv-face gv-front">
+                <div class="gv-pole" aria-hidden="true"></div>
+                <div class="gv-front-body">
+                  <div class="gv-top">
+                    <img class="gv-logo" src="logo-small.png" alt="" width="720" height="474" />
+                    <p class="gv-kicker">Buono<br>regalo</p>
+                  </div>
+                  <div class="gv-gift" id="gv-gift">
+                    <span class="gv-gift-empty">Scegli il regalo</span>
+                  </div>
+                  <div class="gv-lines">
+                    <div class="gv-line" id="gv-line-to"><span class="gv-lab">Per</span><span class="gv-val" id="gv-to" data-ph="chi lo riceve"></span></div>
+                    <div class="gv-line" id="gv-line-from"><span class="gv-lab">Da</span><span class="gv-val" id="gv-from" data-ph="chi lo regala"></span></div>
+                  </div>
+                  <div class="gv-seal" aria-hidden="true">Pronto<br>da<br>regalare</div>
+                </div>
+                <div class="gv-shine" aria-hidden="true"></div>
+              </div>
 
-      <!-- 3. Nome destinatario -->
-      <div style="margin-bottom:1.75rem;">
-        <label for="b-destinatario" class="block text-black font-medium uppercase" style="font-size:.7rem;letter-spacing:.15em;margin-bottom:.6rem;">
-          Nome di chi riceve il buono <span style="color:#c00;">*</span>
-        </label>
-        <input id="b-destinatario" type="text" placeholder="Es. Giulia Verdi" class="field-input" />
-      </div>
+              <div class="gv-face gv-back">
+                <div class="gv-back-body">
+                  <p class="gv-kicker">Dedica</p>
+                  <p class="gv-dedica is-empty" id="gv-dedica">Qui comparirà il tuo messaggio.</p>
+                  <p class="gv-sign" id="gv-sign">Hair&amp;Barber Revolution</p>
+                  <p class="gv-info">Valido presso Hair&amp;Barber Revolution, Via Fornacetta 7, Costa Masnaga (LC)<br>Prenotazioni: Veruska 333 135 5200, Max 338 158 3431</p>
+                </div>
+                <div class="gv-back-pole" aria-hidden="true"></div>
+              </div>
 
-      <!-- 4. Sesso destinatario -->
-      <div style="margin-bottom:1.75rem;">
-        <label class="block text-black font-medium uppercase" style="font-size:.7rem;letter-spacing:.15em;margin-bottom:.6rem;">
-          Sesso di chi riceve il buono <span style="color:#c00;">*</span>
-        </label>
-        <select id="b-sesso" class="styled-select placeholder" onchange="onSessoChange()">
-          <option value="">Seleziona...</option>
-          <option value="Donna">Donna</option>
-          <option value="Uomo">Uomo</option>
-        </select>
-      </div>
-
-      <!-- 5. Trattamento / Accredito -->
-      <div id="section-trattamento" style="margin-bottom:1.75rem;">
-        <label class="block text-black font-medium uppercase" style="font-size:.7rem;letter-spacing:.15em;margin-bottom:.6rem;">
-          Trattamento <span style="color:#c00;">*</span>
-        </label>
-        <div id="trattamenti-container"></div>
-        <button type="button" onclick="addTrattamento()"
-          class="flex items-center text-black uppercase font-medium transition-opacity hover:opacity-50"
-          style="gap:.5rem;font-size:.7rem;letter-spacing:.1em;margin-top:.75rem;">
-          <div class="border border-black flex items-center justify-center" style="width:1.75rem;height:1.75rem;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
           </div>
-          <span>Aggiungi un trattamento</span>
-        </button>
-        <p style="margin-top:.85rem;">
-          <span class="switch-link" onclick="switchToAccredito()">Non vuoi regalare un trattamento? Fai un accredito a questa persona!</span>
-        </p>
-      </div>
-
-      <div id="section-accredito" style="margin-bottom:1.75rem;display:none;">
-        <label for="b-accredito" class="block text-black font-medium uppercase" style="font-size:.7rem;letter-spacing:.15em;margin-bottom:.6rem;">
-          Importo accredito (€) <span style="color:#c00;">*</span>
-        </label>
-        <input id="b-accredito" type="number" min="1" step="1" placeholder="Es. 50" class="field-input"
-          oninput="this.value = this.value.replace(/[^0-9]/g,'');" />
-        <p style="margin-top:.85rem;">
-          <span class="switch-link" onclick="switchToTrattamento()">Vuoi regalare un trattamento? Clicca qui!</span>
-        </p>
-      </div>
-
-      <!-- TOTALE STIMATO (trattamento) -->
-      <div id="buoni-total-wrap" style="display:none;margin-bottom:1.5rem;padding:.875rem 1rem;border:1px solid rgba(0,0,0,.1);background:rgba(0,0,0,.025);">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;">
-          <span class="uppercase text-black" style="font-size:.7rem;letter-spacing:.12em;opacity:.45;">Totale stimato</span>
-          <span id="buoni-total-amount" class="font-serif font-bold text-black" style="font-size:1.15rem;"></span>
         </div>
-        <p id="buoni-total-note" class="text-black" style="font-size:.65rem;opacity:.4;margin-top:.3rem;display:none;"></p>
       </div>
 
-      <!-- 6. Dedica (opzionale) -->
-      <div style="margin-bottom:2.5rem;">
-        <label for="b-dedica" class="block text-black font-medium uppercase" style="font-size:.7rem;letter-spacing:.15em;margin-bottom:.6rem;">
-          Dedica <span style="font-size:.65rem;text-transform:none;letter-spacing:0;opacity:.5;font-weight:400;">(facoltativa)</span>
-        </label>
-        <textarea id="b-dedica" class="field-textarea" placeholder="Scrivi un messaggio personale per chi riceve il buono..."></textarea>
+      <div class="gv-under">
+        <div class="gv-progress">
+          <div class="gv-steps" aria-hidden="true"><i data-step="0"></i><i data-step="1"></i><i data-step="2"></i><i data-step="3"></i></div>
+          <span id="gv-progress-text" aria-live="polite">Iniziamo</span>
+        </div>
+        <button type="button" class="gv-flip-btn" id="gv-flip-btn" aria-pressed="false" onclick="toggleFlip()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          <span id="gv-flip-label">Gira il buono</span>
+        </button>
       </div>
+      </div>
+    </div>
 
-      <!-- Submit -->
-      <button type="submit" id="submit-btn" disabled
-        class="w-full bg-black text-white border border-black transition-colors duration-300 hover:bg-white hover:text-black flex items-center justify-center"
-        style="height:3.5rem;font-size:.875rem;font-weight:500;gap:.75rem;text-transform:uppercase;letter-spacing:.2em;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <!-- Modulo -->
+    <form id="buono-form" class="gv-form" novalidate data-reveal style="--d:2;">
+
+      <fieldset id="fs-from">
+        <legend><span class="gv-check" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Chi regala</legend>
+        <div class="two">
+          <div class="gv-field">
+            <label for="b-nome" class="field-label">Il tuo nome e cognome <span class="req">*</span></label>
+            <input id="b-nome" type="text" placeholder="Es. Mario Rossi" autocomplete="name" class="field-input" aria-describedby="b-nome-hint" />
+            <p class="field-hint" id="b-nome-hint">Serve solo per il messaggio WhatsApp al salone: non compare sul buono.</p>
+          </div>
+          <div class="gv-field">
+            <label for="b-mittente" class="field-label">Nome sul buono <span class="req">*</span></label>
+            <input id="b-mittente" type="text" placeholder="Es. Anna Bianchi" class="field-input" />
+          </div>
+        </div>
+        <p class="field-hint" style="margin-top:.6rem;">Il nome sul buono è quello che leggerà chi lo riceve: puoi scrivere anche "Mamma e papà".</p>
+      </fieldset>
+
+      <fieldset id="fs-to">
+        <legend><span class="gv-check" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Chi lo riceve</legend>
+        <div class="gv-field">
+          <label for="b-destinatario" class="field-label">Nome di chi riceve il buono <span class="req">*</span></label>
+          <input id="b-destinatario" type="text" placeholder="Es. Giulia Verdi" class="field-input" />
+        </div>
+        <div class="gv-field">
+          <span class="field-label" id="sesso-label">Reparto <span class="req">*</span></span>
+          <div class="tiles" role="radiogroup" aria-labelledby="sesso-label">
+            <label class="tile"><input type="radio" name="b-sesso-r" value="Donna" /><span>Donna</span></label>
+            <label class="tile"><input type="radio" name="b-sesso-r" value="Uomo" /><span>Uomo</span></label>
+          </div>
+          <input type="hidden" id="b-sesso" value="" />
+        </div>
+      </fieldset>
+
+      <fieldset id="fs-gift">
+        <legend><span class="gv-check" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Il regalo</legend>
+        <div class="gv-field">
+          <span class="field-label" id="mode-label">Cosa vuoi regalare</span>
+          <div class="tiles" role="radiogroup" aria-labelledby="mode-label">
+            <label class="tile"><input type="radio" name="b-mode" value="trattamento" checked /><span>Un trattamento</span></label>
+            <label class="tile"><input type="radio" name="b-mode" value="accredito" /><span>Un importo</span></label>
+          </div>
+        </div>
+
+        <div class="gv-panel" id="section-trattamento">
+          <span class="field-label" id="chips-label">Scegli uno o più trattamenti <span class="req">*</span></span>
+          <div class="chips" id="trattamenti-container" role="group" aria-labelledby="chips-label">
+            <p class="chips-empty">Scegli prima il reparto, Donna o Uomo, per vedere i trattamenti.</p>
+          </div>
+        </div>
+
+        <div class="gv-panel" id="section-accredito" hidden>
+          <span class="field-label" id="amount-label">Importo del buono <span class="req">*</span></span>
+          <div class="amounts" role="group" aria-labelledby="amount-label">
+            <button type="button" class="amount-btn" data-amount="25" aria-pressed="false">€25</button>
+            <button type="button" class="amount-btn" data-amount="50" aria-pressed="false">€50</button>
+            <button type="button" class="amount-btn" data-amount="75" aria-pressed="false">€75</button>
+            <button type="button" class="amount-btn" data-amount="100" aria-pressed="false">€100</button>
+            <button type="button" class="amount-btn" data-amount="150" aria-pressed="false">€150</button>
+          </div>
+          <label for="b-accredito" class="field-label" style="margin-top:1rem;">Oppure scrivi un importo</label>
+          <div class="euro-input">
+            <input id="b-accredito" type="text" inputmode="numeric" placeholder="Es. 60" class="field-input" maxlength="4" />
+          </div>
+        </div>
+
+        <div class="gv-total" id="buoni-total-wrap" hidden>
+          <div>
+            <div class="gv-total-lab">Valore stimato</div>
+            <p class="gv-total-note" id="buoni-total-note" hidden></p>
+          </div>
+          <span class="gv-total-val" id="buoni-total-amount" aria-live="polite"></span>
+        </div>
+      </fieldset>
+
+      <fieldset id="fs-dedica">
+        <legend><span class="gv-check" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>La dedica</legend>
+        <label for="b-dedica" class="field-label">Messaggio <span class="req">(facoltativo)</span></label>
+        <textarea id="b-dedica" class="field-textarea" maxlength="220" placeholder="Scrivi un messaggio personale per chi riceve il buono..."></textarea>
+        <p class="field-hint"><span>Scrivendo, il buono si gira e mostra la dedica sul retro.</span><span id="dedica-count">0/220</span></p>
+      </fieldset>
+
+      <button type="submit" id="submit-btn" disabled class="btn btn-dark btn-block" style="min-height:3.6rem;font-size:.82rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
         Richiedi il tuo buono
       </button>
-      <p class="text-center text-black/40 tracking-wide" style="font-size:.7rem;margin-top:.75rem;">
+      <p class="gv-missing" id="gv-missing" aria-live="polite"></p>
+      <p class="text-center" style="font-size:.78rem;opacity:.6;margin-top:.4rem;">
         Verrai reindirizzato a WhatsApp con il riepilogo del buono.
       </p>
-
     </form>
+
   </div>
 </main>
 
-<!-- POPUP CONFIRM -->
-<div id="popup-overlay" onclick="closePopup(event)">
-  <div id="popup-box">
-    <h3 class="font-serif font-bold text-black" style="font-size:1.4rem;margin-bottom:.5rem;">Conferma invio buono</h3>
-    <p class="text-black" style="font-size:.8rem;opacity:.55;margin-bottom:1.5rem;">
-      Stai per inviare il seguente messaggio su WhatsApp a <strong id="popup-dest-name"></strong>:
-    </p>
-    <div id="popup-message" class="bg-black/5 border border-black/10" style="padding:1.25rem;white-space:pre-wrap;font-size:.82rem;line-height:1.7;margin-bottom:2rem;max-height:14rem;overflow-y:auto;"></div>
-    <div class="flex" style="gap:1rem;">
-      <button onclick="cancelPopup()"
-        class="flex-1 border border-black text-black transition-colors duration-200 hover:bg-black hover:text-white"
-        style="height:3rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;">
-        Annulla
-      </button>
-      <button onclick="confirmSend()"
-        class="flex-1 bg-black text-white border border-black transition-colors duration-200 hover:bg-white hover:text-black"
-        style="height:3rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;">
-        Invia su WhatsApp
-      </button>
-    </div>
-  </div>
-</div>
-
 <!-- FOOTER -->
-<footer class="bg-black text-white border-t border-white/10 px-6" style="padding-top:2.5rem;padding-bottom:2.5rem;">
-  <div class="container mx-auto">
-    <div class="flex flex-col md:flex-row justify-between items-center" style="gap:1.5rem;margin-bottom:1.5rem;">
-      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:3rem;width:auto;object-fit:contain;"
-        onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
-      <div class="flex flex-wrap justify-center" style="gap:.75rem;">
-        <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Facebook">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </a>
-        <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Instagram">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-        </a>
-        <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer"
-           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Google">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          Recensioni Google
-        </a>
-        <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer"
-           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Facebook">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          Recensioni Facebook
-        </a>
+<footer class="site-footer">
+  <div class="container mx-auto px-6">
+
+    <!-- Invito finale -->
+    <div class="ft-cta">
+      <p class="ft-cta-title">Il tuo prossimo look<br>inizia da qui.</p>
+      <div class="ft-cta-btns">
+        <a href="index.html#booking" class="btn btn-light">Prenota un appuntamento</a>
+        <a href="buoni.html" class="btn btn-ghost-light">Regala un buono</a>
       </div>
-      <div class="text-white/40 text-xs tracking-widest text-center md:text-right" style="line-height:1.8;">
-        Hair&amp;Barber Revolution, via Fornacetta 7 Costa Masnaga (LC), 23845<br>
-        &copy; <span id="footer-year"></span> HAIR&amp;BARBER REVOLUTION DI TOMA VERUSKA. TUTTI I DIRITTI RISERVATI.<br>
-        P.IVA 03667090132<br>
-        <a href="privacy.html" class="text-white/30 hover:text-white/60 transition-colors underline underline-offset-2">Privacy Policy</a>
+    </div>
+
+    <div class="ft-grid">
+      <div class="ft-col">
+        <p class="ft-h">Salone</p>
+        <p>Via Fornacetta 7<br>23845 Costa Masnaga (LC)</p>
+        <a class="ft-link" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via+Fornacetta+7,+23845+Costa+Masnaga+LC" target="_blank" rel="noreferrer">Indicazioni stradali</a>
       </div>
+      <div class="ft-col">
+        <p class="ft-h">Prenota</p>
+        <p><a class="ft-plain ft-tel" href="tel:+393331355200"><span class="ft-dim">Veruska</span> 333 135 5200</a><a class="ft-plain ft-tel" href="tel:+393381583431"><span class="ft-dim">Max</span> 338 158 3431</a></p>
+        <a class="ft-link" href="https://wa.me/393331355200" target="_blank" rel="noreferrer">Scrivi su WhatsApp</a>
+      </div>
+      <div class="ft-col">
+        <p class="ft-h">Orari</p>
+        <p class="ft-hours"><span><span class="ft-dim">Mar, Gio, Ven</span> 9:00-19:00</span><span><span class="ft-dim">Mer</span> 12:00-21:00</span><span><span class="ft-dim">Sab</span> 8:00-16:00</span><span class="ft-dim">Dom e Lun chiuso</span></p>
+      </div>
+      <div class="ft-col">
+        <p class="ft-h">Esplora</p>
+        <p class="ft-nav"><a href="novita.html">Novità</a><a href="buoni.html">Buoni regalo</a><a href="promozioni.html">Promozioni</a><a href="recensioni.html">Recensioni</a></p>
+      </div>
+    </div>
+
+    <div class="ft-social">
+      <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></a>
+      <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer" class="ft-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>Recensisci su Google</a>
+      <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer" class="ft-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Recensisci su Facebook</a>
+    </div>
+
+    <div class="ft-bottom">
+      <span>&copy; <span id="footer-year"></span> Hair&amp;Barber Revolution di Toma Veruska · P.IVA 03667090132</span>
+      <a href="privacy.html">Privacy e cookie</a>
     </div>
   </div>
 </footer>
@@ -367,7 +575,7 @@
 
 document.getElementById('footer-year').textContent = new Date().getFullYear();
 
-/* ── Mobile menu ── */
+/* ── Menu mobile ── */
 function openMenu() {
   var m = document.getElementById('mobile-menu');
   m.classList.remove('closing');
@@ -379,191 +587,177 @@ function closeMenu() {
   setTimeout(function() { m.classList.remove('open','closing'); }, 400);
 }
 
+/* ════════════════════════
+   LISTINO
+════════════════════════ */
 var SERVICES = {
-  donna: [
-    {"nome":"Taglio capelli donna","prezzo":"€25,00"},
-    {"nome":"Taglio + piega","prezzo":"€40,00"},
-    {"nome":"Piega","prezzo":"€18,00"},
-    {"nome":"Messa in piega & styling","prezzo":"€22,00"},
-    {"nome":"Colorazione","prezzo":"€50,00"},
-    {"nome":"Balayage / Colpi di sole","prezzo":"€80,00"},
-    {"nome":"Meches","prezzo":"€70,00"},
-    {"nome":"Trattamento Cheratina","prezzo":"€120,00"},
-    {"nome":"Trattamenti capelli","prezzo":"€30,00"},
-    {"nome":"Extension","prezzo":"€150,00"},
-    {"nome":"Permanente","prezzo":"€60,00"},
-    {"nome":"Colore + Piega","prezzo":"€65,00"},
-    {"nome":"Ricrescita","prezzo":"€40,00"},
-    {"nome":"Riflessante","prezzo":"€35,00"}
-  ],
-  uomo: [
-    {"nome":"Taglio capelli uomo","prezzo":"€18,00"},
-    {"nome":"Taglio + Barba","prezzo":"€28,00"},
-    {"nome":"Barba (rasatura classica)","prezzo":"€15,00"},
-    {"nome":"Barba con rasoio","prezzo":"€20,00"},
-    {"nome":"Taglio bambino","prezzo":"€12,00"},
-    {"nome":"Trattamento cuoio capelluto","prezzo":"€25,00"},
-    {"nome":"Shampoo + Taglio","prezzo":"€22,00"},
-    {"nome":"Rifinire barba","prezzo":"€10,00"},
-    {"nome":"Colore capelli uomo","prezzo":"€35,00"},
-    {"nome":"Trattamento idratante","prezzo":"€20,00"}
-  ]
+  donna: window.SERVIZI_DONNA_DATA || [],
+  uomo:  window.SERVIZI_UOMO_DATA  || []
 };
 
-function loadServices() {
-  renderTrattamenti();
-  Promise.all([
-    fetch('SERVIZI_DONNA.json').then(function(r){ return r.json(); }),
-    fetch('SERVIZI_UOMO.json').then(function(r){ return r.json(); })
-  ]).then(function(results) {
-    SERVICES.donna = results[0];
-    SERVICES.uomo  = results[1];
-    renderTrattamenti();
-  }).catch(function() {});
-}
-
-/* ════════════════════════
-   TRATTAMENTO MODE
-════════════════════════ */
-var MODE = 'trattamento'; // 'trattamento' | 'accredito'
-var tRowIds   = [0];
-var tRowCount = 1;
+var $ = function(id) { return document.getElementById(id); };
+var MODE = 'trattamento';
 var currentSesso = '';
+var chosen = [];
+var reduceMotion = window.HBR ? window.HBR.reduceMotion : false;
 
-function switchToAccredito() {
-  MODE = 'accredito';
-  document.getElementById('section-trattamento').style.display = 'none';
-  document.getElementById('section-accredito').style.display = 'block';
-  checkFormValidity();
-  updateBuoniTotal();
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function switchToTrattamento() {
-  MODE = 'trattamento';
-  document.getElementById('section-accredito').style.display = 'none';
-  document.getElementById('section-trattamento').style.display = 'block';
-  checkFormValidity();
-  updateBuoniTotal();
-}
-
-function onSessoChange() {
-  var sel = document.getElementById('b-sesso');
-  currentSesso = sel.value;
-  sel.classList.toggle('placeholder', !currentSesso);
-  updateTrattamentoOptions();
-  checkFormValidity();
-}
-
-function buildOptions(selectedValue) {
-  var list = currentSesso ? (SERVICES[currentSesso.toLowerCase()] || []) : [];
-  var opts = '<option value="">Seleziona un trattamento</option>'
-    + list.map(function(s) {
-        var sel = selectedValue && selectedValue === s.nome ? ' selected' : '';
-        return '<option value="' + s.nome + '"' + sel + '>' + s.nome + ' - ' + s.prezzo + '</option>';
-      }).join('');
-  return opts;
-}
-
-function buildTRow(id, selectedValue) {
-  var canRemove = tRowIds.length > 1;
-  return '<div class="service-row" id="trow-' + id + '">'
-    + '<select class="styled-select" id="tval-' + id + '" onchange="checkFormValidity();updateBuoniTotal();">'
-    + buildOptions(selectedValue)
-    + '</select>'
-    + (canRemove
-       ? '<button type="button" onclick="removeTrattamento(' + id + ')" style="flex-shrink:0;padding:.625rem;border:1px solid rgba(0,0,0,.2);color:rgba(0,0,0,.4);" class="hover:border-black hover:text-black transition-colors" aria-label="Rimuovi">'
-         + '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
-         + '</button>'
-       : '')
-    + '</div>';
-}
-
-function renderTrattamenti(savedSelections) {
-  if (!savedSelections) {
-    savedSelections = tRowIds.map(function(id) {
-      var el = document.getElementById('tval-' + id);
-      return el ? el.value : '';
-    });
-  }
-  var container = document.getElementById('trattamenti-container');
-  container.innerHTML = tRowIds.map(function(id, idx) {
-    return buildTRow(id, savedSelections[idx] || '');
-  }).join('');
-  checkFormValidity();
-  updateBuoniTotal();
-}
-
-function updateTrattamentoOptions() {
-  tRowIds.forEach(function(id) {
-    var sel = document.getElementById('tval-' + id);
-    if (!sel) return;
-    var cur = sel.value;
-    sel.innerHTML = buildOptions(cur);
-  });
-  checkFormValidity();
-}
-
-function addTrattamento() {
-  var saved = tRowIds.map(function(id) {
-    var el = document.getElementById('tval-' + id);
-    return el ? el.value : '';
-  });
-  saved.push('');
-  tRowIds.push(tRowCount++);
-  renderTrattamenti(saved);
-}
-
-function removeTrattamento(id) {
-  if (tRowIds.length === 1) return;
-  var saved = tRowIds.map(function(i) {
-    var el = document.getElementById('tval-' + i);
-    return el ? el.value : '';
-  });
-  var idx = tRowIds.indexOf(id);
-  if (idx > -1) saved.splice(idx, 1);
-  tRowIds = tRowIds.filter(function(i) { return i !== id; });
-  renderTrattamenti(saved);
-}
+function val(id) { var el = $(id); return el ? el.value.trim() : ''; }
 
 /* ════════════════════════
-   FORM VALIDATION
+   SCELTE DEL MODULO
 ════════════════════════ */
-function getFieldValue(id) {
-  var el = document.getElementById(id);
-  return el ? el.value.trim() : '';
-}
-
-function checkFormValidity() {
-  var nome        = getFieldValue('b-nome');
-  var mittente    = getFieldValue('b-mittente');
-  var destinatario = getFieldValue('b-destinatario');
-  var sesso       = getFieldValue('b-sesso');
-
-  var trattamentoOk = false;
-  if (MODE === 'trattamento') {
-    var chosen = tRowIds.map(function(id) {
-      var el = document.getElementById('tval-' + id);
-      return el ? el.value : '';
-    }).filter(Boolean);
-    trattamentoOk = chosen.length > 0;
-  } else {
-    var importo = getFieldValue('b-accredito');
-    trattamentoOk = importo !== '' && parseInt(importo, 10) > 0;
-  }
-
-  var valid = nome && mittente && destinatario && sesso && trattamentoOk;
-  document.getElementById('submit-btn').disabled = !valid;
-}
-
-// Live validation
-['b-nome','b-mittente','b-destinatario'].forEach(function(id) {
-  var el = document.getElementById(id);
-  if (el) el.addEventListener('input', checkFormValidity);
+Array.prototype.forEach.call(document.querySelectorAll('input[name="b-sesso-r"]'), function(r) {
+  r.addEventListener('change', function() {
+    currentSesso = r.value;
+    $('b-sesso').value = r.value;
+    chosen = [];
+    renderChips();
+    update();
+  });
 });
-var accreditoEl = document.getElementById('b-accredito');
-if (accreditoEl) accreditoEl.addEventListener('input', function() { checkFormValidity(); updateBuoniTotal(); });
+
+Array.prototype.forEach.call(document.querySelectorAll('input[name="b-mode"]'), function(r) {
+  r.addEventListener('change', function() {
+    MODE = r.value;
+    $('section-trattamento').hidden = MODE !== 'trattamento';
+    $('section-accredito').hidden  = MODE !== 'accredito';
+    update();
+  });
+});
+
+function renderChips() {
+  var box = $('trattamenti-container');
+  if (!currentSesso) {
+    box.innerHTML = '<p class="chips-empty">Scegli prima il reparto, Donna o Uomo, per vedere i trattamenti.</p>';
+    return;
+  }
+  var list = SERVICES[currentSesso.toLowerCase()] || [];
+  if (!list.length) {
+    box.innerHTML = '<p class="chips-empty">Il listino non è disponibile in questo momento: scegli "Un importo".</p>';
+    return;
+  }
+  box.innerHTML = list.map(function(s, i) {
+    var on = chosen.indexOf(s.nome) !== -1;
+    return '<button type="button" class="chip" style="--i:' + i + '" aria-pressed="' + on + '" data-nome="' + esc(s.nome) + '">'
+      + esc(s.nome) + ' <small>' + esc(s.prezzo) + '</small></button>';
+  }).join('');
+}
+
+$('trattamenti-container').addEventListener('click', function(e) {
+  var chip = e.target.closest('.chip');
+  if (!chip) return;
+  var nome = chip.getAttribute('data-nome');
+  var i = chosen.indexOf(nome);
+  if (i === -1) chosen.push(nome); else chosen.splice(i, 1);
+  chip.setAttribute('aria-pressed', i === -1 ? 'true' : 'false');
+  update();
+});
+
+/* Importi rapidi e importo libero */
+Array.prototype.forEach.call(document.querySelectorAll('.amount-btn'), function(b) {
+  b.addEventListener('click', function() {
+    $('b-accredito').value = b.getAttribute('data-amount');
+    update();
+  });
+});
+$('b-accredito').addEventListener('input', function() {
+  this.value = this.value.replace(/[^0-9]/g, '');
+  update();
+});
+
+['b-nome','b-mittente','b-destinatario'].forEach(function(id) {
+  $(id).addEventListener('input', update);
+});
+
+/* Dedica */
+$('b-dedica').addEventListener('input', function() {
+  $('dedica-count').textContent = this.value.length + '/220';
+  update();
+});
+$('b-dedica').addEventListener('focus', function() { setFlip(true); });
+['b-nome','b-mittente','b-destinatario','b-accredito'].forEach(function(id) {
+  $(id).addEventListener('focus', function() { setFlip(false); });
+});
+document.addEventListener('change', function(e) {
+  if (e.target.name === 'b-sesso-r' || e.target.name === 'b-mode') setFlip(false);
+});
+$('trattamenti-container').addEventListener('click', function() { setFlip(false); });
 
 /* ════════════════════════
-   TOTALE STIMATO BUONI
+   ROTAZIONE DEL BUONO
+════════════════════════ */
+var flipped = false;
+function setFlip(on) {
+  if (flipped === on) return;
+  flipped = on;
+  $('gv-flip').classList.toggle('is-flipped', on);
+  $('gv-flip-btn').setAttribute('aria-pressed', on ? 'true' : 'false');
+  $('gv-flip-label').textContent = on ? 'Mostra il fronte' : 'Gira il buono';
+}
+function toggleFlip() { setFlip(!flipped); }
+$('gv-stage').addEventListener('click', toggleFlip);
+
+/* ════════════════════════
+   BUONO AGGANCIATO IN ALTO (telefono e tablet)
+════════════════════════ */
+(function() {
+  var aside = document.querySelector('.gv-aside'), dock = $('gv-dock'), form = $('buono-form');
+  var mq = window.matchMedia('(max-width: 1023.98px)');
+  var docked = false, ticking = false, dockH = 170;
+  function navBottom() { var n = $('navbar'); return n ? Math.max(0, n.getBoundingClientRect().bottom) : 0; }
+  function check() {
+    ticking = false;
+    var top = navBottom(), a = aside.getBoundingClientRect(), f = form.getBoundingClientRect();
+    var want = mq.matches && a.top + a.height * 0.5 < top && f.bottom > top + dockH + 40;
+    if (want !== docked) {
+      docked = want;
+      if (want) aside.style.minHeight = aside.offsetHeight + 'px';
+      aside.classList.toggle('is-docked', want);
+      if (!want) aside.style.minHeight = '';
+      if (want) dockH = dock.offsetHeight;
+    }
+    if (docked) dock.style.setProperty('--dock-top', top + 'px');
+    // i campi che prendono il focus non devono finire sotto il buono
+    document.documentElement.style.scrollPaddingTop = docked ? (top + dockH + 16) + 'px' : '';
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(check); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  check();
+})();
+
+/* ════════════════════════
+   INCLINAZIONE CON IL PUNTATORE
+════════════════════════ */
+(function() {
+  var stage = $('gv-stage'), tilt = $('gv-tilt');
+  if (reduceMotion || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  var raf = 0, px = 0, py = 0;
+  stage.addEventListener('pointermove', function(e) {
+    var r = stage.getBoundingClientRect();
+    px = (e.clientX - r.left) / r.width; py = (e.clientY - r.top) / r.height;
+    stage.classList.add('is-tracking');
+    if (raf) return;
+    raf = requestAnimationFrame(function() {
+      raf = 0;
+      tilt.style.setProperty('--ry', ((px - .5) * 12).toFixed(2) + 'deg');
+      tilt.style.setProperty('--rx', ((.5 - py) * 9).toFixed(2) + 'deg');
+      stage.style.setProperty('--sx', (px * 100).toFixed(1) + '%');
+      stage.style.setProperty('--sy', (py * 100).toFixed(1) + '%');
+    });
+  });
+  stage.addEventListener('pointerleave', function() {
+    stage.classList.remove('is-tracking');
+    tilt.style.setProperty('--ry', '0deg');
+    tilt.style.setProperty('--rx', '0deg');
+  });
+})();
+
+/* ════════════════════════
+   STIMA DEL VALORE
 ════════════════════════ */
 function parseEuro(priceStr) {
   var amounts = [];
@@ -579,123 +773,211 @@ function parseEuro(priceStr) {
     isPartial: priceStr.indexOf('+') !== -1
   };
 }
+function fmt(n) { return '€' + n.toFixed(2).replace('.', ','); }
 
-function updateBuoniTotal() {
-  var wrap     = document.getElementById('buoni-total-wrap');
-  var amountEl = document.getElementById('buoni-total-amount');
-  var noteEl   = document.getElementById('buoni-total-note');
-  if (!wrap) return;
-
-  var fmt = function(n) { return '€' + n.toFixed(2).replace('.', ','); };
-
-  /* Modalità accredito: mostra importo digitato */
+function estimate() {
   if (MODE === 'accredito') {
-    var val = parseInt(document.getElementById('b-accredito').value, 10);
-    if (!val || val <= 0) { wrap.style.display = 'none'; return; }
-    wrap.style.display = 'block';
-    amountEl.textContent = '€' + val + ',00';
-    noteEl.style.display = 'none';
-    return;
+    var v = parseInt(val('b-accredito'), 10);
+    return v > 0 ? { text: '€' + v + ',00', note: '' } : null;
   }
-
-  /* Modalità trattamento */
+  if (!chosen.length) return null;
   var services = SERVICES[currentSesso.toLowerCase()] || [];
-  var totalMin = 0, totalMax = 0;
-  var hasRange = false, hasPartial = false, hasUnknown = false, hasAny = false;
-
-  tRowIds.forEach(function(id) {
-    var el = document.getElementById('tval-' + id);
-    if (!el || !el.value) return;
-    hasAny = true;
-    var svc = services.filter(function(s) { return s.nome === el.value; })[0];
-    if (!svc) return;
-    var p = parseEuro(svc.prezzo);
+  var totalMin = 0, totalMax = 0, hasRange = false, hasPartial = false, hasUnknown = false;
+  chosen.forEach(function(nome) {
+    var svc = services.filter(function(s) { return s.nome === nome; })[0];
+    var p = svc ? parseEuro(svc.prezzo) : null;
     if (!p) { hasUnknown = true; return; }
-    totalMin += p.min;
-    totalMax += p.max;
-    if (p.isRange)   hasRange   = true;
+    totalMin += p.min; totalMax += p.max;
+    if (p.isRange) hasRange = true;
     if (p.isPartial) hasPartial = true;
   });
-
-  if (!hasAny) { wrap.style.display = 'none'; return; }
-  wrap.style.display = 'block';
-
-  var text, note = '';
-  if (hasUnknown && totalMin === 0) {
-    text = 'Prezzo da preventivo';
-  } else if (hasRange || hasPartial || hasUnknown) {
-    text = 'da ' + fmt(totalMin);
-    if (totalMax !== totalMin && !hasUnknown && !hasPartial) text += ' a ' + fmt(totalMax);
-    note = 'Stima sul prezzo minimo — alcuni servizi richiedono preventivo';
-  } else {
-    text = fmt(totalMin);
+  if (hasUnknown && totalMin === 0) return { text: 'Da preventivo', note: '' };
+  if (hasRange || hasPartial || hasUnknown) {
+    var t = 'da ' + fmt(totalMin);
+    if (totalMax !== totalMin && !hasUnknown && !hasPartial) t += ' a ' + fmt(totalMax);
+    return { text: t, note: 'Stima sul prezzo minimo: alcuni servizi richiedono preventivo' };
   }
-
-  amountEl.textContent = text;
-  if (note) { noteEl.textContent = note; noteEl.style.display = 'block'; }
-  else       { noteEl.style.display = 'none'; }
+  return { text: fmt(totalMin), note: '' };
 }
 
 /* ════════════════════════
-   FORM SUBMIT
+   AGGIORNAMENTO DEL BUONO
 ════════════════════════ */
-var pendingWhatsappUrl = '';
+function setLine(id, lineId, text) {
+  var el = $(id), was = el.textContent;
+  if (was === text) return;
+  el.textContent = text;
+  if (!was && text && !reduceMotion) {
+    el.classList.remove('ink'); void el.offsetWidth; el.classList.add('ink');
+  }
+  $(lineId).classList.toggle('is-filled', !!text);
+}
 
-document.getElementById('buono-form').addEventListener('submit', function(e) {
+var lastGiftKey = '';
+var shownAmount = 0;
+function countTo(el, to) {
+  if (reduceMotion) { el.textContent = '€' + to; shownAmount = to; return; }
+  var from = shownAmount, start = performance.now(), dur = 520;
+  function step(now) {
+    var t = Math.min(1, (now - start) / dur), e = 1 - Math.pow(1 - t, 3);
+    el.textContent = '€' + Math.round(from + (to - from) * e);
+    if (t < 1) requestAnimationFrame(step); else shownAmount = to;
+  }
+  requestAnimationFrame(step);
+}
+
+function renderGift() {
+  var gift = $('gv-gift');
+  if (MODE === 'accredito') {
+    var v = parseInt(val('b-accredito'), 10) || 0;
+    if (!v) { lastGiftKey = ''; shownAmount = 0; gift.innerHTML = '<span class="gv-gift-empty">Scegli l\'importo</span>'; return; }
+    if (lastGiftKey !== 'amount') {
+      gift.innerHTML = '<span class="gv-amount" id="gv-amount">€0</span><span class="gv-value">Da spendere in salone</span>';
+      lastGiftKey = 'amount'; shownAmount = 0;
+    }
+    countTo($('gv-amount'), v);
+    return;
+  }
+  var key = chosen.join('|');
+  if (key === lastGiftKey) return;
+  var prev = lastGiftKey ? lastGiftKey.split('|') : [];
+  lastGiftKey = key;
+  if (!chosen.length) { gift.innerHTML = '<span class="gv-gift-empty">Scegli il regalo</span>'; return; }
+  var est = estimate();
+  var names = chosen.map(shortName);
+  var body = names.length <= 4
+    ? '<ul class="gv-items">' + names.map(function(n, i) {
+        var isNew = prev.indexOf(chosen[i]) === -1;
+        return '<li' + (isNew ? '' : ' style="animation:none"') + '>' + esc(n) + '</li>';
+      }).join('') + '</ul>'
+    : '<p class="gv-flow">' + names.map(esc).join(' · ') + '</p>';
+  gift.innerHTML = body + (est ? '<span class="gv-value">Valore ' + esc(est.text) + '</span>' : '');
+}
+
+function shortName(n) { return n.replace(/\s*\(.*?\)\s*/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+/* ════════════════════════
+   RIDIMENSIONAMENTO TESTI ANTEPRIMA
+════════════════════════ */
+function fitGift() {
+  var gift = $('gv-gift');
+  var target = gift.querySelector('.gv-items, .gv-flow');
+  if (!target) return;
+  target.style.fontSize = '';
+  var cs = getComputedStyle(gift);
+  var avail = gift.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+  var value = gift.querySelector('.gv-value');
+  var s = parseFloat(getComputedStyle(target).fontSize), min = s * 0.4;
+  function overflows() {
+    var h = target.offsetHeight + (value ? value.offsetHeight + parseFloat(getComputedStyle(value).marginTop) : 0);
+    if (h > avail + 1) return true;
+    return Array.prototype.some.call(target.querySelectorAll('li'), function(li) { return li.scrollWidth > li.clientWidth + 1; });
+  }
+  while (overflows() && s > min) { s -= 1; target.style.fontSize = s + 'px'; }
+}
+function fitLine(el) {
+  el.style.fontSize = '';
+  var s = parseFloat(getComputedStyle(el).fontSize), min = s * 0.6;
+  while (el.scrollWidth > el.clientWidth + 1 && s > min) { s -= 0.5; el.style.fontSize = s + 'px'; }
+}
+function fitDedica() {
+  var d = $('gv-dedica'), span = d.firstChild;
+  if (!span || !span.style) return;
+  d.style.fontSize = '';
+  var cs = getComputedStyle(d);
+  var avail = d.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+  var s = parseFloat(cs.fontSize), min = s * 0.45;
+  while (span.offsetHeight > avail + 1 && s > min) { s -= 0.5; d.style.fontSize = s + 'px'; }
+}
+function fitAll() { fitGift(); fitLine($('gv-to')); fitLine($('gv-from')); fitDedica(); }
+if ('ResizeObserver' in window) new ResizeObserver(function() { fitAll(); }).observe($('gv-flip'));
+
+function update() {
+  var nome = val('b-nome'), mittente = val('b-mittente'), dest = val('b-destinatario'), dedica = val('b-dedica');
+
+  setLine('gv-to', 'gv-line-to', dest);
+  setLine('gv-from', 'gv-line-from', mittente);
+  renderGift();
+
+  var d = $('gv-dedica');
+  var backText = dedica || (dest ? 'Per ' + dest : '');
+  d.innerHTML = '<span>' + esc(backText || 'Qui comparirà il tuo messaggio.') + '</span>';
+  d.classList.toggle('is-empty', !backText);
+  $('gv-sign').textContent = mittente ? 'Da ' + mittente : 'Hair&Barber Revolution';
+  fitAll();
+
+  var est = estimate();
+  $('buoni-total-wrap').hidden = !est;
+  if (est) {
+    $('buoni-total-amount').textContent = est.text;
+    $('buoni-total-note').textContent = est.note;
+    $('buoni-total-note').hidden = !est.note;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.amount-btn'), function(b) {
+    b.setAttribute('aria-pressed', MODE === 'accredito' && b.getAttribute('data-amount') === val('b-accredito') ? 'true' : 'false');
+  });
+
+  var giftOk = MODE === 'trattamento' ? chosen.length > 0 : (parseInt(val('b-accredito'), 10) > 0);
+  var steps = [
+    { el: 'fs-from',   ok: !!(nome && mittente) },
+    { el: 'fs-to',     ok: !!(dest && currentSesso) },
+    { el: 'fs-gift',   ok: giftOk },
+    { el: 'fs-dedica', ok: !!dedica }
+  ];
+  var done = 0;
+  steps.forEach(function(s, i) {
+    $(s.el).classList.toggle('is-done', s.ok);
+    document.querySelector('.gv-steps [data-step="' + i + '"]').classList.toggle('done', s.ok);
+    if (s.ok) done++;
+  });
+
+  var valid = !!(nome && mittente && dest && currentSesso && giftOk);
+  $('submit-btn').disabled = !valid;
+  $('gv-flip').classList.toggle('is-complete', valid);
+
+  var missing = [];
+  if (!nome) missing.push('il tuo nome');
+  if (!mittente) missing.push('il nome sul buono');
+  if (!dest) missing.push('chi lo riceve');
+  if (!currentSesso) missing.push('il reparto');
+  if (!giftOk) missing.push(MODE === 'trattamento' ? 'un trattamento' : 'l\'importo');
+  $('gv-missing').textContent = valid ? '' : 'Mancano: ' + missing.join(', ') + '.';
+  $('gv-progress-text').textContent = valid
+    ? (dedica ? 'Buono completo' : 'Pronto, la dedica è facoltativa')
+    : (done ? done + ' di 4 parti' : 'Iniziamo');
+}
+
+/* ════════════════════════
+   INVIO WHATSAPP (solo messaggio)
+   Il formato del messaggio è letto da gestione-buoni.html per
+   compilare il buono: se cambi le etichette, aggiornale anche lì.
+════════════════════════ */
+$('buono-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  var nome         = getFieldValue('b-nome');
-  var mittente     = getFieldValue('b-mittente');
-  var destinatario = getFieldValue('b-destinatario');
-  var sesso        = getFieldValue('b-sesso');
-  var dedica       = getFieldValue('b-dedica');
+  if ($('submit-btn').disabled) return;
 
-  var trattamentoText = '';
+  var nome = val('b-nome'), mittente = val('b-mittente'), destinatario = val('b-destinatario');
+  var sesso = val('b-sesso'), dedica = val('b-dedica');
   var phone = sesso === 'Donna' ? '393331355200' : '393381583431';
   var nomeDestinatario = sesso === 'Donna' ? 'Veruska' : 'Max';
 
-  if (MODE === 'trattamento') {
-    var chosen = tRowIds
-      .map(function(id) { var el = document.getElementById('tval-' + id); return el ? el.value : ''; })
-      .filter(Boolean);
-    trattamentoText = 'Trattamento: ' + chosen.join(', ');
-  } else {
-    var importo = getFieldValue('b-accredito');
-    trattamentoText = 'Importo: ' + importo + '€';
-  }
+  var trattamentoText = MODE === 'trattamento'
+    ? 'Trattamento: ' + chosen.join(', ')
+    : 'Importo: ' + val('b-accredito') + '€';
 
   var msg = 'Ciao ' + nomeDestinatario + ', sono ' + nome + ',\n'
-    + 'vorrei richiedere un buono per un trattamento:\n'
+    + 'vorrei richiedere un buono regalo:\n'
     + 'Da: ' + mittente + '\n'
     + 'Per: ' + destinatario + '\n'
+    + 'Reparto: ' + sesso + '\n'
     + trattamentoText;
+  if (dedica) msg += '\nDedica: ' + dedica;
 
-  if (dedica) {
-    msg += '\nDedica: ' + dedica;
-  }
-
-  pendingWhatsappUrl = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
-
-  // Show popup
-  document.getElementById('popup-dest-name').textContent = nomeDestinatario;
-  document.getElementById('popup-message').textContent = msg;
-  document.getElementById('popup-overlay').classList.add('open');
+  window.location.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
 });
 
-function closePopup(e) {
-  if (e && e.target !== document.getElementById('popup-overlay')) return;
-  document.getElementById('popup-overlay').classList.remove('open');
-}
-function cancelPopup() {
-  document.getElementById('popup-overlay').classList.remove('open');
-}
-function confirmSend() {
-  document.getElementById('popup-overlay').classList.remove('open');
-  window.open(pendingWhatsappUrl, '_blank');
-}
-
-loadServices();
+update();
 </script>
-
 <script src="cookie-banner.js"></script>
 </body>
 </html>
