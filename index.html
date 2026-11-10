@@ -3,6 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Rete di sicurezza per le immagini: se un file non c'è sul server
+       (es. una .jpg nuova non ancora caricata) usa la versione che c'è già. -->
+  <script>
+    document.addEventListener('error', function (e) {
+      var el = e.target;
+      if (!el || el.tagName !== 'IMG' || el.getAttribute('data-fb')) return;
+      var src = el.getAttribute('src') || '', alt = null;
+      var map = { 'logo-small.png': 'logo.png', 'logo-white-small.png': 'logo-white.png', 'IMMAGINI_GENERALI/banner.jpg': 'IMMAGINI_GENERALI/banner.png' };
+      if (map[src]) alt = map[src];
+      else if (/\.jpe?g$/i.test(src)) alt = src.replace(/\.jpe?g$/i, '.png');
+      if (!alt) return;
+      el.setAttribute('data-fb', '1');
+      el.src = alt;
+    }, true);
+  </script>
   <title>Hair&amp;Barber Revolution</title>
   <meta name="description" content="Hair&amp;Barber Revolution - Salone Parrucchieri &amp; Barber Shop a Costa Masnaga (LC). Taglio, colore, barba e molto altro." />
   <meta name="theme-color" content="#0d0d0d" />
@@ -238,7 +253,7 @@
   <!-- CHI SIAMO -->
   <section id="about" class="section">
     <div class="container mx-auto">
-      <!-- La frase resta ferma al centro mentre si scorre e si accende parola per parola -->
+      <!-- La frase si accende parola per parola mentre si scorre -->
       <div class="stmt-scene">
       <div class="stmt-sticky" style="max-width:62rem;">
         <p class="eyebrow anim-up">Chi siamo</p>
@@ -248,7 +263,7 @@
           Il nostro salone è uno spazio <strong class="hl">moderno</strong> e <strong class="hl">accogliente</strong>, pensato per offrire un momento
           di <strong class="hl">puro</strong> <strong class="hl">relax</strong> e cura di sé. Ogni dettaglio è curato con <strong class="hl">professionalità</strong> e amore per l'arte.
         </p>
-        <!-- Ponte verso il team: compare nella parte vuota della scena, alla fine della frase -->
+        <!-- Ponte verso il team: le foto entrano una dopo l'altra mentre si scorre -->
         <a href="#team" class="stmt-team" onclick="event.preventDefault();document.querySelector('.team-grid').scrollIntoView({behavior:'smooth',block:'center'})">
           <span class="stmt-faces" aria-hidden="true">
             <img src="IMMAGINI_NOI/veruska.jpg" alt="" width="900" height="873" decoding="async" style="object-position:72% 30%;" />
@@ -261,7 +276,7 @@
       </div>
       </div>
 
-      <!-- Su telefono il team scorre di lato mentre si scende -->
+      <!-- Su telefono il team si sfoglia di lato con il dito -->
       <div class="team-scene"><div class="team-sticky">
       <div class="team-grid">
 
@@ -738,67 +753,28 @@ function checkAnimations() {
 }
 onPageReady(checkAnimations);
 
-/* Team su telefono: scorrimento laterale con il dito e, con la scena ferma,
-   anche con lo scorrimento verticale. Le due posizioni restano allineate. */
+/* Team su telefono: carosello da sfogliare con il dito, con barra di avanzamento.
+   Nessun blocco della pagina: lo scorrimento laterale è quello nativo del telefono. */
 (function() {
   var scene = document.querySelector('.team-scene');
   if (!scene) return;
   var grid = scene.querySelector('.team-grid'), bar = scene.querySelector('.team-bar i');
   var cards = grid.querySelectorAll('.team-card');
-  var mq = window.matchMedia('(max-width: 767.98px)');
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var live = false, settleT = null, lastSet = null, shown = false;
-  var EDGE = .06;                                   /* margine all'inizio e alla fine della scena */
-
-  function clamp(v) { return Math.max(0, Math.min(1, v)); }
-  function maxX() { return Math.max(1, grid.scrollWidth - grid.clientWidth); }
-  function geo() { return { top: scene.getBoundingClientRect().top + window.scrollY, len: Math.max(1, scene.offsetHeight - window.innerHeight) }; }
-  function setBar(p) { bar.style.transform = 'scaleX(' + (1 / cards.length + p * (1 - 1 / cards.length)).toFixed(3) + ')'; }
-
-  /* le schede si scoprono appena la sezione arriva (non dipende da quale scheda è visibile) */
+  function update() {
+    var max = grid.scrollWidth - grid.clientWidth, p = max > 0 ? grid.scrollLeft / max : 0;
+    bar.style.transform = 'scaleX(' + (1 / cards.length + p * (1 - 1 / cards.length)).toFixed(3) + ')';
+  }
+  grid.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+  /* le schede si scoprono appena la sezione arriva, anche quelle ancora fuori a destra */
   function reveal() {
-    if (shown || scene.getBoundingClientRect().top > window.innerHeight * 1.2) return;
-    shown = true;
+    if (scene.getBoundingClientRect().top > window.innerHeight * 1.2) return;
     Array.prototype.forEach.call(cards, function(c) { c.classList.add('in'); });
+    window.removeEventListener('scroll', reveal);
   }
-
-  /* pagina → schede */
-  function fromPage() {
-    reveal();
-    if (!live) return;
-    var g = geo(), p = clamp(((window.scrollY - g.top) / g.len - EDGE) / (1 - 2 * EDGE));
-    var x = Math.round(p * maxX());
-    if (Math.abs(x - grid.scrollLeft) > 1) { lastSet = x; grid.scrollLeft = x; }
-    setBar(p);
-  }
-  window.addEventListener('scroll', fromPage, { passive: true });
-
-  /* schede → pagina (quando è il dito a scorrerle) */
-  grid.addEventListener('scroll', function() {
-    var p = grid.scrollLeft / maxX();
-    setBar(p);
-    if (!live || (lastSet !== null && Math.abs(grid.scrollLeft - lastSet) <= 2)) return;
-    lastSet = null;
-    var g = geo(), inScene = window.scrollY >= g.top - 2 && window.scrollY <= g.top + g.len + 2;
-    if (!inScene) return;
-    window.scrollTo(0, g.top + (EDGE + p * (1 - 2 * EDGE)) * g.len);
-    /* a dito fermo, si allinea alla scheda più vicina */
-    clearTimeout(settleT);
-    settleT = setTimeout(function() {
-      var i = Math.round(grid.scrollLeft / maxX() * (cards.length - 1)), q = i / (cards.length - 1), g2 = geo();
-      window.scrollTo({ top: g2.top + (EDGE + q * (1 - 2 * EDGE)) * g2.len, behavior: 'smooth' });
-    }, 160);
-  }, { passive: true });
-
-  function apply() {
-    live = mq.matches && !reduce;
-    scene.classList.toggle('is-live', live);
-    fromPage();
-    if (!live) setBar(grid.scrollLeft / maxX());
-  }
-  if (mq.addEventListener) mq.addEventListener('change', apply); else mq.addListener(apply);
-  window.addEventListener('resize', function() { if (live) fromPage(); });
-  apply();
+  window.addEventListener('scroll', reveal, { passive: true });
+  reveal();
 })();
 
 /* Parole in evidenza: ogni parola diventa un .hlw che riserva la larghezza del grassetto,
@@ -883,12 +859,7 @@ Array.prototype.forEach.call(document.querySelectorAll('.h-section.anim-up'), fu
 })();
 
 /* Frase di "Chi siamo": parole che si accendono con lo scroll (solo CSS, dove supportato) */
-Array.prototype.forEach.call(document.querySelectorAll('[data-words]'), function(p) {
-  splitWords(p, 'sw', false);
-  /* --p: punto della scena (0-80%) in cui la parola si accende */
-  var ws = p.querySelectorAll('.sw'), n = Math.max(1, ws.length - 1);
-  Array.prototype.forEach.call(ws, function(w, i) { w.style.setProperty('--p', (i / n * 80).toFixed(2)); });
-});
+Array.prototype.forEach.call(document.querySelectorAll('[data-words]'), function(p) { splitWords(p, 'sw', false); });
 
 
 var SERVICES = {
