@@ -1,0 +1,857 @@
+/* ═══════════════════════════════════════════════════════════════
+   Hair&Barber Revolution - foglio di stile condiviso
+   Caricato da tutte le pagine, dopo lo <style> interno.
+
+   Scala z-index (unica, non aggiungere valori a caso):
+     40    navbar
+     50    menu mobile
+     100   schermata di caricamento (solo home)
+     9999  modali a tutto schermo e banner cookie
+═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --ink: #0d0d0d;
+  --paper: #fafafa;
+  --line: rgba(13, 13, 13, .12);
+  --line-inv: rgba(250, 250, 250, .16);
+  --ease: cubic-bezier(.16, 1, .3, 1);
+  --ease-inout: cubic-bezier(.76, 0, .24, 1);
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Jost', 'Segoe UI', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection { background: var(--ink); color: var(--paper); }
+.section-dark ::selection, footer ::selection, #home ::selection { background: var(--paper); color: var(--ink); }
+
+/* Focus sempre visibile da tastiera (le pagine usavano focus:outline-none) */
+:focus-visible { outline: 2px solid currentColor !important; outline-offset: 3px; }
+
+/* Passaggio morbido tra una pagina e l'altra (browser che lo supportano) */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .35s; }
+
+/* Feedback tattile su tutti i controlli */
+button:not(:disabled):active, .btn:active, .social-btn:active { transform: scale(.98); }
+
+/* ───────────── NAVBAR (tutte le pagine) ───────────── */
+#navbar { transition: background-color .4s var(--ease), border-color .4s var(--ease), padding .4s var(--ease); border-bottom: 1px solid transparent; }
+#navbar.is-solid {
+  background-color: rgba(13, 13, 13, .86) !important;
+  border-bottom-color: var(--line-inv);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+#navbar nav > * { position: relative; white-space: nowrap; }
+#navbar nav > *::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 1px;
+  background: currentColor; transform: scaleX(0); transform-origin: right;
+  transition: transform .5s var(--ease);
+}
+#navbar nav > *:hover::after { transform: scaleX(1); transform-origin: left; }
+#navbar nav > .is-current::after { transform: scaleX(1); height: 2px; }
+
+/* ───────────── MENU MOBILE (tutte le pagine) ───────────── */
+@keyframes hbrMenuIn  { from { opacity: 0; transform: translateY(-4%); } to { opacity: 1; transform: none; } }
+@keyframes hbrMenuOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-4%); } }
+@keyframes hbrRise    { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+#mobile-menu         { display: none; }
+#mobile-menu.open    { display: flex; overflow-y: auto; animation: hbrMenuIn .45s var(--ease) forwards; }
+#mobile-menu.closing { animation: hbrMenuOut .35s ease forwards; }
+#mobile-menu.open nav > * { animation: hbrRise .6s var(--ease) both; }
+#mobile-menu.open nav > *:nth-child(1)  { animation-delay: .06s; }
+#mobile-menu.open nav > *:nth-child(2)  { animation-delay: .10s; }
+#mobile-menu.open nav > *:nth-child(3)  { animation-delay: .14s; }
+#mobile-menu.open nav > *:nth-child(4)  { animation-delay: .18s; }
+#mobile-menu.open nav > *:nth-child(5)  { animation-delay: .22s; }
+#mobile-menu.open nav > *:nth-child(6)  { animation-delay: .26s; }
+#mobile-menu.open nav > *:nth-child(7)  { animation-delay: .30s; }
+#mobile-menu.open nav > *:nth-child(8)  { animation-delay: .34s; }
+#mobile-menu.open nav > *:nth-child(9)  { animation-delay: .38s; }
+#mobile-menu.open nav > *:nth-child(10) { animation-delay: .42s; }
+
+/* ───────────── PALO DA BARBIERE (divisore e caricamento) ───────────── */
+.pole-rule { position: relative; height: 6px; overflow: hidden; background: var(--paper); }
+.pole-rule::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -80px; right: -80px;
+  background: repeating-linear-gradient(90deg,
+    var(--ink) 0 10px, var(--paper) 10px 20px);
+  transform: skewX(-45deg);
+  animation: poleMove 2.4s linear infinite;
+}
+@keyframes poleMove {
+  from { transform: translateX(0) skewX(-45deg); }
+  to   { transform: translateX(-20px) skewX(-45deg); }
+}
+
+/* ───────────── BOTTONI ───────────── */
+.btn {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center; gap: .65rem;
+  min-height: 3.25rem; padding: 0 1.75rem;
+  font-size: .74rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap;
+  color: var(--btn-fg); background: var(--btn-bg); border: 1px solid var(--btn-bd);
+  cursor: pointer; text-decoration: none;
+  transition: color .45s var(--ease), border-color .45s var(--ease), transform .2s ease;
+}
+.btn::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--btn-hover-bg); transform: scaleY(0); transform-origin: bottom;
+  transition: transform .45s var(--ease);
+}
+.btn:hover, .btn:focus-visible { color: var(--btn-hover-fg); border-color: var(--btn-hover-bd, var(--btn-bd)); }
+.btn:hover::before, .btn:focus-visible::before { transform: scaleY(1); }
+.btn-light       { --btn-bg: var(--paper); --btn-fg: var(--ink); --btn-bd: var(--paper); --btn-hover-bg: var(--ink); --btn-hover-fg: var(--paper); }
+.btn-dark        { --btn-bg: var(--ink); --btn-fg: var(--paper); --btn-bd: var(--ink); --btn-hover-bg: var(--paper); --btn-hover-fg: var(--ink); }
+.btn-ghost-light { --btn-bg: transparent; --btn-fg: var(--paper); --btn-bd: rgba(250,250,250,.55); --btn-hover-bg: var(--paper); --btn-hover-fg: var(--ink); --btn-hover-bd: var(--paper); }
+.btn-ghost-dark  { --btn-bg: transparent; --btn-fg: var(--ink); --btn-bd: var(--ink); --btn-hover-bg: var(--ink); --btn-hover-fg: var(--paper); }
+.btn-sm { min-height: 2.75rem; padding: 0 1.25rem; font-size: .7rem; }
+.btn-block { display: flex; width: 100%; }
+
+/* ───────────── SELETTORE A DUE VOCI (Donna / Uomo, Ordine / Casuale) ───────────── */
+.seg { position: relative; display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1px solid var(--seg-line, var(--ink)); }
+.seg::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 50%;
+  background: var(--seg-thumb, var(--ink)); transition: transform .5s var(--ease);
+}
+.seg[data-active="1"]::before { transform: translateX(100%); }
+.seg button {
+  position: relative; padding: .8rem 2.25rem; cursor: pointer;
+  font-size: .72rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--seg-fg, var(--ink)); opacity: .55; transition: color .35s ease, opacity .35s ease;
+}
+.seg button:hover { opacity: .9; }
+.seg button[aria-pressed="true"] { color: var(--seg-fg-on, var(--paper)); opacity: 1; }
+.seg-inv { --seg-line: rgba(250,250,250,.35); --seg-thumb: var(--paper); --seg-fg: var(--paper); --seg-fg-on: var(--ink); }
+.seg-sm button { padding: .55rem 1.1rem; letter-spacing: .12em; font-size: .68rem; }
+
+/* ───────────── TITOLI E TESTO DI SEZIONE (home) ───────────── */
+.section { padding: clamp(5rem, 10vw, 9rem) 1.5rem; scroll-margin-top: 4.5rem; }
+.section-dark { background: var(--ink); color: var(--paper); }
+.eyebrow { font-size: .72rem; letter-spacing: .24em; text-transform: uppercase; opacity: .5; margin-bottom: 1.25rem; }
+.h-section {
+  font-family: 'Cormorant Garamond', serif; font-weight: 600;
+  font-size: clamp(2.3rem, 5.2vw, 3.9rem); line-height: 1.05; letter-spacing: -.01em;
+}
+.lede { font-size: 1.05rem; line-height: 1.75; max-width: 60ch; opacity: .68; }
+
+/* ───────────── COMPARSA ALLO SCROLL ─────────────
+   Gli elementi sono nascosti solo se JavaScript è attivo (classe .js su <html>):
+   senza script la pagina resta leggibile per intero. */
+html.js .anim-up   { opacity: 0; transform: translateY(28px); }
+html.js .anim-fade { opacity: 0; }
+html.js .anim-left { opacity: 0; transform: translateX(-28px); }
+.anim-up, .anim-fade, .anim-left { transition: opacity .9s var(--ease), transform .9s var(--ease); }
+html.js .anim-up.in, html.js .anim-fade.in, html.js .anim-left.in { opacity: 1; transform: none; }
+
+/* ───────────── HERO (home) ───────────── */
+#home {
+  position: relative; display: flex; align-items: flex-end; overflow: hidden;
+  min-height: clamp(34rem, 100dvh, 62rem);
+  background: var(--ink); color: var(--paper);
+}
+.hero-media { position: absolute; inset: 0; }
+.hero-bg, .hero-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; filter: grayscale(100%);
+}
+.hero-video { opacity: 0; transition: opacity 1.2s ease; pointer-events: none; }
+.hero-video.ready { opacity: 1; }
+.hero-overlay {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(13,13,13,.6) 0%, rgba(13,13,13,0) 24%),
+    linear-gradient(to top, rgba(13,13,13,.94) 0%, rgba(13,13,13,.6) 42%, rgba(13,13,13,.45) 100%);
+}
+.hero-content { position: relative; z-index: 2; width: 100%; padding-top: 6rem; padding-bottom: clamp(3rem, 7vw, 5.5rem); }
+.hero-title {
+  font-family: 'Cormorant Garamond', serif; font-weight: 700;
+  font-size: clamp(3rem, 9.4vw, 8rem); line-height: 1; letter-spacing: -.015em;
+  margin-bottom: 1.5rem;
+}
+.hero-line { display: block; overflow: hidden; padding-top: .06em; }
+.hero-line > span { display: block; }
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(1.15rem, 2vw, 1.45rem); line-height: 1.5;
+  max-width: 34rem; opacity: .88; margin-bottom: 2.25rem;
+}
+.hero-cta { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* Entrata dell'hero: parte quando <html> riceve .ready (fine caricamento) */
+@keyframes lineUp { from { transform: translateY(105%); } to { transform: none; } }
+@keyframes heroBgIn { from { transform: scale(1.12); } to { transform: none; } }
+html.js .hero-line > span { transform: translateY(105%); }
+html.js .hero-sub, html.js .hero-cta { opacity: 0; }
+html.js.ready .hero-line > span { animation: lineUp 1.2s var(--ease) .15s forwards; }
+html.js.ready .hero-line:nth-child(2) > span { animation-delay: .28s; }
+html.js.ready .hero-sub { animation: hbrRise 1s var(--ease) .6s forwards; }
+html.js.ready .hero-cta { animation: hbrRise 1s var(--ease) .75s forwards; }
+html.js.ready .hero-bg  { animation: heroBgIn 2.4s var(--ease) both; }
+
+/* Leggero parallax dell'immagine durante lo scroll, solo CSS */
+@supports (animation-timeline: scroll()) {
+  .hero-media { animation: heroDrift linear both; animation-timeline: scroll(root); animation-range: 0 100vh; }
+  @keyframes heroDrift { to { transform: translateY(14%) scale(1.12); } }
+}
+
+/* ───────────── CHI SIAMO ───────────── */
+.team-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+.team-card { display: grid; grid-template-columns: 38% 1fr; gap: 1.25rem; align-items: start; }
+.team-photo { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: rgba(13,13,13,.06); }
+.team-photo img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: grayscale(100%) contrast(1.04);
+  transition: filter .8s ease;
+}
+.team-card:hover .team-photo img { filter: none; }
+/* Su telefono e tablet (niente mouse) la foto si colora quando arriva al centro dello schermo */
+.team-card.is-color .team-photo img { filter: none; }
+html.js .team-photo::after {
+  content: ""; position: absolute; inset: 0; background: var(--paper);
+  transform-origin: top; transition: transform 1.2s var(--ease-inout) .1s;
+}
+html.js .team-card.in .team-photo::after { transform: scaleY(0); }
+.team-name { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.7rem; line-height: 1.1; margin-bottom: .35rem; }
+.team-role { font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; opacity: .5; margin-bottom: .9rem; }
+.team-bio  { font-size: .93rem; line-height: 1.7; opacity: .68; }
+.team-placeholder {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 700; color: rgba(13,13,13,.15);
+}
+@media (min-width: 768px) {
+  .team-grid { grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 4vw, 4rem); }
+  .team-card { grid-template-columns: 1fr; gap: 1.5rem; }
+  .team-card:nth-child(2) { margin-top: 4.5rem; }
+  .team-card:nth-child(3) { margin-top: 1.75rem; }
+}
+
+/* ───────────── LISTINO ───────────── */
+.price-list { list-style: none; }
+.price-list li {
+  display: flex; align-items: baseline; gap: .75rem; padding: .72rem 0; break-inside: avoid;
+  animation: hbrRise .7s var(--ease) both; animation-delay: calc(var(--i, 0) * 28ms);
+}
+.price-list .pl-name  { font-size: .96rem; line-height: 1.4; color: rgba(250,250,250,.84); transition: color .3s ease; }
+.price-list .pl-dots  { flex: 1; min-width: 1.25rem; border-bottom: 1px dotted rgba(250,250,250,.28); transform: translateY(-.28em); }
+.price-list .pl-price { font-size: .96rem; font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; max-width: 46%; }
+.price-list li:hover .pl-name { color: var(--paper); }
+@media (min-width: 900px) { .price-list { columns: 2; column-gap: clamp(3rem, 7vw, 6rem); } }
+.price-col[hidden] { display: none; }
+
+/* ───────────── GALLERIA ───────────── */
+.gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; }
+@media (min-width: 640px)  { .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: .9rem; } }
+@media (min-width: 1024px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
+.gallery-grid.has-feature > :first-child { grid-column: span 2; grid-row: span 2; }
+.gallery-item {
+  position: relative; overflow: hidden; aspect-ratio: 1 / 1; background: rgba(13,13,13,.06);
+  animation: tileIn .8s var(--ease) both; animation-delay: calc(var(--i, 0) * 45ms);
+}
+@keyframes tileIn { from { opacity: 0; transform: translateY(22px) scale(.97); } to { opacity: 1; transform: none; } }
+.gallery-item img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 1.1s var(--ease); }
+.gallery-item:hover img { transform: scale(1.06); }
+.gallery-overlay { position: absolute; inset: 0; background: rgba(13,13,13,0); transition: background-color .5s ease; pointer-events: none; }
+.gallery-item:hover .gallery-overlay { background: rgba(13,13,13,.18); }
+.gallery-more {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem;
+  width: 100%; background: rgba(13,13,13,.62); color: var(--paper); cursor: pointer; text-align: center; padding: .5rem;
+  transition: background-color .4s ease;
+}
+.gallery-more:hover { background: rgba(13,13,13,.78); }
+.gallery-more strong { font-size: .74rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; }
+.gallery-more span { font-size: .72rem; opacity: .7; }
+.gallery-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.75rem; }
+.gallery-count { font-size: .8rem; opacity: .55; }
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center; width: 2.35rem; height: 2.35rem;
+  border: 1px solid var(--ink); color: var(--ink); cursor: pointer; transition: background-color .3s ease, color .3s ease;
+}
+.icon-btn:hover { background: var(--ink); color: var(--paper); }
+.empty-box { border: 1px dashed rgba(13,13,13,.25); padding: 4rem 1rem; text-align: center; font-size: .9rem; color: rgba(13,13,13,.55); }
+@keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+#gallery-modal { animation: modalFade .35s ease both; }
+#gallery-modal > * { animation: hbrRise .6s var(--ease) both; }
+
+/* ───────────── PRENOTAZIONE ───────────── */
+.field-label { display: block; font-size: .72rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; margin-bottom: .6rem; }
+.field-input, .styled-select {
+  width: 100%; height: 52px; padding: 0 14px; border-radius: 0;
+  border: 1px solid rgba(13,13,13,.32); outline: none; background-color: #fff; color: var(--ink);
+  font-size: .95rem; font-family: inherit;
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+.field-input::placeholder { color: rgba(13,13,13,.5); }
+.field-input:focus, .styled-select:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(13,13,13,.1); }
+.styled-select {
+  appearance: none; -webkit-appearance: none; padding-right: 40px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230d0d0d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+}
+.service-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; animation: hbrRise .5s var(--ease) both; }
+.service-row .styled-select { flex: 1; min-width: 0; }
+.form-error { font-size: .9rem; font-weight: 500; margin-bottom: 1rem; padding: .7rem .9rem; border: 1px solid var(--ink); border-left-width: 4px; }
+.form-error[hidden] { display: none; }
+.booking-steps { list-style: none; counter-reset: step; }
+.booking-steps li {
+  counter-increment: step; display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 0; border-top: 1px solid var(--line); font-size: .95rem; font-weight: 500;
+}
+.booking-steps li::before {
+  content: counter(step); flex-shrink: 0; width: 2.25rem; height: 2.25rem;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--ink); font-family: 'Cormorant Garamond', serif; font-size: 1.05rem;
+}
+
+/* ───────────── CONTATTI ───────────── */
+.contact-grid { display: grid; grid-template-columns: 1fr; gap: 3.5rem; }
+@media (min-width: 1024px) { .contact-grid { grid-template-columns: 5fr 6fr; gap: clamp(3rem, 6vw, 6rem); } }
+.contact-block + .contact-block { margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid var(--line-inv); }
+.contact-h { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.35rem; margin-bottom: 1rem; }
+.contact-people { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+@media (min-width: 480px) { .contact-people { grid-template-columns: 1fr 1fr; } }
+.contact-people p { font-size: .9rem; opacity: .65; margin-bottom: .75rem; }
+.contact-people .btn + .btn { margin-top: .5rem; }
+.hours { display: grid; grid-template-columns: auto 1fr; gap: .45rem 2rem; font-size: .92rem; font-variant-numeric: tabular-nums; }
+.hours dt { opacity: .6; position: relative; }
+.hours dd { opacity: .82; }
+.hours .is-closed { opacity: .45; }
+.hours dt.is-today, .hours dd.is-today { opacity: 1; font-weight: 500; }
+.hours dt.is-today::before { content: ""; position: absolute; left: -.9rem; top: .2em; bottom: .2em; width: 3px; background: var(--paper); }
+.status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; position: relative; border: 1.5px solid var(--paper); }
+.status-dot.is-open { background: var(--paper); }
+.status-dot.is-open::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit;
+  animation: statusPulse 2.2s ease-out infinite;
+}
+@keyframes statusPulse { from { transform: scale(1); opacity: .7; } to { transform: scale(2.8); opacity: 0; } }
+.map-frame { position: relative; min-height: 22rem; height: 100%; border: 1px solid var(--line-inv); overflow: hidden; }
+.map-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: grayscale(100%) invert(90%) contrast(90%); }
+
+/* ───────────── SOTTOPAGINE: entrata morbida del contenuto ───────────── */
+body:not(.home) main { animation: hbrRise .8s var(--ease) .12s backwards; }
+
+/* ───────────── RIDUZIONE DEL MOVIMENTO ───────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; transition-delay: 0s !important;
+  }
+  .pole-rule::before, .status-dot.is-open::after, .hero-media { animation: none !important; }
+  @view-transition { navigation: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   SECONDO PASSAGGIO - solo bianco e nero, più movimento
+   Tutto in CSS (nessuna libreria): le animazioni legate allo scroll
+   usano animation-timeline dove il browser lo supporta, altrimenti
+   l'elemento resta semplicemente nel suo stato finale.
+═══════════════════════════════════════════════════════════════ */
+
+/* Barra di avanzamento della lettura, sotto la navbar */
+.scroll-progress {
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: var(--paper); transform: scaleX(0); transform-origin: left; pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress { animation: progressGrow linear both; animation-timeline: scroll(root); }
+  @keyframes progressGrow { to { transform: scaleX(1); } }
+  /* Il testo dell'hero si allontana mentre si scorre */
+  .hero-content { animation: heroOut linear both; animation-timeline: scroll(root); animation-range: 8vh 85vh; }
+  @keyframes heroOut { to { opacity: 0; transform: translateY(-10%); } }
+}
+
+/* Titoli di sezione: le parole salgono una dopo l'altra da dietro una maschera */
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .16em; margin-bottom: -.16em; }
+.w > span { display: inline-block; }
+html.js .h-section.anim-up { opacity: 1; transform: none; }
+html.js .h-section.is-split .w > span {
+  transform: translateY(112%);
+  transition: transform 1.1s var(--ease); transition-delay: calc(var(--i, 0) * 75ms);
+}
+html.js .h-section.is-split.in .w > span { transform: none; }
+
+/* Chi siamo: frase grande, le parole si accendono mentre si scorre */
+.statement {
+  font-family: 'Cormorant Garamond', serif; font-weight: 500;
+  font-size: clamp(1.5rem, 2.7vw, 2.25rem); line-height: 1.36; letter-spacing: -.005em; max-width: 27em;
+}
+.statement .sw { display: inline-block; }
+@supports (animation-timeline: view()) {
+  html.js .statement .sw { animation: wordOn linear both; animation-timeline: view(); animation-range: entry 10% cover 38%; }
+  @keyframes wordOn { from { opacity: .14; } to { opacity: 1; } }
+  /* Le foto del team scorrono leggermente dentro la cornice */
+  .team-photo img { animation: imgDrift linear both; animation-timeline: view(); }
+  @keyframes imgDrift { from { transform: translateY(-5%) scale(1.14); } to { transform: translateY(5%) scale(1.14); } }
+  .gallery-grid.has-feature > :first-child img { animation: imgDrift linear both; animation-timeline: view(); }
+}
+
+/* Listino: titolo e selettore restano fermi a sinistra mentre l'elenco scorre */
+.price-layout { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+@media (min-width: 900px) { .price-list { columns: 1; } }
+@media (min-width: 1024px) {
+  .price-layout { grid-template-columns: 4fr 7fr; gap: clamp(3rem, 7vw, 7rem); align-items: start; }
+  .price-aside { position: sticky; top: 7rem; }
+  .price-list .pl-name, .price-list .pl-price { font-size: 1.04rem; }
+  .price-list li { padding: .85rem 0; }
+}
+.price-list .pl-dots { transition: border-color .35s ease; }
+.price-list li:hover .pl-dots { border-bottom-color: rgba(250,250,250,.85); }
+/* Riga sotto il mouse: fascia chiara appena accennata, nome che si sposta di poco
+   e prezzo a piena luce. Discreto, per non distrarre dalla lettura. */
+.price-list li { position: relative; }
+.price-list li::before {
+  content: ""; position: absolute; inset: 0 -.9rem; z-index: -1; pointer-events: none;
+  background: rgba(250,250,250,.07); border-left: 2px solid var(--paper);
+  opacity: 0; transform: scaleX(.98); transform-origin: left; transition: opacity .3s ease, transform .45s var(--ease);
+}
+.price-list .pl-name, .price-list .pl-price { transition: color .3s ease, transform .45s var(--ease); }
+.price-list .pl-price { color: rgba(250,250,250,.84); }
+@media (hover: hover) {
+  .price-list li:hover::before { opacity: 1; transform: none; }
+  .price-list li:hover .pl-name { color: var(--paper); transform: translateX(.4rem); }
+  .price-list li:hover .pl-price { color: var(--paper); }
+}
+.price-col { position: relative; z-index: 0; }
+.price-note { font-size: .88rem; line-height: 1.6; opacity: .6; max-width: 26rem; }
+
+/* Fascia finale: un unico grande invito a prenotare */
+.cta-band {
+  position: relative; isolation: isolate; overflow: hidden; display: block;
+  padding: clamp(3rem, 7vw, 6rem) 1.5rem; background: var(--paper); color: var(--ink);
+  transition: color .6s var(--ease);
+}
+.cta-band::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; background: var(--ink);
+  transform: scaleY(0); transform-origin: bottom; transition: transform .75s var(--ease);
+}
+.cta-band:hover, .cta-band:focus-visible { color: var(--paper); }
+.cta-band:hover::before, .cta-band:focus-visible::before { transform: scaleY(1); }
+.cta-band-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.cta-band-text { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(2.3rem, 7.4vw, 6.75rem); line-height: 1; letter-spacing: -.015em; }
+.cta-band svg { flex-shrink: 0; width: clamp(2.5rem, 6.5vw, 5.5rem); height: auto; transform: rotate(-45deg); transition: transform .75s var(--ease); }
+.cta-band:hover svg, .cta-band:focus-visible svg { transform: rotate(0deg) translateX(6%); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content, .team-photo img, .gallery-grid.has-feature > :first-child img, .statement .sw { animation: none !important; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   SOTTOPAGINE (Buoni, Promozioni, Novità, Recensioni, Privacy, 404)
+   Stesso linguaggio della home: testata nera allineata a sinistra,
+   titolo che entra parola per parola, contenuti che compaiono allo scroll.
+═══════════════════════════════════════════════════════════════ */
+
+body:not(.home) main { animation: none; }
+
+/* Testata */
+.page-hero {
+  position: relative; overflow: hidden;
+  background: var(--ink); color: var(--paper);
+  padding: clamp(8rem, 14vw, 11rem) 1.5rem clamp(3.5rem, 6vw, 5rem);
+}
+.page-hero .container { position: relative; }
+.page-eyebrow { font-size: .72rem; letter-spacing: .26em; text-transform: uppercase; opacity: .5; margin-bottom: 1.25rem; }
+.page-title {
+  font-family: 'Cormorant Garamond', serif; font-weight: 600;
+  font-size: clamp(3.2rem, 9vw, 7.5rem); line-height: .98; letter-spacing: -.02em;
+  margin-bottom: 1.5rem;
+}
+.page-sub {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+  line-height: 1.5; opacity: .78; max-width: 36rem;
+}
+/* Riga sottile che si disegna sotto la testata */
+.page-hero::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: rgba(250,250,250,.22); transform-origin: left;
+  animation: lineDraw 1.6s var(--ease) .5s both;
+}
+@keyframes lineDraw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Ingresso della testata (non serve aspettare lo scroll: è il primo schermo) */
+html.js .page-title .w > span { transform: translateY(112%); animation: lineUp 1.1s var(--ease) both; animation-delay: calc(.1s + var(--i, 0) * 80ms); }
+html.js .page-eyebrow, html.js .page-sub, html.js .page-hero-extra { animation: hbrRise .9s var(--ease) both; }
+html.js .page-eyebrow    { animation-delay: .05s; }
+html.js .page-sub        { animation-delay: .35s; }
+html.js .page-hero-extra { animation-delay: .5s; }
+
+/* Comparsa allo scroll per i contenuti generati dagli script */
+html.js [data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: calc(var(--d, 0) * 70ms); }
+html.js [data-reveal].in { opacity: 1; transform: none; }
+
+/* Luce che segue il puntatore sulle card (solo mouse) */
+.spot { position: relative; isolation: isolate; }
+.spot::after {
+  content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.16), transparent 45%);
+  transition: opacity .4s ease;
+}
+.spot.on-paper::after { background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(13,13,13,.06), transparent 45%); }
+@media (hover: hover) { .spot:hover::after { opacity: 1; } }
+
+/* Modali delle sottopagine: sfondo che sfuma, riquadro che sale */
+@keyframes modalRise { from { opacity: 0; transform: translateY(30px) scale(.97); } to { opacity: 1; transform: none; } }
+#promo-modal.open, #novita-modal.open, #review-modal.open, #popup-overlay.open { animation: modalFade .35s ease both; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.modal-box, .rmodal-box, #popup-box { animation: modalRise .6s var(--ease) both !important; border-radius: 0; }
+.modal-close-btn, .rmodal-close-btn { transition: background-color .25s ease, color .25s ease, transform .4s var(--ease); }
+.modal-close-btn:hover, .rmodal-close-btn:hover { transform: rotate(90deg); }
+.modal-nav-btn, .rmodal-close-footer { transition: background-color .3s ease, color .3s ease, border-color .3s ease; }
+
+/* Stato vuoto comune */
+.empty-state { border: 1px dashed rgba(13,13,13,.25) !important; padding: 4rem 1.5rem !important; }
+
+/* ───────────── NOVITÀ ───────────── */
+.novita-feature {
+  display: grid; grid-template-columns: 1fr; border: 1px solid var(--ink); background: var(--paper);
+  cursor: pointer; text-align: left; width: 100%;
+}
+@media (min-width: 860px) { .novita-feature { grid-template-columns: 1.05fr 1fr; } }
+.novita-feature .nf-media { position: relative; overflow: hidden; aspect-ratio: 1 / 1; background: #e9e9e8; }
+.novita-feature .nf-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.4s var(--ease); }
+.novita-feature:hover .nf-media img { transform: scale(1.05); }
+.novita-feature .nf-body { display: flex; flex-direction: column; justify-content: center; gap: 1.1rem; padding: clamp(1.75rem, 4vw, 3.5rem); }
+.nf-date { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; opacity: .55; }
+.nf-title { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(2rem, 3.6vw, 3.1rem); line-height: 1.05; }
+.nf-text { font-size: 1rem; line-height: 1.75; opacity: .72; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+.nf-more { display: inline-flex; align-items: center; gap: .6rem; font-size: .74rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; }
+.nf-more svg { transition: transform .5s var(--ease); }
+.novita-feature:hover .nf-more svg { transform: translateX(6px); }
+.novita-card { border-color: rgba(13,13,13,.14) !important; transition: transform .6s var(--ease), border-color .4s ease !important; box-shadow: none !important; }
+.novita-card:hover { transform: translateY(-6px) !important; border-color: var(--ink) !important; }
+.novita-card-titolo { font-size: 1.35rem !important; }
+
+/* ───────────── PROMOZIONI ───────────── */
+.promo-grid { gap: clamp(1.25rem, 3vw, 2.25rem) !important; }
+.promo-card { border: 1px solid rgba(13,13,13,.14) !important; background: var(--paper); transition: transform .6s var(--ease), border-color .4s ease !important; box-shadow: none !important; }
+.promo-card:hover { transform: translateY(-6px) !important; border-color: var(--ink) !important; }
+.promo-photo-wrap img { transition: transform 1.4s var(--ease) !important; }
+.promo-card:hover .promo-photo-wrap img { transform: scale(1.06) !important; }
+.promo-name { font-size: 1.55rem !important; font-weight: 600 !important; line-height: 1.12 !important; }
+.promo-desc { font-size: .95rem !important; }
+.promo-body { padding: 1.5rem 1.6rem 1.75rem !important; gap: .6rem !important; }
+.promo-card-leggi { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none !important; }
+.promo-card-leggi::after { content: ""; width: 1.4rem; height: 1px; background: currentColor; transition: transform .5s var(--ease); transform-origin: left; }
+.promo-card:hover .promo-card-leggi::after { transform: scaleX(1.8); }
+.video-play-btn-circle { border-radius: 50% !important; transition: transform .6s var(--ease) !important; }
+.promo-card:hover .video-play-btn-circle { transform: scale(1.14) !important; }
+.video-play-btn-circle::before {
+  content: ""; position: absolute; width: 3.5rem; height: 3.5rem; border-radius: 50%; border: 1px solid #fff;
+  animation: playRing 2.4s ease-out infinite;
+}
+@keyframes playRing { from { transform: scale(1); opacity: .9; } to { transform: scale(1.9); opacity: 0; } }
+.video-badge { background: var(--ink) !important; letter-spacing: .16em !important; }
+
+/* ───────────── RECENSIONI ───────────── */
+.rv-summary { display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: end; margin-bottom: clamp(3rem, 6vw, 5rem); }
+@media (min-width: 900px) { .rv-summary { grid-template-columns: auto 1fr; gap: clamp(3rem, 6vw, 6rem); } }
+.rv-score { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(5rem, 13vw, 10rem); line-height: .85; letter-spacing: -.03em; }
+.rv-score-meta { display: flex; flex-direction: column; gap: .5rem; margin-top: 1rem; }
+.rv-stars { display: flex; gap: .25rem; }
+.rv-stars svg { opacity: 0; transform: scale(.4) rotate(-30deg); animation: starPop .7s var(--ease) both; animation-delay: calc(.3s + var(--i, 0) * 90ms); }
+@keyframes starPop { to { opacity: 1; transform: none; } }
+.rv-count { font-size: .9rem; opacity: .65; }
+
+.rv-feature { position: relative; border-left: 1px solid var(--ink); padding-left: clamp(1.25rem, 3vw, 2.5rem); min-height: 13rem; }
+.rv-feature-quote {
+  font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: clamp(1.45rem, 2.6vw, 2.2rem); line-height: 1.3;
+  transition: opacity .5s ease, transform .7s var(--ease);
+}
+.rv-feature-quote.is-out { opacity: 0; transform: translateY(14px); }
+.rv-feature-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; }
+.rv-feature-name { font-size: .78rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; transition: opacity .5s ease; }
+.rv-feature-name.is-out { opacity: 0; }
+.rv-nav { display: flex; align-items: center; gap: .5rem; }
+.rv-nav button { width: 2.75rem; height: 2.75rem; border: 1px solid var(--ink); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color .3s ease, color .3s ease; }
+.rv-nav button:hover { background: var(--ink); color: var(--paper); }
+.rv-timer { position: relative; width: 4.5rem; height: 2px; background: rgba(13,13,13,.15); overflow: hidden; }
+.rv-timer i { position: absolute; inset: 0; background: var(--ink); transform: scaleX(0); transform-origin: left; }
+.rv-timer i.run { animation: timerRun 7s linear forwards; }
+.rv-feature.is-paused .rv-timer i { animation-play-state: paused; }
+@keyframes timerRun { to { transform: scaleX(1); } }
+
+.rv-grid { columns: 1; column-gap: 1.25rem; }
+@media (min-width: 640px)  { .rv-grid { columns: 2; } }
+@media (min-width: 1024px) { .rv-grid { columns: 3; column-gap: 1.5rem; } }
+.rv-card {
+  break-inside: avoid; display: block; margin-bottom: 1.25rem; padding: 1.75rem;
+  border: 1px solid rgba(13,13,13,.14); background: #fff;
+  transition: border-color .4s ease, transform .6s var(--ease);
+}
+.rv-card:hover { border-color: var(--ink); }
+.rv-card .rv-stars { margin-bottom: 1rem; }
+.rv-card .rv-stars svg { opacity: 1; transform: none; animation: none; }
+.rv-card-quote { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; line-height: 1.55; color: rgba(13,13,13,.84); margin-bottom: 1.25rem; }
+.rv-card-name { font-size: .78rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.rv-card-src { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; opacity: .5; margin-top: .3rem; }
+/* Ultima scheda delle recensioni: nera, invita a scriverne una */
+.rv-card.rv-card-cta {
+  display: flex; flex-direction: column; gap: 1rem; min-height: 17rem;
+  background: var(--ink); color: var(--paper); border-color: var(--ink); text-decoration: none;
+}
+.rv-cta-g { width: 3rem; height: 3rem; border: 1px solid rgba(250,250,250,.35); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+.rv-cta-title { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(1.9rem, 6vw, 2.3rem); line-height: 1.05; }
+.rv-cta-text { font-size: .92rem; line-height: 1.6; color: rgba(250,250,250,.7); flex: 1; }
+.rv-cta-go { display: inline-flex; align-items: center; gap: .6rem; font-size: .74rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; }
+.rv-cta-go svg { transition: transform .4s var(--ease); }
+.rv-card-cta:hover .rv-cta-go svg { transform: translateX(5px); }
+.rv-card.rv-card-cta:hover { border-color: var(--ink); }
+.rv-more { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.rv-cta { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* ───────────── PRIVACY ───────────── */
+.privacy-layout { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+@media (min-width: 1024px) { .privacy-layout { grid-template-columns: 15rem 1fr; gap: 5rem; } }
+.privacy-toc { display: none; }
+@media (min-width: 1024px) {
+  .privacy-toc { display: block; position: sticky; top: 7rem; align-self: start; }
+  .privacy-toc ol { list-style: none; border-left: 1px solid var(--line); }
+  .privacy-toc a { display: block; padding: .5rem 0 .5rem 1.1rem; margin-left: -1px; border-left: 1px solid transparent; font-size: .88rem; opacity: .55; transition: opacity .3s ease, border-color .3s ease; }
+  .privacy-toc a:hover { opacity: 1; }
+  .privacy-toc a.is-current { opacity: 1; border-left-color: var(--ink); font-weight: 500; }
+}
+.privacy-section { scroll-margin-top: 6.5rem; }
+.privacy-section h2 { font-size: clamp(1.6rem, 3vw, 2.1rem) !important; border-bottom-color: var(--line) !important; }
+.privacy-section p, .privacy-section li { font-size: .97rem !important; color: rgba(13,13,13,.78) !important; }
+
+/* ───────────── 404 ───────────── */
+.nf-code {
+  font-family: 'Cormorant Garamond', serif; font-weight: 600; line-height: .8; letter-spacing: -.04em;
+  font-size: clamp(9rem, 30vw, 22rem); display: flex; justify-content: flex-start;
+}
+.nf-code span { display: inline-block; animation: digitDrop 1.1s var(--ease) both; animation-delay: calc(var(--i, 0) * 120ms); }
+.nf-code span:nth-child(2) { color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
+@keyframes digitDrop { from { opacity: 0; transform: translateY(-40%); } to { opacity: 1; transform: none; } }
+.quick-link { transition: background-color .35s ease, color .35s ease, border-color .35s ease, transform .5s var(--ease) !important; }
+.quick-link:hover { transform: translateY(-3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] { opacity: 1; transform: none; }
+  .video-play-btn-circle::before, .rv-timer i.run { animation: none !important; }
+}
+
+/* Bottoni social delle sottopagine allineati ai bottoni del sito */
+.social-btn { position: relative; isolation: isolate; overflow: hidden; min-height: 3.25rem; height: auto !important; border-color: #0d0d0d !important; background: transparent !important; color: #0d0d0d !important; transition: color .45s var(--ease) !important; }
+.social-btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: #0d0d0d; transform: scaleY(0); transform-origin: bottom; transition: transform .45s var(--ease); }
+.social-btn:hover { color: #fafafa !important; }
+.social-btn:hover::before { transform: scaleY(1); }
+/* ───────────── PAROLE IN EVIDENZA (<strong class="hl">) ─────────────
+   Partono come il resto del testo e, quando entrano nello schermo (.on dal JS),
+   diventano grassetto a piena intensità, una dopo l'altra. Il peso passa in modo
+   fluido perché i font sono variabili. Ogni parola è un .hlw che riserva già la
+   larghezza del grassetto, così il paragrafo non si muove durante l'animazione. */
+.hl { --hlb: 600; font-weight: inherit; color: inherit; transition: font-weight .9s var(--ease), color .9s var(--ease); transition-delay: calc(.2s + var(--k, 0) * .15s); }
+.hero-sub .hl, .page-sub .hl, .statement .hl { --hlb: 700; }
+.hl.on { font-weight: var(--hlb); color: var(--hl-ink, var(--ink)); }
+.hero-sub .hl { transition-delay: calc(1.15s + var(--k, 0) * .16s); }
+#home, .section-dark, .page-hero, footer { --hl-ink: var(--paper); }
+.hlw { display: inline-grid; }
+.hlw > span, .hlw::after { grid-area: 1 / 1; justify-self: center; }
+.hlw::after {
+  content: attr(data-t); content: attr(data-t) / "";
+  font-weight: var(--hlb); visibility: hidden; pointer-events: none; user-select: none;
+}
+
+/* I testi tenui usano un colore attenuato invece dell'opacità, così il grassetto resta pieno */
+@supports (color: color-mix(in srgb, red 50%, transparent)) {
+  .lede        { opacity: 1; color: color-mix(in srgb, currentColor 68%, transparent); }
+  .team-bio    { opacity: 1; color: color-mix(in srgb, currentColor 68%, transparent); }
+  .price-note  { opacity: 1; color: color-mix(in srgb, currentColor 60%, transparent); }
+  .page-sub    { opacity: 1; color: color-mix(in srgb, currentColor 78%, transparent); }
+  .soft        { opacity: 1 !important; color: color-mix(in srgb, currentColor 65%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hl { transition: none; font-weight: var(--hlb); color: var(--hl-ink, var(--ink)); }
+}
+
+/* ───────────── ANIMAZIONI LEGATE ALLO SCORRIMENTO (stile "keynote") ─────────────
+   Pensate per il telefono: tutto segue il dito, avanti e indietro, senza timer.
+   Solo transform, opacity e clip-path; nei browser senza animation-timeline
+   restano gli stati finali, quindi nulla si nasconde. */
+@supports (animation-timeline: view()) {
+  /* Le sezioni scure arrivano come una scheda con gli angoli arrotondati che si allarga fino ai bordi */
+  #services, #contact { animation: sectionGrow linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+  @keyframes sectionGrow { from { clip-path: inset(0 5% 0 5% round 2rem 2rem 0 0); } to { clip-path: inset(0 0 0 0 round 0); } }
+
+  /* Il team sale e si avvicina mentre lo raggiungi */
+  .team-card { animation: cardRise linear both; animation-timeline: view(); animation-range: entry 0% cover 28%; }
+  @keyframes cardRise { from { opacity: .15; transform: translateY(56px) scale(.93); } to { opacity: 1; transform: none; } }
+
+  /* Galleria: ogni foto cresce dal centro, a colonne sfalsate */
+  .gallery-item { animation: tileIn linear both; animation-timeline: view(); animation-range: entry 0% cover 24%; }
+  .gallery-grid > .gallery-item:nth-child(even) { animation-range: entry 12% cover 34%; }
+  @keyframes tileIn { from { opacity: .2; transform: translateY(36px) scale(.86); } to { opacity: 1; transform: none; } }
+
+  /* La mappa si apre da una finestra arrotondata */
+  .map-frame { animation: frameOpen linear both; animation-timeline: view(); animation-range: entry 0% cover 35%; }
+  @keyframes frameOpen { from { clip-path: inset(8% 8% round 1.5rem); transform: scale(1.04); } to { clip-path: inset(0 round 0); transform: none; } }
+
+  /* Il riquadro della prenotazione emerge dal basso */
+  #booking-form { animation: formUp linear both; animation-timeline: view(); animation-range: entry 0% cover 25%; }
+  @keyframes formUp { from { opacity: .3; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  #services, #contact, .team-card, .gallery-item, .map-frame, #booking-form { animation: none !important; }
+}
+
+/* ───────────── FOOTER (uguale su tutte le pagine) ───────────── */
+.site-footer { background: var(--ink); color: var(--paper); overflow: hidden; padding-top: clamp(4rem, 9vw, 7rem); }
+.ft-cta { display: flex; flex-direction: column; gap: 2rem; padding-bottom: clamp(3rem, 7vw, 5rem); border-bottom: 1px solid var(--line-inv); }
+@media (min-width: 900px) { .ft-cta { flex-direction: row; align-items: flex-end; justify-content: space-between; } }
+.ft-cta-title { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(2.4rem, 7vw, 4.6rem); line-height: 1; letter-spacing: -.015em; }
+.ft-cta-btns { display: flex; flex-wrap: wrap; gap: .75rem; }
+.ft-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.25rem 1.5rem; padding: clamp(2.5rem, 6vw, 4rem) 0; font-size: .92rem; line-height: 1.7; color: rgba(250,250,250,.72); }
+@media (min-width: 900px) { .ft-grid { grid-template-columns: repeat(4, 1fr); } }
+.ft-h { font-size: .66rem; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(250,250,250,.45); margin-bottom: .8rem; }
+.ft-dim { color: rgba(250,250,250,.45); }
+.ft-tel, .ft-hours > span { display: block; white-space: nowrap; }
+.ft-tel .ft-dim, .ft-hours .ft-dim { display: block; font-size: .7rem; letter-spacing: .08em; }
+.ft-hours > span + span { margin-top: .35rem; }
+.ft-tel + .ft-tel { margin-top: .45rem; }
+.ft-plain { color: inherit; text-decoration: none; transition: color .25s ease; }
+.ft-plain:hover { color: var(--paper); }
+.ft-link { display: inline-block; margin-top: .55rem; color: var(--paper); font-size: .78rem; letter-spacing: .08em; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(250,250,250,.35); transition: text-decoration-color .25s ease; }
+.ft-link:hover { text-decoration-color: var(--paper); }
+.ft-nav { display: flex; flex-direction: column; }
+.ft-nav a { color: inherit; text-decoration: none; padding: .1rem 0; transition: color .25s ease, transform .35s var(--ease); }
+.ft-nav a:hover { color: var(--paper); transform: translateX(4px); }
+.ft-social { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; padding-bottom: 1rem; }
+.ft-social a { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 2.75rem; color: rgba(250,250,250,.8); border: 1px solid var(--line-inv); text-decoration: none; transition: color .25s ease, border-color .25s ease, background-color .25s ease; }
+.ft-social a:not(.ft-pill) { width: 2.75rem; }
+.ft-social .ft-pill { padding: 0 1rem; font-size: .68rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; }
+.ft-social a:hover { color: var(--ink); background: var(--paper); border-color: var(--paper); }
+.ft-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .75rem 2rem; padding: 1.5rem 0 calc(1.5rem + env(safe-area-inset-bottom)); margin-top: 1rem; border-top: 1px solid var(--line-inv); font-size: .72rem; letter-spacing: .06em; color: rgba(250,250,250,.45); }
+.ft-bottom a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.ft-bottom a:hover { color: var(--paper); }
+@supports (animation-timeline: view()) {
+  .ft-cta-title { animation: formUp linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+}
+@media (prefers-reduced-motion: reduce) { .ft-cta-title { animation: none !important; } }
+
+/* ───────────── LA HOME SI COSTRUISCE MENTRE SI SCORRE ─────────────
+   Scene "ferme" (sticky) dentro contenitori alti: lo scorrimento del dito
+   fa avanzare l'animazione, come nelle presentazioni dei prodotti.
+   Senza animation-timeline o con "riduci movimento" restano pagine normali. */
+@supports (animation-timeline: view()) {
+@media (prefers-reduced-motion: no-preference) {
+
+  /* Hero: mentre si scende l'immagine si stacca dai bordi e diventa una scheda */
+  #home { animation: heroCard linear both; animation-timeline: scroll(root); animation-range: 0 95vh; }
+  @keyframes heroCard {
+    from { clip-path: inset(0 0 0 0 round 0); }
+    to   { clip-path: inset(0 4% 7% 4% round 0 0 2rem 2rem); }
+  }
+
+  /* Chi siamo: la frase resta al centro e si accende parola per parola */
+  .stmt-scene { height: 220vh; view-timeline: --stmt block; }
+  /* il contenuto parte subito sotto il menu: niente vuoto dopo l'hero */
+  #about { padding-top: 0; }
+  .stmt-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; flex-direction: column; justify-content: flex-start; padding-top: calc(4.6rem + 1.5vh); padding-bottom: 1.5rem; }
+  @media (min-width: 768px) { .stmt-sticky { justify-content: center; padding-top: 4.5rem; } }
+  @media (max-width: 767.98px) {
+    .stmt-scene .statement { font-size: clamp(1.5rem, 7.2vw, 2.1rem); line-height: 1.32; }
+    .stmt-scene .stmt-faces img { width: 4.4rem; height: 4.4rem; }
+    .stmt-scene .stmt-team-txt b { font-size: 1.4rem; }
+  }
+  /* il ponte verso il team riempie la parte bassa della scena e compare alla fine della frase */
+  .stmt-scene .stmt-team { display: flex; }
+  .stmt-faces img { animation: faceIn linear both; animation-timeline: --stmt; animation-range: contain 58% contain 74%; }
+  .stmt-faces img:nth-child(2) { animation-range: contain 63% contain 79%; }
+  .stmt-faces img:nth-child(3) { animation-range: contain 68% contain 84%; }
+  .stmt-team-txt, .stmt-team > svg { animation: hbrRiseTl linear both; animation-timeline: --stmt; animation-range: contain 72% contain 90%; }
+  @keyframes faceIn { from { opacity: 0; transform: translateY(26px) scale(.6); } to { opacity: 1; transform: none; } }
+  @keyframes hbrRiseTl { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  html.js .stmt-scene .statement .sw {
+    animation: wordGlow linear both; animation-timeline: --stmt;
+    animation-range: contain calc(var(--p, 0) * 1%) contain calc(var(--p, 0) * 1% + 14%);
+  }
+  @keyframes wordGlow { from { opacity: .12; filter: blur(2px); transform: translateY(.18em); } to { opacity: 1; filter: none; transform: none; } }
+
+  /* Listino su telefono e tablet: le righe entrano una dopo l'altra seguendo il dito */
+  @media (max-width: 1023.98px) {
+    .price-list li { animation: rowIn linear both; animation-timeline: view(); animation-range: entry 0% entry 90%; }
+    @keyframes rowIn { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
+  }
+
+  /* Team su telefono: la scena si ferma e le schede scorrono di lato mentre si scende */
+  @media (max-width: 767.98px) {
+    .team-scene { height: 270vh; view-timeline: --team block; }
+    .team-sticky {
+      position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
+      display: flex; align-items: center; margin: 0 -1.5rem; padding: 4.75rem 0 2.5rem;
+    }
+    .team-scene .team-grid {
+      display: flex; gap: 1rem; width: max-content; padding: 0 1.5rem;
+      animation: teamSlide linear both; animation-timeline: --team; animation-range: contain 6% contain 94%;
+    }
+    @keyframes teamSlide { to { transform: translateX(calc(-100% + 100vw)); } }
+    .team-scene .team-card { width: 78vw; grid-template-columns: 1fr; gap: 1rem; margin-top: 0; animation: none; }
+    .team-scene .team-photo { aspect-ratio: 1 / 1; }
+    /* barra di avanzamento della scena */
+    .team-sticky::before, .team-sticky::after { content: ""; position: absolute; left: 1.5rem; right: 1.5rem; bottom: 1.4rem; height: 2px; }
+    .team-sticky::before { background: rgba(13,13,13,.12); }
+    .team-sticky::after { background: var(--ink); transform-origin: left; transform: scaleX(0); animation: progressGrow linear both; animation-timeline: --team; animation-range: contain 6% contain 94%; }
+  }
+}
+}
+
+/* Ponte "Conosci il team" nella scena di Chi siamo (visibile solo dove la scena è attiva) */
+.stmt-team { display: none; align-items: center; gap: 1rem; margin-top: auto; padding-top: 1.75rem; color: inherit; text-decoration: none; }
+@media (min-width: 768px) { .stmt-team { margin-top: 3rem; } }
+.stmt-faces { display: flex; }
+.stmt-faces img { width: 3.4rem; height: 3.4rem; border-radius: 50%; object-fit: cover; border: 3px solid var(--paper); filter: grayscale(100%); background: #e7e7e5; }
+.stmt-faces img + img { margin-left: -.9rem; }
+.stmt-team-txt { display: flex; flex-direction: column; line-height: 1.3; }
+.stmt-team-txt b { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.25rem; }
+.stmt-team-txt span { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; opacity: .55; margin-top: .2rem; }
+.stmt-team > svg { margin-left: auto; }
+.stmt-team:hover .stmt-faces img { filter: none; }
+
+/* ───────────── TUTTE LE PAGINE SI COSTRUISCONO SCORRENDO ─────────────
+   Le comparse a tempo ([data-reveal]) diventano legate allo scorrimento: ogni blocco
+   sale e si avvicina seguendo il dito, e torna indietro se si risale. */
+@supports (animation-timeline: view()) {
+@media (prefers-reduced-motion: no-preference) {
+
+  /* Testata delle pagine: si stacca dai bordi e diventa una scheda, il titolo sale e sfuma */
+  .page-hero { animation: heroCard linear both; animation-timeline: scroll(root); animation-range: 0 75vh; }
+  .page-hero > .container { animation: heroLift linear both; animation-timeline: scroll(root); animation-range: 0 65vh; }
+  @keyframes heroLift { to { opacity: .1; transform: translateY(-16%) scale(.96); } }
+
+  /* Blocchi delle pagine: entrano seguendo il dito, a colonne sfalsate */
+  html.js [data-reveal] {
+    opacity: 1; transform: none; transition: none;
+    animation: buildIn linear both; animation-timeline: view(); animation-range: entry 0px entry 260px;
+  }
+  html.js [data-reveal][style*="--d:1"] { animation-range: entry 40px entry 300px; }
+  html.js [data-reveal][style*="--d:2"] { animation-range: entry 80px entry 340px; }
+  @keyframes buildIn { from { opacity: 0; transform: translateY(60px) scale(.94); } to { opacity: 1; transform: none; } }
+  /* esclusi: il buono agganciato (ha un elemento fixed dentro), il modulo intero e il mazzo delle recensioni */
+  html.js .gv-aside[data-reveal], html.js .gv-form[data-reveal], html.js .rv-grid.is-deck [data-reveal] { animation: none; }
+
+  /* Buoni: le parti del modulo entrano una alla volta */
+  .gv-form fieldset { animation: buildIn linear both; animation-timeline: view(); animation-range: entry 0px entry 240px; }
+
+  /* Recensioni: il voto medio cresce mentre arriva */
+  .rv-score { animation: scoreIn linear both; animation-timeline: view(); animation-range: entry 5% cover 35%; transform-origin: left bottom; }
+  @keyframes scoreIn { from { opacity: .15; transform: scale(.62); } to { opacity: 1; transform: none; } }
+
+  /* Home, contatti: i blocchi salgono uno dopo l'altro */
+  .contact-block { animation: buildIn linear both; animation-timeline: view(); animation-range: entry 0% cover 25%; }
+  .contact-block:nth-child(2) { animation-range: entry 6% cover 31%; }
+  .contact-block:nth-child(3) { animation-range: entry 12% cover 37%; }
+
+  /* Footer: invito, colonne e pulsanti si compongono arrivando in fondo */
+  .ft-col { animation: buildIn linear both; animation-timeline: view(); animation-range: entry 0% cover 20%; }
+  .ft-col:nth-child(2n) { animation-range: entry 8% cover 28%; }
+  .ft-social a { animation: buildIn linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
+  .ft-cta-btns { animation: buildIn linear both; animation-timeline: view(); animation-range: entry 0% cover 25%; }
+}
+}
