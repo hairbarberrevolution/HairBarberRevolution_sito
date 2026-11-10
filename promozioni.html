@@ -8,9 +8,8 @@ ga<!DOCTYPE html>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', { analytics_storage: 'denied' });
+    gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', wait_for_update: 500 });
   </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E9R0TDFCKJ"></script>
   <script>
     gtag('js', new Date());
     gtag('config', 'G-E9R0TDFCKJ');
@@ -18,15 +17,16 @@ ga<!DOCTYPE html>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          colors: { black: '#0d0d0d', white: '#fafafa' },
           fontFamily: {
             serif: ["'Cormorant Garamond'", "serif"],
-            sans:  ["'Segoe UI'", "system-ui", "sans-serif"]
+            sans:  ["'Jost'", "'Segoe UI'", "system-ui", "sans-serif"]
           }
         }
       }
@@ -35,7 +35,7 @@ ga<!DOCTYPE html>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #fff; color: #111; }
+    body { font-family: 'Jost', 'Segoe UI', system-ui, sans-serif; background: #fafafa; color: #0d0d0d; }
 
     #navbar { transition: background 0.3s, border-color 0.3s; }
 
@@ -374,19 +374,21 @@ ga<!DOCTYPE html>
     .modal-close-btn:hover { background: #000; color: #fff; }
     .modal-close-btn:hover svg { stroke: #fff; }
   </style>
+  <link rel="stylesheet" href="hbr.css" />
+  <script src="hbr-sub.js"></script>
 </head>
 
 <body>
 
 <!-- NAVBAR -->
-<header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-black py-4 border-b border-white/10">
+<header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-black py-3 border-b border-white/10">
   <div class="container mx-auto px-6 flex items-center justify-between">
     <a href="index.html" class="focus:outline-none">
-      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:2.75rem;width:auto;object-fit:contain;"
+      <img src="logo-white-small.png" alt="Hair&amp;Barber Revolution" style="height:3.25rem;width:auto;object-fit:contain;"
         onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
     </a>
 
-    <nav class="hidden md:flex items-center" style="gap:1.75rem;">
+    <nav class="hidden xl:flex items-center" style="gap:1.75rem;">
       <a href="index.html"         class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Home</a>
       <a href="index.html#about"   class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Chi siamo</a>
       <a href="index.html#services"class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Servizi</a>
@@ -399,7 +401,7 @@ ga<!DOCTYPE html>
       <a href="index.html#contact" class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Contatti</a>
     </nav>
 
-    <div class="hidden md:flex items-center" style="gap:1rem;">
+    <div class="hidden xl:flex items-center" style="gap:1rem;">
       <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/60 hover:text-white transition-colors" aria-label="Facebook">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
       </a>
@@ -408,7 +410,7 @@ ga<!DOCTYPE html>
       </a>
     </div>
 
-    <button onclick="openMenu()" class="md:hidden text-white focus:outline-none" aria-label="Apri menu">
+    <button onclick="openMenu()" class="xl:hidden text-white focus:outline-none p-2 -mr-2" aria-label="Apri menu">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="3" y1="6"  x2="21" y2="6"/>
         <line x1="3" y1="12" x2="21" y2="12"/>
@@ -425,7 +427,7 @@ ga<!DOCTYPE html>
       <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
     </svg>
   </button>
-  <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:4rem;width:auto;object-fit:contain;margin-bottom:1.75rem;opacity:.9;"
+  <img src="logo-white-small.png" alt="Hair&amp;Barber Revolution" style="height:4rem;width:auto;object-fit:contain;margin-bottom:1.75rem;opacity:.9;"
     onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
   <nav class="flex flex-col items-center" style="gap:1.1rem;">
     <a href="index.html"          onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Home</a>
@@ -450,29 +452,29 @@ ga<!DOCTYPE html>
 </div>
 
 <!-- HERO -->
-<div class="bg-black text-white" style="padding-top:7rem;padding-bottom:3rem;padding-left:1.5rem;padding-right:1.5rem;">
-  <div class="container mx-auto text-center page-in">
-    <p class="text-white uppercase" style="font-size:.75rem;letter-spacing:.3em;opacity:.45;margin-bottom:1rem;">Hair&amp;Barber Revolution</p>
-    <h1 class="font-serif font-bold text-white" style="font-size:clamp(2.4rem,6vw,4rem);margin-bottom:1.25rem;line-height:1.1;">Promozioni</h1>
-    <p class="text-white leading-relaxed max-w-xl mx-auto" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;opacity:.7;">
-      Le offerte del mese, per lei e per lui.
+<div class="page-hero">
+  <div class="container mx-auto">
+    <p class="page-eyebrow">Hair&amp;Barber Revolution</p>
+    <h1 class="page-title">Promozioni</h1>
+    <p class="page-sub">
+      Le <strong class="hl">offerte del mese</strong>, per <strong class="hl">lei</strong> e per <strong class="hl">lui</strong>.
     </p>
   </div>
 </div>
 
 <!-- SELETTORE -->
-<div class="px-6" style="padding-top:2.5rem;">
-  <div class="container mx-auto text-center">
-    <div class="gender-toggle" role="group" aria-label="Seleziona categoria">
-      <button id="btn-donna" class="gender-btn active" onclick="selectGender('donna')">Donna</button>
-      <button id="btn-uomo"  class="gender-btn"        onclick="selectGender('uomo')">Uomo</button>
+<div class="px-6" style="padding-top:clamp(2.5rem,5vw,4rem);">
+  <div class="container mx-auto" style="max-width:72rem;">
+    <div class="seg" id="promo-seg" data-active="0" role="group" aria-label="Seleziona categoria" data-reveal>
+      <button type="button" id="btn-donna" aria-pressed="true"  onclick="selectGender('donna')">Donna</button>
+      <button type="button" id="btn-uomo"  aria-pressed="false" onclick="selectGender('uomo')">Uomo</button>
     </div>
   </div>
 </div>
 
 <!-- PROMOZIONI -->
-<main class="px-6" style="padding-top:2.5rem;padding-bottom:6rem;">
-  <div class="container mx-auto" style="max-width:64rem;">
+<main class="px-6" style="padding-top:2rem;padding-bottom:clamp(4rem,8vw,7rem);">
+  <div class="container mx-auto" style="max-width:72rem;">
     <div id="promo-content"></div>
   </div>
 </main>
@@ -483,7 +485,7 @@ ga<!DOCTYPE html>
 <div id="promo-modal" role="dialog" aria-modal="true" aria-labelledby="modal-titolo-text">
   <div class="modal-box" role="document">
 
-    <!-- X chiudi — sempre visibile -->
+    <!-- X chiudi, sempre visibile -->
     <button class="modal-close-btn" onclick="closeModal()" aria-label="Chiudi">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -602,35 +604,49 @@ ga<!DOCTYPE html>
 <script src="promozioniuomo.js"></script>
 
 <!-- FOOTER -->
-<footer class="bg-black text-white border-t border-white/10 px-6" style="padding-top:2.5rem;padding-bottom:2.5rem;">
-  <div class="container mx-auto">
-    <div class="flex flex-col md:flex-row justify-between items-center" style="gap:1.5rem;margin-bottom:1.5rem;">
-      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:3rem;width:auto;object-fit:contain;"
-        onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
-      <div class="flex flex-wrap justify-center" style="gap:.75rem;">
-        <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Facebook">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </a>
-        <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Instagram">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-        </a>
-        <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer"
-           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Google">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          Recensioni Google
-        </a>
-        <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer"
-           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Facebook">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          Recensioni Facebook
-        </a>
+<footer class="site-footer">
+  <div class="container mx-auto px-6">
+
+    <!-- Invito finale -->
+    <div class="ft-cta">
+      <p class="ft-cta-title">Il tuo prossimo look<br>inizia da qui.</p>
+      <div class="ft-cta-btns">
+        <a href="index.html#booking" class="btn btn-light">Prenota un appuntamento</a>
+        <a href="buoni.html" class="btn btn-ghost-light">Regala un buono</a>
       </div>
-      <div class="text-white/40 text-xs tracking-widest text-center md:text-right" style="line-height:1.8;">
-        Hair&amp;Barber Revolution, via Fornacetta 7 Costa Masnaga (LC), 23845<br>
-        &copy; <span id="footer-year"></span> HAIR&amp;BARBER REVOLUTION DI TOMA VERUSKA. TUTTI I DIRITTI RISERVATI.<br>
-        P.IVA 03667090132<br>
-        <a href="privacy.html" class="text-white/30 hover:text-white/60 transition-colors underline underline-offset-2">Privacy Policy</a>
+    </div>
+
+    <div class="ft-grid">
+      <div class="ft-col">
+        <p class="ft-h">Salone</p>
+        <p>Via Fornacetta 7<br>23845 Costa Masnaga (LC)</p>
+        <a class="ft-link" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via+Fornacetta+7,+23845+Costa+Masnaga+LC" target="_blank" rel="noreferrer">Indicazioni stradali</a>
       </div>
+      <div class="ft-col">
+        <p class="ft-h">Prenota</p>
+        <p><a class="ft-plain ft-tel" href="tel:+393331355200"><span class="ft-dim">Veruska</span> 333 135 5200</a><a class="ft-plain ft-tel" href="tel:+393381583431"><span class="ft-dim">Max</span> 338 158 3431</a></p>
+        <a class="ft-link" href="https://wa.me/393331355200" target="_blank" rel="noreferrer">Scrivi su WhatsApp</a>
+      </div>
+      <div class="ft-col">
+        <p class="ft-h">Orari</p>
+        <p class="ft-hours"><span><span class="ft-dim">Mar, Gio, Ven</span> 9:00-19:00</span><span><span class="ft-dim">Mer</span> 12:00-21:00</span><span><span class="ft-dim">Sab</span> 8:00-16:00</span><span class="ft-dim">Dom e Lun chiuso</span></p>
+      </div>
+      <div class="ft-col">
+        <p class="ft-h">Esplora</p>
+        <p class="ft-nav"><a href="novita.html">Novità</a><a href="buoni.html">Buoni regalo</a><a href="promozioni.html">Promozioni</a><a href="recensioni.html">Recensioni</a></p>
+      </div>
+    </div>
+
+    <div class="ft-social">
+      <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></a>
+      <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer" class="ft-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>Recensisci su Google</a>
+      <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer" class="ft-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Recensisci su Facebook</a>
+    </div>
+
+    <div class="ft-bottom">
+      <span>&copy; <span id="footer-year"></span> Hair&amp;Barber Revolution di Toma Veruska · P.IVA 03667090132</span>
+      <a href="privacy.html">Privacy e cookie</a>
     </div>
   </div>
 </footer>
@@ -707,7 +723,7 @@ function promoCardHtml(p, idx) {
       '</div>';
   }
 
-  return '<div class="promo-card" tabindex="0" role="button"' +
+  return '<div class="promo-card spot on-paper" data-reveal style="--d:' + (idx % 2) + '" tabindex="0" role="button"' +
          ' aria-label="Apri promozione: ' + escAttr(p.nome) + '"' +
          ' onclick="openModal(' + idx + ')"' +
          ' onkeydown="if(event.key===\'Enter\'||event.key===\' \')openModal(' + idx + ')">' +
@@ -727,7 +743,7 @@ function render() {
 
   if (donnaEmpty && uomoEmpty) {
     container.innerHTML =
-      '<div class="empty-state"><p>Promozioni in arrivo... Resta aggiornato sui nostri social:</p>' + SOCIAL_HTML + '</div>';
+      '<div class="empty-state"><p>Promozioni in arrivo. Resta aggiornato sui nostri social:</p>' + SOCIAL_HTML + '</div>';
     return;
   }
 
@@ -739,6 +755,7 @@ function render() {
   }
 
   container.innerHTML = '<div class="promo-grid">' + list.map(promoCardHtml).join('') + '</div>';
+  if (window.HBR) window.HBR.reveal(container);
 
   /* Seek thumbnail video a metà durata */
   document.querySelectorAll('.promo-video-thumb').forEach(function(v) {
@@ -752,8 +769,9 @@ function render() {
 
 function selectGender(g) {
   currentGender = g;
-  document.getElementById('btn-donna').classList.toggle('active', g === 'donna');
-  document.getElementById('btn-uomo').classList.toggle('active', g === 'uomo');
+  document.getElementById('promo-seg').setAttribute('data-active', g === 'donna' ? '0' : '1');
+  document.getElementById('btn-donna').setAttribute('aria-pressed', g === 'donna' ? 'true' : 'false');
+  document.getElementById('btn-uomo').setAttribute('aria-pressed', g === 'uomo' ? 'true' : 'false');
   /* Se il modal è aperto, chiudilo quando si cambia categoria */
   if (document.getElementById('promo-modal').classList.contains('open')) closeModal();
   render();
