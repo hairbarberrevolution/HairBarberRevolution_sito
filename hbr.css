@@ -749,30 +749,13 @@ html.js [data-reveal].in { opacity: 1; transform: none; }
     to   { clip-path: inset(0 4% 7% 4% round 0 0 2rem 2rem); }
   }
 
-  /* Chi siamo: la frase resta al centro e si accende parola per parola */
-  .stmt-scene { height: 220vh; view-timeline: --stmt block; }
-  /* il contenuto parte subito sotto il menu: niente vuoto dopo l'hero */
-  #about { padding-top: 0; }
-  .stmt-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; flex-direction: column; justify-content: flex-start; padding-top: calc(4.6rem + 1.5vh); padding-bottom: 1.5rem; }
-  @media (min-width: 768px) { .stmt-sticky { justify-content: center; padding-top: 4.5rem; } }
-  @media (max-width: 767.98px) {
-    .stmt-scene .statement { font-size: clamp(1.5rem, 7.2vw, 2.1rem); line-height: 1.32; }
-    .stmt-scene .stmt-faces img { width: 4.4rem; height: 4.4rem; }
-    .stmt-scene .stmt-team-txt b { font-size: 1.4rem; }
-  }
-  /* il ponte verso il team riempie la parte bassa della scena e compare alla fine della frase */
-  .stmt-scene .stmt-team { display: flex; }
-  .stmt-faces img { animation: faceIn linear both; animation-timeline: --stmt; animation-range: contain 58% contain 74%; }
-  .stmt-faces img:nth-child(2) { animation-range: contain 63% contain 79%; }
-  .stmt-faces img:nth-child(3) { animation-range: contain 68% contain 84%; }
-  .stmt-team-txt, .stmt-team > svg { animation: hbrRiseTl linear both; animation-timeline: --stmt; animation-range: contain 72% contain 90%; }
+  /* Chi siamo: sotto la frase le foto del team entrano una dopo l'altra mentre si scorre */
+  .stmt-faces img { animation: faceIn linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
+  .stmt-faces img:nth-child(2) { animation-range: entry 15% entry 100%; }
+  .stmt-faces img:nth-child(3) { animation-range: entry 30% entry 100%; }
+  .stmt-team-txt, .stmt-team > svg { animation: hbrRiseTl linear both; animation-timeline: view(); animation-range: entry 20% entry 100%; }
   @keyframes faceIn { from { opacity: 0; transform: translateY(26px) scale(.6); } to { opacity: 1; transform: none; } }
   @keyframes hbrRiseTl { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-  html.js .stmt-scene .statement .sw {
-    animation: wordGlow linear both; animation-timeline: --stmt;
-    animation-range: contain calc(var(--p, 0) * 1%) contain calc(var(--p, 0) * 1% + 14%);
-  }
-  @keyframes wordGlow { from { opacity: .12; filter: blur(2px); transform: translateY(.18em); } to { opacity: 1; filter: none; transform: none; } }
 
   /* Listino su telefono e tablet: le righe entrano una dopo l'altra seguendo il dito */
   @media (max-width: 1023.98px) {
@@ -784,10 +767,10 @@ html.js [data-reveal].in { opacity: 1; transform: none; }
 }
 
 /* Ponte "Conosci il team" nella scena di Chi siamo (visibile solo dove la scena è attiva) */
-.stmt-team { display: none; align-items: center; gap: 1rem; margin-top: auto; padding-top: 1.75rem; color: inherit; text-decoration: none; }
-@media (min-width: 768px) { .stmt-team { margin-top: 3rem; } }
+.stmt-sticky { margin-bottom: clamp(3rem, 7vw, 5.5rem); }
+.stmt-team { display: flex; align-items: center; gap: 1rem; margin-top: 2.25rem; color: inherit; text-decoration: none; max-width: 26rem; }
 .stmt-faces { display: flex; }
-.stmt-faces img { width: 3.4rem; height: 3.4rem; border-radius: 50%; object-fit: cover; border: 3px solid var(--paper); filter: grayscale(100%); background: #e7e7e5; }
+.stmt-faces img { width: 4rem; height: 4rem; border-radius: 50%; object-fit: cover; border: 3px solid var(--paper); filter: grayscale(100%); background: #e7e7e5; }
 .stmt-faces img + img { margin-left: -.9rem; }
 .stmt-team-txt { display: flex; flex-direction: column; line-height: 1.3; }
 .stmt-team-txt b { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.25rem; }
@@ -838,29 +821,21 @@ html.js [data-reveal].in { opacity: 1; transform: none; }
 }
 
 /* ───────────── TEAM SU TELEFONO ─────────────
-   Le schede si scorrono di lato con il dito. Con la scena attiva (.is-live, dal JS)
-   la sezione si ferma e anche lo scorrimento verticale le fa avanzare: le due cose
-   restano allineate. È uno scorrimento vero, quindi le foto si caricano sempre. */
+   Carosello nativo da sfogliare con il dito, con aggancio a ogni scheda. */
 .team-bar { display: none; }
 @media (max-width: 767.98px) {
   .team-scene .team-grid {
     display: flex; gap: 1rem; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
-    margin: 0 -1.5rem; padding: .25rem 1.5rem .75rem; scroll-snap-type: x mandatory; scroll-padding: 0 1.5rem;
+    margin: 0 -1.5rem; padding: .25rem 1.5rem .75rem; scroll-snap-type: x mandatory; scroll-padding: 0 1.5rem; touch-action: pan-x pan-y;
     -webkit-overflow-scrolling: touch;
   }
   .team-scene .team-grid::-webkit-scrollbar { display: none; }
-  .team-scene .team-card { flex: 0 0 78vw; grid-template-columns: 1fr; gap: 1rem; margin-top: 0; scroll-snap-align: start; animation: none; }
+  .team-scene .team-card { flex: 0 0 80vw; grid-template-columns: 1fr; gap: 1rem; margin-top: 0; scroll-snap-align: start; scroll-snap-stop: always; animation: none; }
   .team-scene .team-photo { aspect-ratio: 1 / 1; }
   .team-bar { display: flex; align-items: center; gap: .9rem; margin-top: .75rem; font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: rgba(13,13,13,.55); }
   .team-bar span { flex: 1; height: 2px; background: rgba(13,13,13,.12); position: relative; overflow: hidden; }
   .team-bar i { position: absolute; inset: 0; background: var(--ink); transform-origin: left; transform: scaleX(.333); transition: transform .2s linear; }
   .team-bar svg { animation: swipeHint 1.8s ease-in-out infinite; }
   @keyframes swipeHint { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
-  .team-scene.is-live { height: 260vh; }
-  .team-scene.is-live .team-sticky {
-    position: sticky; top: 0; height: 100vh; height: 100svh;
-    display: flex; flex-direction: column; justify-content: center; padding: 4.75rem 0 1.25rem;
-  }
-  .team-scene.is-live .team-grid { scroll-snap-type: none; }
 }
 @media (prefers-reduced-motion: reduce) { .team-bar svg { animation: none; } }
