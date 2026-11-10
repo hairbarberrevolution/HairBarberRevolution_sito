@@ -176,6 +176,8 @@
 
     .gv-card-wrap { container-type: inline-size; }
     .gv-stage { cursor: pointer; }
+    /* il browser non deve "correggere" lo scorrimento quando il buono si aggancia */
+    .gv-aside, .gv-dock { overflow-anchor: none; }
 
     /* Telefono e tablet: quando il buono esce dallo schermo resta agganciato in alto,
        in piccolo, con avanzamento e "gira" accanto. L'.gv-aside conserva la sua altezza
@@ -721,26 +723,37 @@ $('gv-stage').addEventListener('click', toggleFlip);
 (function() {
   var aside = document.querySelector('.gv-aside'), dock = $('gv-dock'), form = $('buono-form');
   var mq = window.matchMedia('(max-width: 1023.98px)');
-  var docked = false, ticking = false, dockH = 170;
+  var docked = false, ticking = false, dockH = 170, GAP = 32;
   function navBottom() { var n = $('navbar'); return n ? Math.max(0, n.getBoundingClientRect().bottom) : 0; }
+  /* l'altezza del buono resta sempre riservata: agganciarlo o sganciarlo non sposta mai la pagina */
+  function reserve() {
+    if (docked) return;
+    aside.style.minHeight = '';
+    if (mq.matches) aside.style.minHeight = aside.offsetHeight + 'px';
+  }
   function check() {
     ticking = false;
+    if (!mq.matches) { if (docked) { docked = false; aside.classList.remove('is-docked'); } return; }
     var top = navBottom(), a = aside.getBoundingClientRect(), f = form.getBoundingClientRect();
-    var want = mq.matches && a.top + a.height * 0.5 < top && f.bottom > top + dockH + 40;
+    var mid = a.top + a.height * 0.5;
+    /* margine di tolleranza: si aggancia un po' dopo e si sgancia un po' prima,
+       così mentre il dito rallenta non continua ad agganciarsi e sganciarsi */
+    var want = docked
+      ? (mid < top + GAP && f.bottom > top + dockH)
+      : (mid < top - GAP && f.bottom > top + dockH + 80);
     if (want !== docked) {
       docked = want;
-      if (want) aside.style.minHeight = aside.offsetHeight + 'px';
       aside.classList.toggle('is-docked', want);
-      if (!want) aside.style.minHeight = '';
       if (want) dockH = dock.offsetHeight;
     }
     if (docked) dock.style.setProperty('--dock-top', top + 'px');
-    // i campi che prendono il focus non devono finire sotto il buono
-    document.documentElement.style.scrollPaddingTop = docked ? (top + dockH + 16) + 'px' : '';
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(check); } }
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
+  window.addEventListener('resize', function() { reserve(); onScroll(); });
+  /* i campi che prendono il focus non devono finire sotto il buono agganciato */
+  if (mq.matches) document.documentElement.style.scrollPaddingTop = (navBottom() + dockH + 16) + 'px';
+  reserve();
   check();
 })();
 

@@ -26,8 +26,8 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
-::selection { background: var(--ink); color: var(--paper); }
-.section-dark ::selection, footer ::selection, #home ::selection { background: var(--paper); color: var(--ink); }
+::selection { background: rgba(13,13,13,.14); color: inherit; }
+.section-dark ::selection, footer ::selection, #home ::selection, .page-hero ::selection { background: rgba(250,250,250,.28); color: inherit; }
 
 /* Focus sempre visibile da tastiera (le pagine usavano focus:outline-none) */
 :focus-visible { outline: 2px solid currentColor !important; outline-offset: 3px; }
@@ -681,13 +681,11 @@ html.js [data-reveal].in { opacity: 1; transform: none; }
   @keyframes sectionGrow { from { clip-path: inset(0 5% 0 5% round 2rem 2rem 0 0); } to { clip-path: inset(0 0 0 0 round 0); } }
 
   /* Il team sale e si avvicina mentre lo raggiungi */
-  .team-card { animation: cardRise linear both; animation-timeline: view(); animation-range: entry 0% cover 28%; }
-  @keyframes cardRise { from { opacity: .15; transform: translateY(56px) scale(.93); } to { opacity: 1; transform: none; } }
 
   /* Galleria: ogni foto cresce dal centro, a colonne sfalsate */
-  .gallery-item { animation: tileIn linear both; animation-timeline: view(); animation-range: entry 0% cover 24%; }
+  .gallery-item { animation: tileGrow linear both; animation-timeline: view(); animation-range: entry 0% cover 24%; }
   .gallery-grid > .gallery-item:nth-child(even) { animation-range: entry 12% cover 34%; }
-  @keyframes tileIn { from { opacity: .2; transform: translateY(36px) scale(.86); } to { opacity: 1; transform: none; } }
+  @keyframes tileGrow { from { transform: translateY(36px) scale(.88); } to { transform: none; } }
 
   /* La mappa si apre da una finestra arrotondata */
   .map-frame { animation: frameOpen linear both; animation-timeline: view(); animation-range: entry 0% cover 35%; }
@@ -695,10 +693,10 @@ html.js [data-reveal].in { opacity: 1; transform: none; }
 
   /* Il riquadro della prenotazione emerge dal basso */
   #booking-form { animation: formUp linear both; animation-timeline: view(); animation-range: entry 0% cover 25%; }
-  @keyframes formUp { from { opacity: .3; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+  @keyframes formUp { from { transform: translateY(40px); } to { transform: none; } }
 }
 @media (prefers-reduced-motion: reduce) {
-  #services, #contact, .team-card, .gallery-item, .map-frame, #booking-form { animation: none !important; }
+  #services, #contact, .gallery-item, .map-frame, #booking-form { animation: none !important; }
 }
 
 /* ───────────── FOOTER (uguale su tutte le pagine) ───────────── */
@@ -754,13 +752,13 @@ html.js [data-reveal].in { opacity: 1; transform: none; }
   .stmt-faces img:nth-child(2) { animation-range: entry 15% entry 100%; }
   .stmt-faces img:nth-child(3) { animation-range: entry 30% entry 100%; }
   .stmt-team-txt, .stmt-team > svg { animation: hbrRiseTl linear both; animation-timeline: view(); animation-range: entry 20% entry 100%; }
-  @keyframes faceIn { from { opacity: 0; transform: translateY(26px) scale(.6); } to { opacity: 1; transform: none; } }
-  @keyframes hbrRiseTl { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  @keyframes faceIn { from { transform: translateY(22px) scale(.7); } to { transform: none; } }
+  @keyframes hbrRiseTl { from { transform: translateY(14px); } to { transform: none; } }
 
   /* Listino su telefono e tablet: le righe entrano una dopo l'altra seguendo il dito */
   @media (max-width: 1023.98px) {
     .price-list li { animation: rowIn linear both; animation-timeline: view(); animation-range: entry 0% entry 90%; }
-    @keyframes rowIn { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
+    @keyframes rowIn { from { transform: translateX(-24px); } to { transform: none; } }
   }
 
 }
@@ -796,21 +794,17 @@ html.js [data-reveal].in { opacity: 1; transform: none; }
   }
   html.js [data-reveal][style*="--d:1"] { animation-range: entry 40px entry 300px; }
   html.js [data-reveal][style*="--d:2"] { animation-range: entry 80px entry 340px; }
-  @keyframes buildIn { from { opacity: 0; transform: translateY(60px) scale(.94); } to { opacity: 1; transform: none; } }
+  @keyframes buildIn { from { transform: translateY(48px) scale(.96); } to { transform: none; } }
   /* esclusi: il buono agganciato (ha un elemento fixed dentro), il modulo intero e il mazzo delle recensioni */
   html.js .gv-aside[data-reveal], html.js .gv-form[data-reveal], html.js .rv-grid.is-deck [data-reveal] { animation: none; }
+  /* il modulo dei buoni resta fermo mentre si compila */
 
-  /* Buoni: le parti del modulo entrano una alla volta */
-  .gv-form fieldset { animation: buildIn linear both; animation-timeline: view(); animation-range: entry 0px entry 240px; }
 
   /* Recensioni: il voto medio cresce mentre arriva */
   .rv-score { animation: scoreIn linear both; animation-timeline: view(); animation-range: entry 5% cover 35%; transform-origin: left bottom; }
-  @keyframes scoreIn { from { opacity: .15; transform: scale(.62); } to { opacity: 1; transform: none; } }
+  @keyframes scoreIn { from { transform: scale(.7); } to { transform: none; } }
 
   /* Home, contatti: i blocchi salgono uno dopo l'altro */
-  .contact-block { animation: buildIn linear both; animation-timeline: view(); animation-range: entry 0% cover 25%; }
-  .contact-block:nth-child(2) { animation-range: entry 6% cover 31%; }
-  .contact-block:nth-child(3) { animation-range: entry 12% cover 37%; }
 
   /* Footer: invito, colonne e pulsanti si compongono arrivando in fondo */
   .ft-col { animation: buildIn linear both; animation-timeline: view(); animation-range: entry 0% cover 20%; }
