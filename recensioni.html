@@ -9,9 +9,8 @@
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('consent', 'default', { analytics_storage: 'denied' });
+      gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', wait_for_update: 500 });
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E9R0TDFCKJ"></script>
     <script>
       gtag('js', new Date());
       gtag('config', 'G-E9R0TDFCKJ');
@@ -19,15 +18,16 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          colors: { black: '#0d0d0d', white: '#fafafa' },
           fontFamily: {
             serif: ["'Cormorant Garamond'", "serif"],
-            sans:  ["'Segoe UI'", "system-ui", "sans-serif"]
+            sans:  ["'Jost'", "'Segoe UI'", "system-ui", "sans-serif"]
           }
         }
       }
@@ -36,7 +36,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #fff; color: #111; }
+    body { font-family: 'Jost', 'Segoe UI', system-ui, sans-serif; background: #fafafa; color: #0d0d0d; }
 
     #navbar { transition: background 0.3s, border-color 0.3s; }
 
@@ -266,20 +266,57 @@
       white-space: nowrap; flex-shrink: 0;
     }
     .rmodal-close-footer:hover { background: #fff; color: #000; }
+
+    /* ════════════════════════════════
+       TELEFONO: le recensioni diventano un mazzo da sfogliare con il dito.
+       La scheda al centro è piena; quelle ai lati si rimpiccioliscono, ruotano
+       appena e sfumano (valori --s, --o, --ry calcolati dal JS durante lo scorrimento).
+    ════════════════════════════════ */
+    .rv-deck-ui { display: none; }
+    @media (max-width: 767.98px) {
+      .rv-grid.is-deck {
+        columns: auto; display: flex; align-items: center; gap: .75rem;
+        overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
+        margin: 0 -1.5rem; padding: 1.25rem 11vw 1.75rem; min-height: 22rem; scrollbar-width: none; perspective: 1100px;
+      }
+      .rv-grid.is-deck::-webkit-scrollbar { display: none; }
+      html.js .rv-grid.is-deck .rv-card {
+        flex: 0 0 78vw; margin: 0; display: flex; flex-direction: column;
+        scroll-snap-align: center; scroll-snap-stop: always;
+        opacity: var(--o, 1); transform: rotateY(var(--ry, 0deg)) scale(var(--s, 1));
+        transition: border-color .4s ease, box-shadow .4s ease; will-change: transform, opacity;
+      }
+      html.js .rv-grid.is-deck .rv-card.is-active { border-color: var(--ink); box-shadow: 0 22px 40px -26px rgba(13,13,13,.45); }
+      .rv-grid.is-deck .rv-card-quote { flex: 1; }
+      .rv-deck-ui { display: flex; align-items: center; gap: 1rem; }
+      .rv-deck-ui button {
+        width: 3rem; height: 3rem; flex-shrink: 0; border: 1px solid var(--ink); background: none;
+        display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+        transition: background-color .25s ease, color .25s ease, opacity .25s ease;
+      }
+      .rv-deck-ui button:active { background: var(--ink); color: var(--paper); }
+      .rv-deck-ui button:disabled { opacity: .25; }
+      .rv-deck-meter { flex: 1; display: flex; align-items: center; gap: .75rem; font-size: .78rem; letter-spacing: .1em; font-variant-numeric: tabular-nums; }
+      .rv-deck-meter b { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; letter-spacing: 0; min-width: 1.6em; }
+      .rv-deck-bar { flex: 1; height: 2px; background: rgba(13,13,13,.14); position: relative; overflow: hidden; }
+      .rv-deck-bar i { position: absolute; inset: 0; background: var(--ink); transform-origin: left; transform: scaleX(0); transition: transform .45s cubic-bezier(.16, 1, .3, 1); }
+    }
   </style>
+  <link rel="stylesheet" href="hbr.css" />
+  <script src="hbr-sub.js"></script>
 </head>
 
 <body>
 
 <!-- NAVBAR -->
-<header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-black py-4 border-b border-white/10">
+<header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-black py-3 border-b border-white/10">
   <div class="container mx-auto px-6 flex items-center justify-between">
     <a href="index.html" class="focus:outline-none">
-      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:2.75rem;width:auto;object-fit:contain;"
+      <img src="logo-white-small.png" alt="Hair&amp;Barber Revolution" style="height:3.25rem;width:auto;object-fit:contain;"
         onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
     </a>
 
-    <nav class="hidden md:flex items-center" style="gap:1.75rem;">
+    <nav class="hidden xl:flex items-center" style="gap:1.75rem;">
       <a href="index.html"                          class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Home</a>
       <a href="index.html#about"                    class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Chi siamo</a>
       <a href="index.html#services"                 class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Servizi</a>
@@ -292,7 +329,7 @@
       <a href="index.html#contact"                  class="text-xs uppercase tracking-[0.15em] font-medium text-white hover:opacity-60 transition-opacity">Contatti</a>
     </nav>
 
-    <div class="hidden md:flex items-center" style="gap:1rem;">
+    <div class="hidden xl:flex items-center" style="gap:1rem;">
       <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/60 hover:text-white transition-colors" aria-label="Facebook">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
       </a>
@@ -301,7 +338,7 @@
       </a>
     </div>
 
-    <button onclick="openMenu()" class="md:hidden text-white focus:outline-none" aria-label="Apri menu">
+    <button onclick="openMenu()" class="xl:hidden text-white focus:outline-none p-2 -mr-2" aria-label="Apri menu">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="3" y1="6"  x2="21" y2="6"/>
         <line x1="3" y1="12" x2="21" y2="12"/>
@@ -318,7 +355,7 @@
       <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
     </svg>
   </button>
-  <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:4rem;width:auto;object-fit:contain;margin-bottom:1.75rem;opacity:.9;"
+  <img src="logo-white-small.png" alt="Hair&amp;Barber Revolution" style="height:4rem;width:auto;object-fit:contain;margin-bottom:1.75rem;opacity:.9;"
     onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
   <nav class="flex flex-col items-center" style="gap:1.1rem;">
     <a href="index.html"          onclick="closeMenu()" class="text-2xl font-serif uppercase tracking-widest text-white">Home</a>
@@ -343,79 +380,106 @@
 </div>
 
 <!-- HERO -->
-<div class="bg-black text-white" style="padding-top:7rem;padding-bottom:4rem;padding-left:1.5rem;padding-right:1.5rem;">
-  <div class="container mx-auto text-center page-in">
-    <p class="text-white uppercase" style="font-size:.75rem;letter-spacing:.3em;opacity:.45;margin-bottom:1rem;">Hair&amp;Barber Revolution</p>
-    <h1 class="font-serif font-bold text-white" style="font-size:clamp(2.4rem,6vw,4rem);margin-bottom:1.25rem;line-height:1.1;">Recensioni</h1>
-    <p class="text-white leading-relaxed max-w-xl mx-auto" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;opacity:.7;">
-      Quello che i nostri clienti dicono di noi, dopo ogni appuntamento.
+<div class="page-hero">
+  <div class="container mx-auto">
+    <p class="page-eyebrow">Hair&amp;Barber Revolution</p>
+    <h1 class="page-title">Recensioni</h1>
+    <p class="page-sub">
+      Quello che <strong class="hl">i nostri clienti</strong> dicono di noi, <strong class="hl">dopo ogni appuntamento</strong>.
     </p>
 
-    <!-- CTA -->
-    <div style="margin-top:2rem;">
-      <div class="flex flex-col sm:flex-row justify-center" style="gap:1rem;">
-        <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer" class="review-btn review-btn-hero-solid">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          Lascia una recensione su Google
-        </a>
-        <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer" class="review-btn review-btn-hero-outline">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          Lascia una recensione su Facebook
-        </a>
-      </div>
-      <p class="text-white/40" style="font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;margin-top:1.5rem;">
-        Recensioni verificate, raccolte da Google.
-      </p>
+    <div class="page-hero-extra rv-cta" style="margin-top:2.25rem;">
+      <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer" class="btn btn-light">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
+        Recensisci su Google
+      </a>
+      <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer" class="btn btn-ghost-light">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        Recensisci su Facebook
+      </a>
     </div>
   </div>
 </div>
-
 <!-- REVIEWS -->
-<main class="px-6" style="padding-top:4rem;padding-bottom:5rem;">
+<main class="px-6" style="padding-top:clamp(3.5rem,7vw,6rem);padding-bottom:clamp(4rem,8vw,7rem);">
   <div class="container mx-auto" style="max-width:78rem;">
 
-    <p class="swipe-hint">
-      Scorri per vedere altre recensioni
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </p>
+    <!-- Media e recensione in evidenza che cambia da sola -->
+    <section class="rv-summary" aria-label="Riepilogo recensioni">
+      <div data-reveal>
+        <div class="rv-score" id="rv-score">5,0</div>
+        <div class="rv-score-meta">
+          <div class="rv-stars" id="rv-score-stars" aria-hidden="true"></div>
+          <span class="rv-count" id="rv-count"></span>
+        </div>
+      </div>
+      <figure class="rv-feature" id="rv-feature" data-reveal style="--d:2;">
+        <blockquote class="rv-feature-quote" id="rv-feature-quote" aria-live="polite"></blockquote>
+        <figcaption class="rv-feature-foot">
+          <span class="rv-feature-name" id="rv-feature-name"></span>
+          <span class="rv-nav">
+            <span class="rv-timer" aria-hidden="true"><i id="rv-timer"></i></span>
+            <button type="button" id="rv-prev" aria-label="Recensione precedente">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button type="button" id="rv-next" aria-label="Recensione successiva">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </span>
+        </figcaption>
+      </figure>
+    </section>
 
-    <div id="reviews-viewport">
-      <div id="reviews-track"></div>
-    </div>
+    <h2 class="font-serif" data-reveal style="font-weight:600;font-size:clamp(2rem,4vw,3rem);line-height:1.05;margin-bottom:clamp(1.75rem,3vw,2.5rem);">Tutte le recensioni</h2>
+    <div class="rv-grid" id="rv-grid"></div>
 
   </div>
 </main>
 
 <!-- FOOTER -->
-<footer class="bg-black text-white border-t border-white/10 px-6" style="padding-top:2.5rem;padding-bottom:2.5rem;">
-  <div class="container mx-auto">
-    <div class="flex flex-col md:flex-row justify-between items-center" style="gap:1.5rem;margin-bottom:1.5rem;">
-      <img src="logo-white.png" alt="Hair&amp;Barber Revolution" style="height:3rem;width:auto;object-fit:contain;"
-        onerror="this.src='logo.png';this.style.filter='brightness(0) invert(1)';" />
-      <div class="flex flex-wrap justify-center" style="gap:.75rem;">
-        <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Facebook">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </a>
-        <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" class="text-white/50 hover:text-white transition-colors" aria-label="Instagram">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-        </a>
-        <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer"
-           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Google">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          Recensioni Google
-        </a>
-        <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer"
-           class="flex items-center text-white/50 hover:text-white transition-colors" style="gap:.35rem;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;" aria-label="Recensioni Facebook">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          Recensioni Facebook
-        </a>
+<footer class="site-footer">
+  <div class="container mx-auto px-6">
+
+    <!-- Invito finale -->
+    <div class="ft-cta">
+      <p class="ft-cta-title">Il tuo prossimo look<br>inizia da qui.</p>
+      <div class="ft-cta-btns">
+        <a href="index.html#booking" class="btn btn-light">Prenota un appuntamento</a>
+        <a href="buoni.html" class="btn btn-ghost-light">Regala un buono</a>
       </div>
-      <div class="text-white/40 text-xs tracking-widest text-center md:text-right" style="line-height:1.8;">
-        Hair&amp;Barber Revolution, via Fornacetta 7 Costa Masnaga (LC), 23845<br>
-        &copy; <span id="footer-year"></span> HAIR&amp;BARBER REVOLUTION DI TOMA VERUSKA. TUTTI I DIRITTI RISERVATI.<br>
-        P.IVA 03667090132<br>
-        <a href="privacy.html" class="text-white/30 hover:text-white/60 transition-colors underline underline-offset-2">Privacy Policy</a>
+    </div>
+
+    <div class="ft-grid">
+      <div class="ft-col">
+        <p class="ft-h">Salone</p>
+        <p>Via Fornacetta 7<br>23845 Costa Masnaga (LC)</p>
+        <a class="ft-link" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via+Fornacetta+7,+23845+Costa+Masnaga+LC" target="_blank" rel="noreferrer">Indicazioni stradali</a>
       </div>
+      <div class="ft-col">
+        <p class="ft-h">Prenota</p>
+        <p><a class="ft-plain ft-tel" href="tel:+393331355200"><span class="ft-dim">Veruska</span> 333 135 5200</a><a class="ft-plain ft-tel" href="tel:+393381583431"><span class="ft-dim">Max</span> 338 158 3431</a></p>
+        <a class="ft-link" href="https://wa.me/393331355200" target="_blank" rel="noreferrer">Scrivi su WhatsApp</a>
+      </div>
+      <div class="ft-col">
+        <p class="ft-h">Orari</p>
+        <p class="ft-hours"><span><span class="ft-dim">Mar, Gio, Ven</span> 9:00-19:00</span><span><span class="ft-dim">Mer</span> 12:00-21:00</span><span><span class="ft-dim">Sab</span> 8:00-16:00</span><span class="ft-dim">Dom e Lun chiuso</span></p>
+      </div>
+      <div class="ft-col">
+        <p class="ft-h">Esplora</p>
+        <p class="ft-nav"><a href="novita.html">Novità</a><a href="buoni.html">Buoni regalo</a><a href="promozioni.html">Promozioni</a><a href="recensioni.html">Recensioni</a></p>
+      </div>
+    </div>
+
+    <div class="ft-social">
+      <a href="https://www.instagram.com/hair.barberrevolution/" target="_blank" rel="noreferrer" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></a>
+      <a href="https://www.facebook.com/hairbarberrevolution/" target="_blank" rel="noreferrer" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer" class="ft-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>Recensisci su Google</a>
+      <a href="https://www.facebook.com/hairbarberrevolution/reviews/" target="_blank" rel="noreferrer" class="ft-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Recensisci su Facebook</a>
+    </div>
+
+    <div class="ft-bottom">
+      <span>&copy; <span id="footer-year"></span> Hair&amp;Barber Revolution di Toma Veruska · P.IVA 03667090132</span>
+      <a href="privacy.html">Privacy e cookie</a>
     </div>
   </div>
 </footer>
@@ -682,127 +746,219 @@ function starsSvg(count) {
 }
 
 /* ════════════════════════════════
-   RENDER CARDS CON TRUNCATION
-   Limite: 150 caratteri. Oltre quel limite
-   il testo viene tagliato e appare "...Leggi Tutto"
+   GRIGLIA DELLE RECENSIONI
+   Testi oltre 320 caratteri vengono accorciati con "Leggi tutto",
+   che apre la finestra con il testo completo.
 ════════════════════════════════ */
-var TRUNCATE_LIMIT = 220;
+var TRUNCATE_LIMIT = 320;
+var WITH_TEXT = REVIEWS.map(function(r, i) { return { r: r, i: i }; })
+  .filter(function(x) { return x.r.testo && x.r.testo.trim(); });
 
-function buildQuoteHtml(testo, idx) {
-  if (!testo) return '';
-  /* Prendi solo la prima riga per il troncamento (per testi con \n) */
-  var firstLine = testo.split('\n')[0];
-  if (firstLine.length <= TRUNCATE_LIMIT && testo.length <= TRUNCATE_LIMIT) {
-    /* Testo breve: mostra tutto */
-    return '\u201C' + testo + '\u201D';
-  }
-  /* Testo lungo: tronca a TRUNCATE_LIMIT caratteri sulla prima riga */
-  var cutAt = Math.min(firstLine.length, TRUNCATE_LIMIT);
-  /* Torna indietro fino all'ultimo spazio per non tagliare a metà parola */
-  while (cutAt > 80 && firstLine[cutAt] !== ' ') cutAt--;
-  var preview = firstLine.substring(0, cutAt).trimEnd();
-  return '\u201C' + preview
-    + '... <button class="leggi-tutto-btn" onclick="openReviewModal(' + idx + ')" aria-label="Leggi la recensione completa di ' + testo.substring(0,30).replace(/"/g,'') + '">'
-    + 'Leggi Tutto</button>';
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function quoteHtml(testo, idx) {
+  var t = testo.trim();
+  if (t.length <= TRUNCATE_LIMIT) return '“' + escHtml(t).replace(/\n/g, '<br>') + '”';
+  var cut = TRUNCATE_LIMIT;
+  while (cut > 120 && t[cut] !== ' ') cut--;
+  return '“' + escHtml(t.substring(0, cut).trim()) + '... '
+    + '<button type="button" class="rv-more" onclick="openReviewModal(' + idx + ')">Leggi tutto</button>';
 }
 
 function renderReviews() {
-  var track = document.getElementById('reviews-track');
-  track.innerHTML = REVIEWS.map(function(r, idx) {
-    if (!r.testo) return ''; /* salta recensioni senza testo */
-    return '<div class="review-card">'
-      + '<div class="review-stars">' + starsSvg(r.stelle) + '</div>'
-      + '<p class="review-quote">' + buildQuoteHtml(r.testo, idx) + '</p>'
-      + '<div>'
-      + '<p class="review-name">' + r.nome + '</p>'
-      + '<p class="review-source">Recensione verificata &middot; Google</p>'
-      + '</div>'
-      + '</div>';
-  }).join('');
+  document.getElementById('rv-grid').innerHTML = WITH_TEXT.map(function(x, n) {
+    return '<article class="rv-card spot on-paper" data-reveal style="--d:' + (n % 3) + '">'
+      + '<div class="rv-stars" aria-label="' + x.r.stelle + ' stelle su 5">' + starsSvg(x.r.stelle) + '</div>'
+      + '<p class="rv-card-quote">' + quoteHtml(x.r.testo, x.i) + '</p>'
+      + '<p class="rv-card-name">' + escHtml(x.r.nome) + '</p>'
+      + '<p class="rv-card-src">Recensione verificata &middot; Google</p>'
+      + '</article>';
+  }).join('')
+    /* Ultima scheda: invito a lasciare una recensione */
+    + '<a class="rv-card rv-card-cta" data-reveal href="https://g.page/r/CX5BLAXF88S0EBM/review" target="_blank" rel="noreferrer">'
+    + '<span class="rv-cta-g" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg></span>'
+    + '<span class="rv-cta-title">Lascia la tua recensione</span>'
+    + '<span class="rv-cta-text">Sei stato da noi? Raccontalo in un minuto su Google: ci aiuta tantissimo.</span>'
+    + '<span class="rv-cta-go">Scrivi su Google <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>'
+    + '</a>';
+  if (window.HBR) window.HBR.reveal(document.getElementById('rv-grid'));
 }
+
+/* Media calcolata dalle recensioni dell'elenco */
+(function() {
+  var sum = REVIEWS.reduce(function(a, r) { return a + (r.stelle || 0); }, 0);
+  var avg = REVIEWS.length ? sum / REVIEWS.length : 0;
+  document.getElementById('rv-score').textContent = avg.toFixed(1).replace('.', ',');
+  document.getElementById('rv-score-stars').innerHTML = starsSvg(Math.round(avg));
+  Array.prototype.forEach.call(document.querySelectorAll('#rv-score-stars svg'), function(s, i) {
+    s.setAttribute('width', '26'); s.setAttribute('height', '26'); s.style.setProperty('--i', i);
+  });
+  document.getElementById('rv-count').textContent = 'Media di ' + REVIEWS.length + ' recensioni Google';
+})();
+
 renderReviews();
+setupDeck();
+
+/* Mazzo di recensioni su telefono */
+function setupDeck() {
+  var grid = document.getElementById('rv-grid');
+  var cards = grid.querySelectorAll('.rv-card');
+  if (!cards.length) return;
+  var mq = window.matchMedia('(max-width: 767.98px)');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var arrowL = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>';
+  var arrowR = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>';
+  var ui = document.createElement('div');
+  ui.className = 'rv-deck-ui';
+  ui.innerHTML = '<button type="button" aria-label="Recensione precedente">' + arrowL + '</button>'
+    + '<div class="rv-deck-meter" aria-live="polite"><b>01</b><span class="rv-deck-bar"><i></i></span><span>' + pad(cards.length) + '</span></div>'
+    + '<button type="button" aria-label="Recensione successiva">' + arrowR + '</button>';
+  grid.parentNode.insertBefore(ui, grid.nextSibling);
+  var prev = ui.children[0], next = ui.children[2], num = ui.querySelector('b'), bar = ui.querySelector('.rv-deck-bar i');
+  var active = -1, raf = 0, on = false;
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function update() {
+    raf = 0;
+    if (!on) return;
+    var gr = grid.getBoundingClientRect(), mid = gr.left + gr.width / 2, best = 0, bestD = 1e9;
+    Array.prototype.forEach.call(cards, function(c, i) {
+      var r = c.getBoundingClientRect();
+      var d = (r.left + r.width / 2 - mid) / r.width, a = Math.min(Math.abs(d), 1);
+      if (Math.abs(d) < bestD) { bestD = Math.abs(d); best = i; }
+      if (Math.abs(d) > 2.5) return;               /* lontane dallo schermo: niente calcoli */
+      c.style.setProperty('--o', (1 - a * .4).toFixed(3));
+      if (!reduce) {
+        c.style.setProperty('--s', (1 - a * .08).toFixed(3));
+        c.style.setProperty('--ry', (Math.max(-1, Math.min(1, d)) * -9).toFixed(2) + 'deg');
+      }
+    });
+    if (best !== active) {
+      if (active >= 0) cards[active].classList.remove('is-active');
+      active = best; cards[active].classList.add('is-active');
+      num.textContent = pad(active + 1);
+      bar.style.transform = 'scaleX(' + ((active + 1) / cards.length) + ')';
+      prev.disabled = active === 0; next.disabled = active === cards.length - 1;
+    }
+  }
+  function schedule() { if (!raf) raf = requestAnimationFrame(update); }
+  function goTo(i) {
+    var c = cards[Math.max(0, Math.min(cards.length - 1, i))];
+    grid.scrollTo({ left: c.offsetLeft - (grid.clientWidth - c.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+  }
+  prev.addEventListener('click', function() { goTo(active - 1); });
+  next.addEventListener('click', function() { goTo(active + 1); });
+  grid.addEventListener('scroll', schedule, { passive: true });
+
+  function apply() {
+    on = mq.matches;
+    grid.classList.toggle('is-deck', on);
+    if (!on) {
+      Array.prototype.forEach.call(cards, function(c) { c.style.removeProperty('--o'); c.style.removeProperty('--s'); c.style.removeProperty('--ry'); c.classList.remove('is-active'); });
+      active = -1; return;
+    }
+    Array.prototype.forEach.call(cards, function(c) { c.classList.add('in'); });
+    grid.scrollLeft = 0; active = -1; update();
+  }
+  if (mq.addEventListener) mq.addEventListener('change', apply); else mq.addListener(apply);
+  window.addEventListener('resize', schedule);
+  apply();
+
+  /* La prima volta che il mazzo entra nello schermo fa un piccolo cenno verso sinistra:
+     così si capisce subito che si può sfogliare */
+  if (!reduce && 'IntersectionObserver' in window) {
+    var touched = false;
+    grid.addEventListener('touchstart', function() { touched = true; }, { passive: true });
+    var io = new IntersectionObserver(function(entries) {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      if (!on || touched) return;
+      setTimeout(function() {
+        if (touched) return;
+        grid.scrollTo({ left: grid.scrollLeft + 70, behavior: 'smooth' });
+        setTimeout(function() { if (!touched) goTo(0); }, 550);
+      }, 500);
+    }, { threshold: .6 });
+    io.observe(grid);
+  }
+}
 
 /* ════════════════════════════════
-   AUTO-SCROLL SLIDER
-   Avanza di una card ogni 4 secondi, torna all'inizio dopo l'ultima.
-   Scorrendo manualmente (drag/swipe) si possono vedere tutte le recensioni,
-   l'avanzamento automatico riprende dopo qualche secondo di inattivita'.
+   RECENSIONE IN EVIDENZA
+   Cambia ogni 7 secondi; si ferma al passaggio del mouse, con il focus
+   da tastiera, quando la scheda non è visibile e con "riduci movimento".
 ════════════════════════════════ */
 (function() {
-  var track = document.getElementById('reviews-track');
-  var viewport = document.getElementById('reviews-viewport');
-  var index = 0;
-  var userInteracting = false;
-  var resumeTimeout = null;
-  var autoInterval = null;
+  var pool = WITH_TEXT.filter(function(x) { var l = x.r.testo.trim().length; return l >= 70 && l <= 280; });
+  if (!pool.length) pool = WITH_TEXT;
+  var box = document.getElementById('rv-feature');
+  var q = document.getElementById('rv-feature-quote');
+  var name = document.getElementById('rv-feature-name');
+  var timer = document.getElementById('rv-timer');
+  var reduce = window.HBR && window.HBR.reduceMotion;
+  var idx = 0, paused = false, visible = true, swapT = null;
 
-  /* On mobile, pad the track left/right so the active card sits centered
-     in the viewport with an equal peek of the previous/next card on both
-     sides. On desktop the cards keep their original flush layout. */
-  function setCenteringPadding() {
-    if (window.innerWidth >= 768) {
-      track.style.paddingLeft = '';
-      track.style.paddingRight = '';
-      return;
+  function show(n, animate) {
+    idx = (n + pool.length) % pool.length;
+    var x = pool[idx];
+    function apply() {
+      q.textContent = '“' + x.r.testo.trim() + '”';
+      name.textContent = x.r.nome;
+      q.classList.remove('is-out'); name.classList.remove('is-out');
     }
-    var card = track.querySelector('.review-card');
-    if (!card) return;
-    var pad = Math.max(0, (viewport.clientWidth - card.getBoundingClientRect().width) / 2);
-    track.style.paddingLeft = pad + 'px';
-    track.style.paddingRight = pad + 'px';
+    clearTimeout(swapT);
+    if (animate && !reduce) {
+      q.classList.add('is-out'); name.classList.add('is-out');
+      swapT = setTimeout(apply, 450);
+    } else apply();
+    restartTimer();
   }
-
-  function cardStep() {
-    var card = track.querySelector('.review-card');
-    if (!card) return 0;
-    var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 24;
-    return card.getBoundingClientRect().width + gap;
+  function restartTimer() {
+    timer.classList.remove('run');
+    if (reduce) return;
+    void timer.offsetWidth;
+    timer.classList.add('run');
   }
+  /* il cambio avviene alla fine della barra di avanzamento */
+  timer.addEventListener('animationend', function() { if (!paused && visible) show(idx + 1, true); });
 
-  function goToIndex(i, behavior) {
-    var max = REVIEWS.length - 1;
-    index = i > max ? 0 : (i < 0 ? max : i);
-    track.scrollTo({ left: index * cardStep(), behavior: behavior || 'smooth' });
+  function setPaused(p) { paused = p; box.classList.toggle('is-paused', p || !visible); }
+  box.addEventListener('mouseenter', function() { setPaused(true); });
+  box.addEventListener('mouseleave', function() { setPaused(false); });
+  box.addEventListener('focusin',  function() { setPaused(true); });
+  box.addEventListener('focusout', function() { setPaused(false); });
+  document.getElementById('rv-prev').addEventListener('click', function() { show(idx - 1, true); });
+  document.getElementById('rv-next').addEventListener('click', function() { show(idx + 1, true); });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(e) {
+      visible = e[0].isIntersecting;
+      box.classList.toggle('is-paused', paused || !visible);
+    }).observe(box);
   }
+  show(0, false);
 
-  function startAuto() {
-    stopAuto();
-    autoInterval = setInterval(function() {
-      if (userInteracting) return;
-      goToIndex(index + 1);
-    }, 4000);
+  /* Altezza fissa: il riquadro è alto quanto la recensione più lunga del giro,
+     così cambiando recensione il resto della pagina (e i pulsanti) non si sposta */
+  function lockHeight() {
+    var cur = q.textContent, max = 0;
+    q.style.minHeight = '';
+    pool.forEach(function(x) {
+      q.textContent = '“' + x.r.testo.trim() + '”';
+      max = Math.max(max, q.offsetHeight);
+    });
+    q.textContent = cur;
+    q.style.minHeight = max + 'px';
   }
-  function stopAuto() {
-    if (autoInterval) clearInterval(autoInterval);
-  }
-
-  ['pointerdown', 'touchstart', 'wheel'].forEach(function(evt) {
-    track.addEventListener(evt, function() {
-      userInteracting = true;
-      if (resumeTimeout) clearTimeout(resumeTimeout);
-      resumeTimeout = setTimeout(function() {
-        userInteracting = false;
-        // sync index to nearest card after manual scroll
-        var step = cardStep();
-        if (step) index = Math.round(track.scrollLeft / step);
-      }, 4500);
-    }, { passive: true });
-  });
-
-  setCenteringPadding();
-  goToIndex(0, 'auto');
-  startAuto();
-
-  var resizeTimeout = null;
+  lockHeight();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(lockHeight);
+  var lockT = null, lastW = window.innerWidth;
   window.addEventListener('resize', function() {
-    if (resizeTimeout) clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(function() {
-      setCenteringPadding();
-      goToIndex(index, 'auto');
-    }, 150);
+    if (window.innerWidth === lastW) return;          /* su telefono la barra dell'indirizzo cambia solo l'altezza */
+    lastW = window.innerWidth;
+    clearTimeout(lockT); lockT = setTimeout(lockHeight, 150);
   });
-})();
-</script>
+})();</script>
 
 <script src="cookie-banner.js"></script>
 </body>
