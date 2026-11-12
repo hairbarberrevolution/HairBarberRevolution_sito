@@ -90,6 +90,19 @@
       });
       hl.replaceChild(frag, n);
     });
+    /* la punteggiatura subito dopo resta attaccata all'ultima parola (niente virgole a capo da sole) */
+    var nx = hl.nextSibling, last = hl.lastChild;
+    if (nx && nx.nodeType === 3 && last && last.className === 'hlw') {
+      var pm = /^[.,;:!?)]+/.exec(nx.textContent);
+      if (pm) {
+        var nw = document.createElement('span');
+        nw.style.whiteSpace = 'nowrap';
+        hl.replaceChild(nw, last);
+        nw.appendChild(last);
+        nw.appendChild(document.createTextNode(pm[0]));
+        nx.textContent = nx.textContent.slice(pm[0].length);
+      }
+    }
   }
   function highlights() {
     var els = document.querySelectorAll('.hl');

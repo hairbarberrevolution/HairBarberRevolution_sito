@@ -32,7 +32,7 @@ ga<!DOCTYPE html>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -40,7 +40,7 @@ ga<!DOCTYPE html>
         extend: {
           colors: { black: '#0d0d0d', white: '#fafafa' },
           fontFamily: {
-            serif: ["'Cormorant Garamond'", "serif"],
+            serif: ["'Bricolage Grotesque'", "serif"],
             sans:  ["'Jost'", "'Segoe UI'", "system-ui", "sans-serif"]
           }
         }
@@ -157,7 +157,7 @@ ga<!DOCTYPE html>
     /* Body card */
     .promo-body { padding: 1.25rem 1.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; gap: .35rem; }
     .promo-name {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', serif;
       font-weight: 700; font-size: 1.25rem; color: #000; line-height: 1.2;
     }
     .promo-desc {
@@ -179,7 +179,7 @@ ga<!DOCTYPE html>
       border: 1px dashed rgba(0,0,0,.2);
     }
     .empty-state p {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.25rem;
+      font-family: 'Bricolage Grotesque', serif; font-size: 1.25rem;
       color: rgba(0,0,0,.6); margin-bottom: 1.5rem;
     }
     .social-btn {
@@ -341,7 +341,7 @@ ga<!DOCTYPE html>
       .modal-header { padding: 1.4rem 1.6rem 1rem; }
     }
     .modal-titolo {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', serif;
       font-weight: 700; font-size: clamp(1.25rem,3vw,1.65rem);
       color: #000; line-height: 1.2;
     }
@@ -391,6 +391,7 @@ ga<!DOCTYPE html>
   </style>
   <link rel="stylesheet" href="hbr.css" />
   <script src="hbr-sub.js"></script>
+  <script src="hbr-fx.js" defer></script>
 </head>
 
 <body>
@@ -624,7 +625,7 @@ ga<!DOCTYPE html>
 
     <!-- Invito finale -->
     <div class="ft-cta">
-      <p class="ft-cta-title">Il tuo prossimo look<br>inizia da qui.</p>
+      <p class="ft-cta-title">Il tuo prossimo look <br>inizia da qui.</p>
       <div class="ft-cta-btns">
         <a href="index.html#booking" class="btn btn-light">Prenota un appuntamento</a>
         <a href="buoni.html" class="btn btn-ghost-light">Regala un buono</a>
@@ -738,7 +739,7 @@ function promoCardHtml(p, idx) {
       '</div>';
   }
 
-  return '<div class="promo-card spot on-paper" data-reveal style="--d:' + (idx % 2) + '" tabindex="0" role="button"' +
+  return '<div class="promo-card spot on-paper" data-cursor="Scopri" data-reveal style="--d:' + (idx % 2) + '" tabindex="0" role="button"' +
          ' aria-label="Apri promozione: ' + escAttr(p.nome) + '"' +
          ' onclick="openModal(' + idx + ')"' +
          ' onkeydown="if(event.key===\'Enter\'||event.key===\' \')openModal(' + idx + ')">' +
@@ -746,7 +747,7 @@ function promoCardHtml(p, idx) {
     '<div class="promo-body">' +
       '<h3 class="promo-name">' + p.nome + '</h3>' +
       '<p class="promo-desc">' + stripHtml(p.descrizione || '') + '</p>' +
-      '<span class="promo-card-leggi">Scopri →</span>' +
+      '<span class="promo-card-leggi">Scopri la promozione</span>' +
     '</div>' +
   '</div>';
 }

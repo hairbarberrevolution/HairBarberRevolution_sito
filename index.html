@@ -90,6 +90,10 @@
       background: repeating-linear-gradient(-45deg, #fafafa 0 5px, transparent 5px 10px);
       animation: spPoleX .55s linear infinite;
     }
+    #splash .sp-count {
+      color: #fafafa; font: 500 .78rem/1 'Jost', 'Segoe UI', system-ui, sans-serif; letter-spacing: .22em;
+      font-variant-numeric: tabular-nums; margin-top: -1rem; animation: spIn .9s cubic-bezier(.16, 1, .3, 1) .2s both;
+    }
     @keyframes spFill  { to { clip-path: inset(0 0 0 0); } }
     @keyframes spPoleX { to { transform: translateX(14.14px); } }
     @keyframes spPoleY { to { transform: translateY(16.97px); } }
@@ -101,7 +105,7 @@
   <link rel="preload" as="image" href="IMMAGINI_GENERALI/banner.jpg" fetchpriority="high" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
   <!-- Google tag (gtag.js) - Consent Mode v2 -->
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -123,7 +127,7 @@
         extend: {
           colors: { black: '#0d0d0d', white: '#fafafa' },
           fontFamily: {
-            serif: ["'Cormorant Garamond'", "serif"],
+            serif: ["'Bricolage Grotesque'", "serif"],
             sans:  ["'Jost'", "'Segoe UI'", "system-ui", "sans-serif"]
           }
         }
@@ -144,7 +148,22 @@
   <div class="sp-center">
     <img src="logo-white-small.png" alt="" width="560" height="369" />
     <div class="sp-bar"><div class="sp-fill"></div></div>
+    <div class="sp-count"><span id="sp-count">0</span>%</div>
   </div>
+  <script>
+    /* il contatore sale insieme alla barra (stessa durata e stessa curva) */
+    (function () {
+      var el = document.getElementById('sp-count');
+      if (!el || !document.documentElement.classList.contains('is-loading')) return;
+      var t0 = performance.now() + 300;
+      (function step(now) {
+        var k = Math.max(0, Math.min(1, (now - t0) / 1500));
+        var e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+        el.textContent = Math.round(e * 100);
+        if (k < 1) requestAnimationFrame(step);
+      })(performance.now());
+    })();
+  </script>
 </div>
 
 <div id="site">
@@ -236,8 +255,8 @@
     <div class="hero-overlay"></div>
     <div class="hero-content container mx-auto px-6">
       <h1 class="hero-title" aria-label="Hair&amp;Barber Revolution">
-        <span class="hero-line" aria-hidden="true"><span>Hair&amp;Barber</span></span>
-        <span class="hero-line" aria-hidden="true"><span>Revolution</span></span>
+        <span class="hero-line" aria-hidden="true"><span data-chars>Hair&amp;Barber</span></span>
+        <span class="hero-line" aria-hidden="true"><span data-chars>Revolution</span></span>
       </h1>
       <p class="hero-sub">
         Un salone di bellezza dove <strong class="hl">l'arte</strong> incontra <strong class="hl">la precisione</strong>.
@@ -246,6 +265,15 @@
       <div class="hero-cta">
         <button onclick="goTo('booking')" class="btn btn-light">Prenota un appuntamento</button>
         <button onclick="goTo('services')" class="btn btn-ghost-light">Vedi il listino</button>
+      </div>
+      <!-- Dove siamo e se siamo aperti adesso: subito, senza scorrere -->
+      <div class="hero-foot">
+        <a class="hero-foot-item" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via+Fornacetta+7,+23845+Costa+Masnaga+LC" target="_blank" rel="noreferrer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          Via Fornacetta 7, Costa Masnaga (LC)
+        </a>
+        <span class="hero-foot-item" id="hero-status"></span>
+        <span class="hero-scroll" aria-hidden="true">Scorri <i></i></span>
       </div>
     </div>
   </section>
@@ -256,8 +284,7 @@
       <!-- La frase si accende parola per parola mentre si scorre -->
       <div class="stmt-scene">
       <div class="stmt-sticky" style="max-width:62rem;">
-        <p class="eyebrow anim-up">Chi siamo</p>
-        <h2 class="h-section anim-up" style="margin-bottom:1.75rem;transition-delay:.08s;">Stile, eleganza e precisione</h2>
+        <h2 class="h-section anim-up" style="margin-bottom:1.75rem;">Stile, eleganza e precisione</h2>
         <p class="statement anim-up" data-words style="transition-delay:.16s;">
           Hair&amp;Barber Revolution nasce dalla <strong class="hl">passione</strong> per la cura dei <strong class="hl">capelli</strong> e della <strong class="hl">barba</strong>.
           Il nostro salone è uno spazio <strong class="hl">moderno</strong> e <strong class="hl">accogliente</strong>, pensato per offrire un momento
@@ -276,13 +303,19 @@
       </div>
       </div>
 
+      <!-- Linea di taglio: le forbici avanzano mentre si scorre -->
+      <div class="cut-line" aria-hidden="true" style="margin-top:0;">
+        <span class="cut-done"></span>
+        <span class="cut-run"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><g><circle cx="5.5" cy="6.5" r="2.8"/><line x1="7.9" y1="8.2" x2="20" y2="16.5"/></g><g><circle cx="5.5" cy="17.5" r="2.8"/><line x1="7.9" y1="15.8" x2="20" y2="7.5"/></g></svg></span>
+      </div>
+
       <!-- Su telefono il team si sfoglia di lato con il dito -->
       <div class="team-scene"><div class="team-sticky">
       <div class="team-grid">
 
         <!-- Veruska -->
         <article class="team-card anim-up">
-          <div class="team-photo">
+          <div class="team-photo" data-tilt>
             <img src="IMMAGINI_NOI/veruska.jpg" alt="Veruska con gli attestati di gara" width="900" height="873" decoding="async" style="object-position:72% 30%;"
               onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'team-placeholder\'>V</div>'" />
           </div>
@@ -295,7 +328,7 @@
 
         <!-- Max -->
         <article class="team-card anim-up" style="transition-delay:.12s;">
-          <div class="team-photo">
+          <div class="team-photo" data-tilt>
             <img src="IMMAGINI_NOI/max.jpg" alt="Max" width="900" height="900" decoding="async" style="object-position:50% 20%;"
               onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'team-placeholder\'>M</div>'" />
           </div>
@@ -308,7 +341,7 @@
 
         <!-- Gaia -->
         <article class="team-card anim-up" style="transition-delay:.24s;">
-          <div class="team-photo">
+          <div class="team-photo" data-tilt>
             <img src="IMMAGINI_NOI/gaia.jpg" alt="Gaia" width="900" height="1200" decoding="async" style="object-position:50% 35%;"
               onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'team-placeholder\'>G</div>'" />
           </div>
@@ -324,6 +357,33 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </div>
       </div></div>
+
+      <!-- RICONOSCIMENTI: il voto conta fino a 5, le stelle compaiono, la coccarda si disegna.
+           I numeri delle recensioni vanno aggiornati a mano quando cambiano in recensioni.html -->
+      <div class="proof anim-up">
+        <a class="proof-cell" href="recensioni.html" data-cursor="Leggi">
+          <span class="proof-big" data-count="5" data-dec="1">5,0</span>
+          <span class="proof-title">
+            <span class="rv-stars" role="img" aria-label="5 stelle su 5">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="--i:0" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="--i:1" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="--i:2" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="--i:3" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="--i:4" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+            </span>
+          </span>
+          <span class="proof-txt">Media di 33 recensioni su Google. Leggi cosa dicono i clienti.</span>
+          <svg class="proof-go" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="8 7 17 7 17 16"/></svg>
+        </a>
+        <a class="proof-cell" href="novita.html" data-cursor="Leggi">
+          <span class="proof-big" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="18" r="12" pathLength="1"/><path d="M16.5 27.5 12 44l12-6.5L36 44l-4.5-16.5" pathLength="1"/><path d="M24 11.5l2 4.1 4.5.6-3.3 3.2.8 4.5-4-2.1-4 2.1.8-4.5-3.3-3.2 4.5-.6z" pathLength="1"/></svg>
+          </span>
+          <span class="proof-title">Campioni dei Campioni d'Italia 2025</span>
+          <span class="proof-txt">Veruska premiata nella categoria femminile: taglio medio, colore e piega.</span>
+          <svg class="proof-go" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="8 7 17 7 17 16"/></svg>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -358,6 +418,20 @@
     </div>
   </section>
 
+  <!-- RULLO DEI LAVORI: la scena si ferma e lo scroll fa scorrere le foto di lato.
+       Le foto vengono dalle stesse liste della galleria (GALLERIA_DONNA.js / GALLERIA_UOMO.js). -->
+  <section class="reel" id="reel" aria-label="Alcuni lavori usciti dal salone">
+    <div class="reel-sticky">
+      <div class="reel-ghost" id="reel-ghost" aria-hidden="true">Revolution</div>
+      <div class="container mx-auto px-6 reel-head">
+        <h2 class="h-section anim-up">Usciti dal nostro salone</h2>
+        <p class="anim-up" style="transition-delay:.1s;">Tagli, colori e barbe fatti in negozio, fotografati appena finiti. Tocca una foto per ingrandirla.</p>
+      </div>
+      <div class="reel-track" id="reel-track"></div>
+      <div class="container mx-auto px-6"><div class="reel-bar" aria-hidden="true"><i></i></div></div>
+    </div>
+  </section>
+
   <!-- GALLERIA -->
   <section id="gallery" class="section">
     <div class="container mx-auto">
@@ -368,7 +442,12 @@
 
       <div id="gallery-content"></div>
 
-      <div class="anim-up border-t border-black/15 flex flex-col lg:flex-row lg:items-center justify-between" style="margin-top:clamp(3rem,6vw,5rem);padding-top:2.5rem;gap:2rem;">
+      <div class="cut-line" aria-hidden="true" style="margin-bottom:1.5rem;">
+        <span class="cut-done"></span>
+        <span class="cut-run"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><g><circle cx="5.5" cy="6.5" r="2.8"/><line x1="7.9" y1="8.2" x2="20" y2="16.5"/></g><g><circle cx="5.5" cy="17.5" r="2.8"/><line x1="7.9" y1="15.8" x2="20" y2="7.5"/></g></svg></span>
+      </div>
+
+      <div class="anim-up flex flex-col lg:flex-row lg:items-center justify-between" style="gap:2rem;">
         <div style="max-width:36rem;">
           <h3 class="font-serif font-bold" style="font-size:1.7rem;line-height:1.15;margin-bottom:.6rem;">Scopri tutte le nostre creazioni</h3>
           <p class="soft" style="font-size:.95rem;line-height:1.7;opacity:.65;">
@@ -554,10 +633,12 @@
   </section>
 
   <!-- FASCIA FINALE: l'azione principale della pagina, in grande -->
-  <a href="#booking" onclick="event.preventDefault();goTo('booking')" class="cta-band">
-    <span class="container mx-auto cta-band-inner">
-      <span class="cta-band-text">Prenota un appuntamento</span>
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><line x1="6" y1="24" x2="41" y2="24"/><polyline points="27 10 41 24 27 38"/></svg>
+  <a href="#booking" onclick="event.preventDefault();goTo('booking')" class="cta-band" aria-label="Prenota un appuntamento" data-cursor="Prenota">
+    <span data-marquee data-speed="95" aria-hidden="true">
+      <span class="marquee-track">
+        <span class="cta-band-text">Prenota un appuntamento</span>
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><line x1="6" y1="24" x2="41" y2="24"/><polyline points="27 10 41 24 27 38"/></svg>
+      </span>
     </span>
   </a>
 
@@ -569,7 +650,7 @@
 
     <!-- Invito finale -->
     <div class="ft-cta">
-      <p class="ft-cta-title">Il tuo prossimo look<br>inizia da qui.</p>
+      <p class="ft-cta-title">Il tuo prossimo look <br>inizia da qui.</p>
       <div class="ft-cta-btns">
         <a href="index.html#booking" class="btn btn-light">Prenota un appuntamento</a>
         <a href="buoni.html" class="btn btn-ghost-light">Regala un buono</a>
@@ -792,6 +873,19 @@ function wrapHl(hl) {
     });
     hl.replaceChild(frag, n);
   });
+    /* la punteggiatura subito dopo resta attaccata all'ultima parola (niente virgole a capo da sole) */
+    var nx = hl.nextSibling, last = hl.lastChild;
+    if (nx && nx.nodeType === 3 && last && last.className === 'hlw') {
+      var pm = /^[.,;:!?)]+/.exec(nx.textContent);
+      if (pm) {
+        var nw = document.createElement('span');
+        nw.style.whiteSpace = 'nowrap';
+        hl.replaceChild(nw, last);
+        nw.appendChild(last);
+        nw.appendChild(document.createTextNode(pm[0]));
+        nx.textContent = nx.textContent.slice(pm[0].length);
+      }
+    }
 }
 onPageReady(function() {
   var hls = document.querySelectorAll('.hl');
@@ -955,7 +1049,8 @@ function emptyGalleryHtml(tab) {
 }
 
 function tileHtml(img, alt, i) {
-  return '<div class="gallery-item" style="--i:' + Math.min(i, 14) + '"><img src="' + img.url + '" alt="' + alt + '" loading="lazy" decoding="async" /><div class="gallery-overlay"></div></div>';
+  /* Ogni foto è un pulsante: si apre nel visore a tutto schermo */
+  return '<button type="button" class="gallery-item" data-cursor="Apri" aria-label="Apri la foto ' + alt + '" style="--i:' + Math.min(i, 14) + '"><img src="' + img.url + '" alt="' + alt + '" loading="lazy" decoding="async" /><span class="gallery-overlay"></span></button>';
 }
 
 function renderGallery() {
@@ -1297,6 +1392,11 @@ function handleSubmit(e) {
       + (sub ? '<span style="font-size:.82rem;opacity:.6;">' + sub + '</span>' : '')
       + '</div>';
 
+    /* Lo stesso stato, in breve, anche nell'hero */
+    var hs = document.getElementById('hero-status');
+    if (hs) hs.innerHTML = '<span class="status-dot' + (isOpen ? ' is-open' : '') + '"></span>'
+      + label + (sub ? ', ' + sub.charAt(0).toLowerCase() + sub.slice(1) : '');
+
     /* Evidenzia la riga di oggi nella tabella orari */
     Array.prototype.forEach.call(document.querySelectorAll('#hours-list [data-day]'), function(n) {
       n.classList.toggle('is-today', n.getAttribute('data-day') === String(day));
@@ -1425,7 +1525,205 @@ onPageReady(function() {
 
 </div>
 
+<!-- VISORE FOTO: una foto alla volta, a tutto schermo. Frecce, tastiera e swipe. -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ingrandita">
+  <div class="lb-top">
+    <span class="lb-count" id="lb-count" aria-live="polite"></span>
+    <button type="button" class="lb-btn" id="lb-close" aria-label="Chiudi la foto">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="lb-stage" id="lb-stage"><img class="lb-img" id="lb-img" alt="" /></div>
+  <button type="button" class="lb-btn lb-prev" id="lb-prev" aria-label="Foto precedente">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 5 5 12 12 19"/></svg>
+  </button>
+  <button type="button" class="lb-btn lb-next" id="lb-next" aria-label="Foto successiva">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </button>
+  <div class="lb-thumbs" id="lb-thumbs" aria-label="Tutte le foto"></div>
+  <div class="lb-bar" aria-hidden="true"><i id="lb-bar"></i></div>
+</div>
+
+<!-- PULSANTE FISSO: compare dopo l'hero, sparisce vicino al modulo e al footer -->
+<a href="#booking" class="fab-book" id="fab-book" onclick="event.preventDefault();goTo('booking')">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5"/><line x1="3.5" y1="10" x2="20.5" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
+  Prenota
+</a>
+
+<script src="hbr-fx.js"></script>
 <script>
+/* ════════════════════════
+   VISORE FOTO
+════════════════════════ */
+(function() {
+  var lb = document.getElementById('lightbox'), img = document.getElementById('lb-img');
+  var count = document.getElementById('lb-count'), bar = document.getElementById('lb-bar');
+  var stage = document.getElementById('lb-stage');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var list = [], idx = 0, opener = null, lockedByMe = false;
+
+  var thumbs = document.getElementById('lb-thumbs');
+  function show(i, dir) {
+    idx = (i + list.length) % list.length;
+    img.src = list[idx].src; img.alt = list[idx].alt;
+    count.textContent = (idx + 1) + ' / ' + list.length;
+    bar.style.transform = 'scaleX(' + ((idx + 1) / list.length).toFixed(4) + ')';
+    Array.prototype.forEach.call(thumbs.children, function(b, k) {
+      b.setAttribute('aria-current', k === idx ? 'true' : 'false');
+      if (k === idx) thumbs.scrollLeft = b.offsetLeft - thumbs.clientWidth / 2 + b.offsetWidth / 2;
+    });
+    if (dir && img.animate && !reduce) {
+      img.animate([
+        { opacity: 0, transform: 'translateX(' + (dir * 70) + 'px) scale(.95)' },
+        { opacity: 1, transform: 'none' }
+      ], { duration: 520, easing: 'cubic-bezier(.16,1,.3,1)' });
+    }
+  }
+  function open(tile) {
+    var tiles = Array.prototype.slice.call(tile.closest('.gallery-grid, .reel-track').querySelectorAll('button.gallery-item, button.reel-card'));
+    list = tiles.map(function(t) { var im = t.querySelector('img'); return { src: im.getAttribute('src'), alt: im.alt }; });
+    opener = tile;
+    /* miniature: una per foto, quella attiva è in evidenza */
+    thumbs.innerHTML = list.map(function(it, k) {
+      return '<button type="button" data-k="' + k + '" aria-label="Vai alla foto ' + (k + 1) + '"><img src="' + it.src + '" alt="" loading="lazy" decoding="async" /></button>';
+    }).join('');
+    lb.classList.add('open');
+    lockedByMe = document.body.style.overflow !== 'hidden';
+    if (lockedByMe) document.body.style.overflow = 'hidden';
+    show(tiles.indexOf(tile), 0);
+    document.getElementById('lb-close').focus();
+    /* la foto cresce dal riquadro su cui si è cliccato */
+    if (img.animate && !reduce) {
+      var from = tile.getBoundingClientRect();
+      var grow = function() {
+        var to = img.getBoundingClientRect();
+        if (!to.width) return;
+        var s = Math.max(from.width / to.width, from.height / to.height);
+        var dx = (from.left + from.width / 2) - (to.left + to.width / 2), dy = (from.top + from.height / 2) - (to.top + to.height / 2);
+        img.animate([
+          { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + s + ')', opacity: .6 },
+          { transform: 'none', opacity: 1 }
+        ], { duration: 650, easing: 'cubic-bezier(.16,1,.3,1)' });
+      };
+      if (img.complete && img.naturalWidth) grow(); else img.addEventListener('load', grow, { once: true });
+    }
+  }
+  function close() {
+    if (!lb.classList.contains('open')) return;
+    lb.classList.remove('open');
+    if (lockedByMe) document.body.style.overflow = '';
+    if (opener && opener.focus) opener.focus();
+  }
+
+  document.addEventListener('click', function(e) {
+    var tile = e.target.closest && e.target.closest('button.gallery-item, button.reel-card');
+    if (tile) open(tile);
+  });
+  thumbs.addEventListener('click', function(e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    var k = +b.getAttribute('data-k');
+    if (k !== idx) show(k, k > idx ? 1 : -1);
+  });
+  document.getElementById('lb-close').addEventListener('click', close);
+  document.getElementById('lb-prev').addEventListener('click', function() { show(idx - 1, -1); });
+  document.getElementById('lb-next').addEventListener('click', function() { show(idx + 1, 1); });
+  stage.addEventListener('click', function(e) { if (e.target === stage) close(); });
+
+  /* tastiera: frecce per sfogliare, Esc per chiudere, Tab resta dentro il visore */
+  document.addEventListener('keydown', function(e) {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') { e.stopImmediatePropagation(); close(); }
+    else if (e.key === 'ArrowLeft') show(idx - 1, -1);
+    else if (e.key === 'ArrowRight') show(idx + 1, 1);
+    else if (e.key === 'Tab') {
+      var f = lb.querySelectorAll('button'), first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }, true);
+
+  /* swipe laterale su telefono */
+  var sx = null;
+  stage.addEventListener('pointerdown', function(e) { sx = e.clientX; });
+  stage.addEventListener('pointerup', function(e) {
+    if (sx === null) return;
+    var dx = e.clientX - sx; sx = null;
+    if (Math.abs(dx) > 45) show(idx + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+  });
+  stage.addEventListener('pointercancel', function() { sx = null; });
+})();
+
+/* ════════════════════════
+   RULLO DEI LAVORI
+   Le foto alternano donna e uomo. Con lo script la sezione diventa alta quanto
+   la strada che le foto devono fare: scorrendo in giù, il rullo scorre di lato.
+   Con "riduci movimento" resta una fila da sfogliare con il dito.
+════════════════════════ */
+(function() {
+  var reel = document.getElementById('reel'), track = document.getElementById('reel-track');
+  if (!reel || !track) return;
+  var ghost = document.getElementById('reel-ghost');
+  var d = GALLERY.donna.slice(0, 5), u = GALLERY.uomo.slice(0, 5), items = [];
+  for (var i = 0; i < 5; i++) {
+    if (d[i]) items.push({ url: d[i].url, tag: 'Donna' });
+    if (u[i]) items.push({ url: u[i].url, tag: 'Uomo' });
+  }
+  if (!items.length) { reel.style.display = 'none'; return; }
+  track.innerHTML = items.map(function(it, k) {
+    return '<button type="button" class="reel-card" data-cursor="Apri" aria-label="Apri la foto ' + it.tag + ' ' + (k + 1) + '">'
+      + '<img src="' + it.url + '" alt="Lavoro ' + it.tag.toLowerCase() + ' ' + (k + 1) + '" loading="lazy" decoding="async" />'
+      + '<span class="reel-tag">' + it.tag + '</span></button>';
+  }).join('');
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+  reel.classList.add('is-pinned');
+  var shift = 0, near = false, ticking = false;
+  function measure() {
+    shift = Math.max(0, track.scrollWidth - window.innerWidth);
+    reel.style.height = (window.innerHeight + shift) + 'px';
+    update();
+  }
+  function update() {
+    ticking = false;
+    var top = reel.getBoundingClientRect().top;
+    var p = shift ? Math.max(0, Math.min(1, -top / shift)) : 0;
+    reel.style.setProperty('--p', p.toFixed(4));
+    track.style.transform = 'translate3d(' + (-p * shift).toFixed(1) + 'px,0,0)';
+    if (ghost) ghost.style.transform = 'translate3d(' + (8 - p * 46).toFixed(2) + '%,0,0)';
+  }
+  window.addEventListener('scroll', function() {
+    if (!near || ticking) return;
+    ticking = true; requestAnimationFrame(update);
+  }, { passive: true });
+  window.addEventListener('resize', measure);
+  window.addEventListener('load', measure);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(en) { near = en[0].isIntersecting; if (near) update(); }, { rootMargin: '20% 0px' }).observe(reel);
+  } else near = true;
+  measure();
+})();
+
+/* ════════════════════════
+   PULSANTE FISSO "PRENOTA"
+   Visibile solo quando non si vedono né l'hero né il modulo né la fine della pagina.
+════════════════════════ */
+(function() {
+  var fab = document.getElementById('fab-book');
+  if (!fab || !('IntersectionObserver' in window)) return;
+  var seen = {};
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { seen[e.target.id || e.target.className] = e.isIntersecting; });
+    var hide = Object.keys(seen).some(function(k) { return seen[k]; });
+    fab.classList.toggle('show', !hide);
+  });
+  ['#home', '#booking', '.cta-band', '.site-footer'].forEach(function(sel) {
+    var el = document.querySelector(sel);
+    if (el) { seen[el.id || el.className] = true; io.observe(el); }
+  });
+})();
+
 /* chiudi modal con tasto ESC */
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeGalleryModal();

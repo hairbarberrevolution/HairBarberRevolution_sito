@@ -33,7 +33,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -41,7 +41,7 @@
         extend: {
           colors: { black: '#0d0d0d', white: '#fafafa' },
           fontFamily: {
-            serif: ["'Cormorant Garamond'", "serif"],
+            serif: ["'Bricolage Grotesque'", "serif"],
             sans:  ["'Jost'", "'Segoe UI'", "system-ui", "sans-serif"]
           }
         }
@@ -181,7 +181,7 @@
       color: rgba(0,0,0,.38);
     }
     .novita-card-titolo {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', serif;
       font-weight: 700;
       font-size: 1.15rem;
       color: #000;
@@ -292,7 +292,7 @@
       margin-bottom: .4rem;
     }
     .modal-titolo {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', serif;
       font-weight: 700;
       font-size: clamp(1.3rem, 3vw, 1.7rem);
       color: #000;
@@ -375,7 +375,7 @@
       border: 1px dashed rgba(0,0,0,.2);
     }
     .empty-state p {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', serif;
       font-size: 1.25rem;
       color: rgba(0,0,0,.6);
       margin-bottom: 1.5rem;
@@ -391,6 +391,7 @@
   </style>
   <link rel="stylesheet" href="hbr.css" />
   <script src="hbr-sub.js"></script>
+  <script src="hbr-fx.js" defer></script>
 </head>
 
 <body>
@@ -537,7 +538,7 @@
 
     <!-- Invito finale -->
     <div class="ft-cta">
-      <p class="ft-cta-title">Il tuo prossimo look<br>inizia da qui.</p>
+      <p class="ft-cta-title">Il tuo prossimo look <br>inizia da qui.</p>
       <div class="ft-cta-btns">
         <a href="index.html#booking" class="btn btn-light">Prenota un appuntamento</a>
         <a href="buoni.html" class="btn btn-ghost-light">Regala un buono</a>
@@ -636,7 +637,7 @@ function render() {
   /* Il post più recente è in evidenza, grande; gli altri vanno nella griglia */
   var f = POSTS[0];
   var featureHtml =
-    '<div class="novita-feature spot on-paper" data-reveal tabindex="0" role="button" ' +
+    '<div class="novita-feature spot on-paper" data-cursor="Leggi" data-reveal tabindex="0" role="button" ' +
          'aria-label="Apri post: ' + (f.titolo || '').replace(/"/g, '') + '" ' +
          'onclick="openModal(0)" onkeydown="if(event.key===\'Enter\'||event.key===\' \')openModal(0)">' +
       (f.foto && f.foto.trim() !== ''
@@ -664,7 +665,7 @@ function render() {
     }
 
     cardsHtml +=
-      '<div class="novita-card spot on-paper" data-reveal style="--d:' + ((i - 1) % 3) + '" tabindex="0" role="button" ' +
+      '<div class="novita-card spot on-paper" data-cursor="Leggi" data-reveal style="--d:' + ((i - 1) % 3) + '" tabindex="0" role="button" ' +
            'aria-label="Apri post: ' + (p.titolo || '') + '" ' +
            'onclick="openModal(' + i + ')" ' +
            'onkeydown="if(event.key===\'Enter\'||event.key===\' \')openModal(' + i + ')">' +

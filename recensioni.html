@@ -33,7 +33,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Jost:wght@400..700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -41,7 +41,7 @@
         extend: {
           colors: { black: '#0d0d0d', white: '#fafafa' },
           fontFamily: {
-            serif: ["'Cormorant Garamond'", "serif"],
+            serif: ["'Bricolage Grotesque'", "serif"],
             sans:  ["'Jost'", "'Segoe UI'", "system-ui", "sans-serif"]
           }
         }
@@ -137,7 +137,7 @@
     .review-stars { display: flex; gap: .2rem; margin-bottom: 1rem; color: #000; }
 
     .review-quote {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', serif;
       font-size: 1.05rem;
       line-height: 1.6;
       color: rgba(0,0,0,.75);
@@ -152,7 +152,7 @@
       border: none;
       padding: 0;
       margin: 0;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', serif;
       font-size: 1.05rem;
       line-height: 1.6;
       color: rgba(0,0,0,.85);
@@ -244,7 +244,7 @@
     .rmodal-name-header {
       font-weight: 700;
       font-size: clamp(1.1rem, 3vw, 1.4rem);
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', serif;
       color: #000; line-height: 1.2;
     }
 
@@ -253,7 +253,7 @@
       -webkit-overflow-scrolling: touch; min-height: 0;
     }
     .rmodal-quote-full {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', serif;
       font-size: 1.05rem;
       line-height: 1.75;
       color: rgba(0,0,0,.75);
@@ -287,12 +287,12 @@
        La scheda al centro è piena; quelle ai lati si rimpiccioliscono, ruotano
        appena e sfumano (valori --s, --o, --ry calcolati dal JS durante lo scorrimento).
     ════════════════════════════════ */
-    .rv-deck-ui { display: none; }
+    .rv-deck-ui, .rv-swipe { display: none; }
     @media (max-width: 767.98px) {
       .rv-grid.is-deck {
-        columns: auto; display: flex; align-items: center; gap: .75rem;
+        columns: auto; display: flex; align-items: flex-start; gap: .75rem;
         overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
-        margin: 0 -1.5rem; padding: 1.25rem 11vw 1.75rem; min-height: 22rem; scrollbar-width: none; perspective: 1100px;
+        margin: 0 -1.5rem; padding: .9rem 11vw 1.5rem; scrollbar-width: none; perspective: 1100px;
       }
       .rv-grid.is-deck::-webkit-scrollbar { display: none; }
       html.js .rv-grid.is-deck .rv-card {
@@ -304,6 +304,10 @@
       html.js .rv-grid.is-deck .rv-card.is-active { border-color: var(--ink); box-shadow: 0 22px 40px -26px rgba(13,13,13,.45); }
       .rv-grid.is-deck .rv-card-quote { flex: 1; }
       .rv-deck-ui { display: flex; align-items: center; gap: 1rem; }
+      /* invito a sfogliare: una mano di carte stilizzata e una freccia che si muove */
+      .rv-swipe { display: flex; align-items: center; gap: .6rem; margin-top: .9rem; font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: rgba(13,13,13,.6); }
+      .rv-swipe svg { animation: rvNudge 1.6s ease-in-out infinite; }
+      @keyframes rvNudge { 0%, 100% { transform: translateX(-3px); } 50% { transform: translateX(5px); } }
       .rv-deck-ui button {
         width: 3rem; height: 3rem; flex-shrink: 0; border: 1px solid var(--ink); background: none;
         display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
@@ -312,13 +316,14 @@
       .rv-deck-ui button:active { background: var(--ink); color: var(--paper); }
       .rv-deck-ui button:disabled { opacity: .25; }
       .rv-deck-meter { flex: 1; display: flex; align-items: center; gap: .75rem; font-size: .78rem; letter-spacing: .1em; font-variant-numeric: tabular-nums; }
-      .rv-deck-meter b { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; letter-spacing: 0; min-width: 1.6em; }
+      .rv-deck-meter b { font-family: 'Bricolage Grotesque', serif; font-size: 1.5rem; font-weight: 600; letter-spacing: 0; min-width: 1.6em; }
       .rv-deck-bar { flex: 1; height: 2px; background: rgba(13,13,13,.14); position: relative; overflow: hidden; }
       .rv-deck-bar i { position: absolute; inset: 0; background: var(--ink); transform-origin: left; transform: scaleX(0); transition: transform .45s cubic-bezier(.16, 1, .3, 1); }
     }
   </style>
   <link rel="stylesheet" href="hbr.css" />
   <script src="hbr-sub.js"></script>
+  <script src="hbr-fx.js" defer></script>
 </head>
 
 <body>
@@ -445,7 +450,7 @@
       </figure>
     </section>
 
-    <h2 class="font-serif" data-reveal style="font-weight:600;font-size:clamp(2rem,4vw,3rem);line-height:1.05;margin-bottom:clamp(1.75rem,3vw,2.5rem);">Tutte le recensioni</h2>
+    <h2 class="font-serif" data-reveal style="font-weight:600;font-size:clamp(2rem,4vw,3rem);line-height:1.05;margin-bottom:clamp(.9rem,2.4vw,2rem);">Tutte le recensioni</h2>
     <div class="rv-grid" id="rv-grid"></div>
 
   </div>
@@ -457,7 +462,7 @@
 
     <!-- Invito finale -->
     <div class="ft-cta">
-      <p class="ft-cta-title">Il tuo prossimo look<br>inizia da qui.</p>
+      <p class="ft-cta-title">Il tuo prossimo look <br>inizia da qui.</p>
       <div class="ft-cta-btns">
         <a href="index.html#booking" class="btn btn-light">Prenota un appuntamento</a>
         <a href="buoni.html" class="btn btn-ghost-light">Regala un buono</a>
@@ -828,7 +833,13 @@ function setupDeck() {
   ui.innerHTML = '<button type="button" aria-label="Recensione precedente">' + arrowL + '</button>'
     + '<div class="rv-deck-meter" aria-live="polite"><b>01</b><span class="rv-deck-bar"><i></i></span><span>' + pad(cards.length) + '</span></div>'
     + '<button type="button" aria-label="Recensione successiva">' + arrowR + '</button>';
-  grid.parentNode.insertBefore(ui, grid.nextSibling);
+  /* contatore e frecce stanno subito sotto il titolo, sopra le schede: si capisce che è un mazzo da sfogliare */
+  grid.parentNode.insertBefore(ui, grid);
+  var hint = document.createElement('p');
+  hint.className = 'rv-swipe';
+  hint.setAttribute('aria-hidden', 'true');
+  hint.innerHTML = 'Scorri di lato per leggerle tutte <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+  grid.parentNode.insertBefore(hint, grid);
   var prev = ui.children[0], next = ui.children[2], num = ui.querySelector('b'), bar = ui.querySelector('.rv-deck-bar i');
   var active = -1, raf = 0, on = false;
 
