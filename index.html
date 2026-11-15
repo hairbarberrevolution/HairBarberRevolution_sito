@@ -116,10 +116,10 @@
   gtag('js', new Date());
   gtag('config', 'G-E9R0TDFCKJ');
 </script>
-  <script src="GALLERIA_DONNA.js"></script>
-  <script src="GALLERIA_UOMO.js"></script>
-  <script src="SERVIZI_DONNA.js"></script>
-  <script src="SERVIZI_UOMO.js"></script>
+  <script src="GALLERIA_DONNA.js?v=20261115h"></script>
+  <script src="GALLERIA_UOMO.js?v=20261115h"></script>
+  <script src="SERVIZI_DONNA.js?v=20261115h"></script>
+  <script src="SERVIZI_UOMO.js?v=20261115h"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -134,7 +134,7 @@
       }
     }
   </script>
-  <link rel="stylesheet" href="hbr.css" />
+  <link rel="stylesheet" href="hbr.css?v=20261115h" />
 </head>
 
 <body class="home">
@@ -273,7 +273,6 @@
           Via Fornacetta 7, Costa Masnaga (LC)
         </a>
         <span class="hero-foot-item" id="hero-status"></span>
-        <span class="hero-scroll" aria-hidden="true">Scorri <i></i></span>
       </div>
     </div>
   </section>
@@ -291,7 +290,7 @@
           di <strong class="hl">puro</strong> <strong class="hl">relax</strong> e cura di sé. Ogni dettaglio è curato con <strong class="hl">professionalità</strong> e amore per l'arte.
         </p>
         <!-- Ponte verso il team: le foto entrano una dopo l'altra mentre si scorre -->
-        <a href="#team" class="stmt-team" onclick="event.preventDefault();document.querySelector('.team-grid').scrollIntoView({behavior:'smooth',block:'center'})">
+        <a href="#team" class="stmt-team" data-cursor-soft onclick="event.preventDefault();document.querySelector('.team-grid').scrollIntoView({behavior:'smooth',block:'center'})">
           <span class="stmt-faces" aria-hidden="true">
             <img src="IMMAGINI_NOI/veruska.jpg" alt="" width="900" height="873" decoding="async" style="object-position:72% 30%;" />
             <img src="IMMAGINI_NOI/max.jpg" alt="" width="900" height="900" decoding="async" style="object-position:50% 20%;" />
@@ -418,17 +417,29 @@
     </div>
   </section>
 
-  <!-- RULLO DEI LAVORI: la scena si ferma e lo scroll fa scorrere le foto di lato.
+  <!-- RULLO DEI LAVORI: fila di foto da scorrere di lato (dito, trackpad, trascinamento o frecce).
+       La rotella del mouse scorre la pagina normalmente: la sezione non blocca mai lo scroll.
        Le foto vengono dalle stesse liste della galleria (GALLERIA_DONNA.js / GALLERIA_UOMO.js). -->
   <section class="reel" id="reel" aria-label="Alcuni lavori usciti dal salone">
     <div class="reel-sticky">
-      <div class="reel-ghost" id="reel-ghost" aria-hidden="true">Revolution</div>
-      <div class="container mx-auto px-6 reel-head">
-        <h2 class="h-section anim-up">Usciti dal nostro salone</h2>
-        <p class="anim-up" style="transition-delay:.1s;">Tagli, colori e barbe fatti in negozio, fotografati appena finiti. Tocca una foto per ingrandirla.</p>
+      <div class="px-6"><div class="container mx-auto reel-head" id="reel-head">
+        <div>
+          <h2 class="h-section anim-up">Usciti dal nostro salone</h2>
+          <p class="anim-up" style="transition-delay:.1s;">Tagli, colori e barbe fatti in negozio, fotografati appena finiti. Scorri le foto di lato e toccane una per ingrandirla.</p>
+        </div>
+        <div class="reel-nav anim-up" style="transition-delay:.15s;">
+          <button type="button" class="reel-arrow" id="reel-prev" aria-label="Foto precedenti" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button type="button" class="reel-arrow" id="reel-next" aria-label="Foto successive">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div></div>
+      <div class="reel-viewport">
+        <div class="reel-track" id="reel-track" tabindex="0" aria-label="Foto dei lavori, scorri in orizzontale"></div>
       </div>
-      <div class="reel-track" id="reel-track"></div>
-      <div class="container mx-auto px-6"><div class="reel-bar" aria-hidden="true"><i></i></div></div>
+      <div class="px-6"><div class="container mx-auto"><div class="reel-bar" aria-hidden="true"><i></i></div></div></div>
     </div>
   </section>
 
@@ -1550,7 +1561,7 @@ onPageReady(function() {
   Prenota
 </a>
 
-<script src="hbr-fx.js"></script>
+<script src="hbr-fx.js?v=20261115h"></script>
 <script>
 /* ════════════════════════
    VISORE FOTO
@@ -1656,14 +1667,14 @@ onPageReady(function() {
 
 /* ════════════════════════
    RULLO DEI LAVORI
-   Le foto alternano donna e uomo. Con lo script la sezione diventa alta quanto
-   la strada che le foto devono fare: scorrendo in giù, il rullo scorre di lato.
-   Con "riduci movimento" resta una fila da sfogliare con il dito.
+   Le foto alternano donna e uomo. È una fila che si scorre di lato con il dito,
+   il trackpad, trascinando col mouse o con le frecce; la rotella scorre la pagina.
 ════════════════════════ */
 (function() {
   var reel = document.getElementById('reel'), track = document.getElementById('reel-track');
   if (!reel || !track) return;
-  var ghost = document.getElementById('reel-ghost');
+  var head = document.getElementById('reel-head');
+  var prev = document.getElementById('reel-prev'), next = document.getElementById('reel-next');
   var d = GALLERY.donna.slice(0, 5), u = GALLERY.uomo.slice(0, 5), items = [];
   for (var i = 0; i < 5; i++) {
     if (d[i]) items.push({ url: d[i].url, tag: 'Donna' });
@@ -1672,37 +1683,78 @@ onPageReady(function() {
   if (!items.length) { reel.style.display = 'none'; return; }
   track.innerHTML = items.map(function(it, k) {
     return '<button type="button" class="reel-card" data-cursor="Apri" aria-label="Apri la foto ' + it.tag + ' ' + (k + 1) + '">'
-      + '<img src="' + it.url + '" alt="Lavoro ' + it.tag.toLowerCase() + ' ' + (k + 1) + '" loading="lazy" decoding="async" />'
+      + '<img src="' + it.url + '" alt="Lavoro ' + it.tag.toLowerCase() + ' ' + (k + 1) + '" loading="lazy" decoding="async" draggable="false" />'
       + '<span class="reel-tag">' + it.tag + '</span></button>';
   }).join('');
 
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
-  reel.classList.add('is-pinned');
-  var shift = 0, near = false, ticking = false;
-  function measure() {
-    shift = Math.max(0, track.scrollWidth - window.innerWidth);
-    reel.style.height = (window.innerHeight + shift) + 'px';
+  /* Allinea la prima foto al titolo (stesso margine del contenitore) */
+  function align() {
+    var h1 = head.querySelector('h2');
+    var left = Math.round(h1 ? h1.getBoundingClientRect().left : 24);
+    track.style.setProperty('--reel-pad', Math.max(16, left) + 'px');
     update();
   }
+  var ticking = false;
   function update() {
     ticking = false;
-    var top = reel.getBoundingClientRect().top;
-    var p = shift ? Math.max(0, Math.min(1, -top / shift)) : 0;
+    var max = track.scrollWidth - track.clientWidth;
+    var p = max > 0 ? Math.max(0, Math.min(1, track.scrollLeft / max)) : 0;
     reel.style.setProperty('--p', p.toFixed(4));
-    track.style.transform = 'translate3d(' + (-p * shift).toFixed(1) + 'px,0,0)';
-    if (ghost) ghost.style.transform = 'translate3d(' + (8 - p * 46).toFixed(2) + '%,0,0)';
+    prev.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft >= max - 2;
+    reel.classList.toggle('is-start', track.scrollLeft <= 2);
+    reel.classList.toggle('is-end', track.scrollLeft >= max - 2);
   }
-  window.addEventListener('scroll', function() {
-    if (!near || ticking) return;
+  track.addEventListener('scroll', function() {
+    if (ticking) return;
     ticking = true; requestAnimationFrame(update);
   }, { passive: true });
-  window.addEventListener('resize', measure);
-  window.addEventListener('load', measure);
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function(en) { near = en[0].isIntersecting; if (near) update(); }, { rootMargin: '20% 0px' }).observe(reel);
-  } else near = true;
-  measure();
+
+  function step(dir) {
+    var card = track.querySelector('.reel-card');
+    var gap = parseFloat(getComputedStyle(track).columnGap) || 16;
+    var w = card ? card.getBoundingClientRect().width + gap : track.clientWidth * .8;
+    var n = Math.max(1, Math.floor((track.clientWidth * .85) / w));
+    track.scrollBy({ left: dir * n * w, behavior: 'smooth' });
+  }
+  prev.addEventListener('click', function() { step(-1); });
+  next.addEventListener('click', function() { step(1); });
+  track.addEventListener('keydown', function(e) {
+    if (e.target !== track) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); step(-1); }
+  });
+
+  /* La rotella verticale non tocca le foto: scorre sempre e solo la pagina.
+     Le foto si muovono solo con gesti orizzontali (trackpad, dito, trascinamento, frecce). */
+
+  /* Trascinamento col mouse (sul touch ci pensa il browser) */
+  var drag = null, moved = false;
+  track.addEventListener('pointerdown', function(e) {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    drag = { x: e.clientX, left: track.scrollLeft }; moved = false;
+  });
+  window.addEventListener('pointermove', function(e) {
+    if (!drag) return;
+    var dx = e.clientX - drag.x;
+    if (!moved && Math.abs(dx) > 5) { moved = true; reel.classList.add('is-dragging'); }
+    if (moved) track.scrollLeft = drag.left - dx;
+  });
+  window.addEventListener('pointerup', function() {
+    if (!drag) return;
+    drag = null;
+    if (moved) {
+      reel.classList.remove('is-dragging');
+    }
+  });
+  /* Dopo un trascinamento non aprire la foto */
+  track.addEventListener('click', function(e) {
+    if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
+  }, true);
+
+  window.addEventListener('resize', align);
+  window.addEventListener('load', align);
+  align();
 })();
 
 /* ════════════════════════

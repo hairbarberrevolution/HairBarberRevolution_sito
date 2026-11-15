@@ -154,6 +154,7 @@
       cur.classList.toggle('is-label', !!lab);
       cur.classList.toggle('is-link', !lab && !!link);
       cur.classList.toggle('is-hidden', !!field);
+      cur.classList.toggle('is-soft', !!(link && link.closest('[data-cursor-soft]'))); /* anello vuoto: niente colori invertiti sulle foto */
       if (lab) label.textContent = lab.getAttribute('data-cursor');
       if (!running) { running = true; requestAnimationFrame(loop); }
     }, { passive: true });

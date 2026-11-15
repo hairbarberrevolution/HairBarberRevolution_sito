@@ -154,6 +154,19 @@ ga<!DOCTYPE html>
       padding: .25rem .55rem;
     }
 
+    /* Bollini promo a tempo */
+    .promo-badges { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .2rem; }
+    .promo-badge {
+      display: inline-block; font-size: .64rem; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase; padding: .3rem .6rem; line-height: 1;
+      background: #000; color: #fff;
+    }
+    .promo-badge.terminata { background: #d61f26; color: #fff; }
+    .promo-card.is-terminata .promo-name,
+    .promo-card.is-terminata .promo-desc { opacity: .55; }
+    .promo-card.is-terminata .promo-photo-wrap { filter: grayscale(1); opacity: .7; }
+    .modal-header .promo-badges { margin-bottom: .6rem; }
+
     /* Body card */
     .promo-body { padding: 1.25rem 1.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; gap: .35rem; }
     .promo-name {
@@ -389,9 +402,9 @@ ga<!DOCTYPE html>
     .modal-close-btn:hover { background: #000; color: #fff; }
     .modal-close-btn:hover svg { stroke: #fff; }
   </style>
-  <link rel="stylesheet" href="hbr.css" />
-  <script src="hbr-sub.js"></script>
-  <script src="hbr-fx.js" defer></script>
+  <link rel="stylesheet" href="hbr.css?v=20261115h" />
+  <script src="hbr-sub.js?v=20261115h"></script>
+  <script src="hbr-fx.js?v=20261115h" defer></script>
 </head>
 
 <body>
@@ -616,8 +629,8 @@ ga<!DOCTYPE html>
 </div><!-- /promo-modal -->
 
 <!-- Dati promozioni -->
-<script src="promozionidonna.js"></script>
-<script src="promozioniuomo.js"></script>
+<script src="promozionidonna.js?v=20261115h"></script>
+<script src="promozioniuomo.js?v=20261115h"></script>
 
 <!-- FOOTER -->
 <footer class="site-footer">
@@ -687,9 +700,33 @@ function closeMenu() {
 /* ════════════════════════════════
    DATI
 ════════════════════════════════ */
+/* ── Promo a tempo: "fine" → TERMINATA, "nascondi_dal" → sparisce ── */
+var FORCE_TERMINATA = /[?&]anteprima=terminata\b/.test(location.search);
+function todayStr() {
+  var d = new Date();
+  return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+}
+var TODAY = todayStr();
+function isTerminata(p) { return !!p.fine && (FORCE_TERMINATA || TODAY > p.fine); }
+function isNascosta(p)  { return !FORCE_TERMINATA && !!p.nascondi_dal && TODAY >= p.nascondi_dal; }
+function formatFine(s) {
+  var m = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  var a = s.split('-');
+  return parseInt(a[2], 10) + ' ' + m[parseInt(a[1], 10) - 1];
+}
+function badgesHtml(p) {
+  if (!p.fine) return '';
+  return '<div class="promo-badges">' + (isTerminata(p)
+    ? '<span class="promo-badge terminata">Terminata</span>'
+    : '<span class="promo-badge">Fino al ' + formatFine(p.fine) + '</span>') + '</div>';
+}
+function prepara(list) {
+  return (Array.isArray(list) ? list : []).filter(function(p) { return !isNascosta(p); });
+}
+
 var PROMO = {
-  donna: Array.isArray(window.PROMOZIONI_DONNA_DATA) ? window.PROMOZIONI_DONNA_DATA : [],
-  uomo:  Array.isArray(window.PROMOZIONI_UOMO_DATA)  ? window.PROMOZIONI_UOMO_DATA  : []
+  donna: prepara(window.PROMOZIONI_DONNA_DATA),
+  uomo:  prepara(window.PROMOZIONI_UOMO_DATA)
 };
 var currentGender = 'donna';
 var currentIndex  = 0;
@@ -739,15 +776,16 @@ function promoCardHtml(p, idx) {
       '</div>';
   }
 
-  return '<div class="promo-card spot on-paper" data-cursor="Scopri" data-reveal style="--d:' + (idx % 2) + '" tabindex="0" role="button"' +
+  return '<div class="promo-card spot on-paper' + (isTerminata(p) ? ' is-terminata' : '') + '" data-cursor="Scopri" data-reveal style="--d:' + (idx % 2) + '" tabindex="0" role="button"' +
          ' aria-label="Apri promozione: ' + escAttr(p.nome) + '"' +
          ' onclick="openModal(' + idx + ')"' +
          ' onkeydown="if(event.key===\'Enter\'||event.key===\' \')openModal(' + idx + ')">' +
     mediaHtml +
     '<div class="promo-body">' +
+      badgesHtml(p) +
       '<h3 class="promo-name">' + p.nome + '</h3>' +
-      '<p class="promo-desc">' + stripHtml(p.descrizione || '') + '</p>' +
-      '<span class="promo-card-leggi">Scopri la promozione</span>' +
+      '<p class="promo-desc">' + stripHtml(p.anteprima || p.descrizione || '') + '</p>' +
+      '<span class="promo-card-leggi">' + (isTerminata(p) ? 'Rivedi la promozione' : 'Scopri la promozione') + '</span>' +
     '</div>' +
   '</div>';
 }
@@ -892,7 +930,7 @@ function renderModal() {
   }
 
   /* --- Testo --- */
-  document.getElementById('modal-titolo-text').textContent = p.nome || '';
+  document.getElementById('modal-titolo-text').innerHTML = badgesHtml(p) + escAttr(p.nome || '');
   document.getElementById('modal-desc-text').innerHTML     = p.descrizione || '';
 
   /* --- Navigazione --- */
@@ -988,6 +1026,6 @@ document.addEventListener('mouseup',  function() { isSeeking = false; });
 document.addEventListener('touchend', function() { isSeeking = false; });
 </script>
 
-<script src="cookie-banner.js"></script>
+<script src="cookie-banner.js?v=20261115h"></script>
 </body>
 </html>
